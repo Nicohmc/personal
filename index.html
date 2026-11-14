@@ -331,7 +331,7 @@
             <div class="storage-note">提醒：Excel 匯入會覆蓋目前資料，系統會先詢問確認。</div>
           </section>
           <section class="storage-option"><h3>☁ Google 試算表</h3><p id="cloud-details">網站會自動讀取並儲存到你已連接的 Google 試算表，不必登入或輸入密碼。請不要在公開同步的資料表儲存敏感內容。</p>
-            <div class="option-actions"><button type="button" class="neutral-btn" id="cloud-load">↓ 載入雲端</button><button type="button" class="neutral-btn" id="cloud-upload">↑ 上傳本機</button><button type="button" class="primary-btn" id="cloud-save">↻ 立即同步</button></div>
+            <div class="option-actions" style="display:none"><button type="button" class="neutral-btn" id="cloud-load">↓ 載入雲端</button><button type="button" class="neutral-btn" id="cloud-upload">↑ 上傳本機</button><button type="button" class="primary-btn" id="cloud-save">↻ 立即同步</button></div>
             <div class="storage-note" id="cloud-updated">尚未連線</div>
           </section>
         </div>
@@ -525,64 +525,165 @@ window.CasaWorkbook = (() => {
       $('#storage-export-json').addEventListener('click',()=>$('#export-data').click());
       $('#storage-import-json').addEventListener('click',()=>$('#import-data').click());
 
-      // Public Apps Script web API. No sign-in or password is required.
-      // Warning: anonymous API access means spreadsheet contents are not private.
+      // Casa Marina two-way sync: browser writes immediately; spreadsheet edits
+      // become visible on next poll or tab focus. No login/password UI.
+      const CLOUD_BASELINE_KEY=STORAGE_KEY+'.syncBaseline.v2';
+      const CLOUD_RECOVERY_KEY=STORAGE_KEY+'.recovery';
+      const CLOUD_POLL_MS=12000;
+      let cloudBaseline=null;
+      try { const b=JSON.parse(localStorage.getItem(CLOUD_BASELINE_KEY)||'null');if(b)cloudBaseline=normalizeData(b); } catch(e){}
+      function setBaseline(next){cloudBaseline=normalizeData(next);try{localStorage.setItem(CLOUD_BASELINE_KEY,JSON.stringify(cloudBaseline))}catch(e){}}
+      function preserveLocal(reason){try{localStorage.setItem(CLOUD_RECOVERY_KEY,JSON.stringify({reason,savedAt:new Date().toISOString(),data}))}catch(e){}}
+      function saveLocalOnly(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}catch(e){console.warn(e)}}
+      function sameData(a,b){return JSON.stringify(a)===JSON.stringify(b)}
+      function userHasLocalData(d){return d.projects.length>0||d.todos.length>0||d.events.length>0||d.quickLinks.some(x=>x.id!==DEFAULT_LINK.id)}
       function updateCloudStatus(label,kind='normal',updated=''){
         $('#cloud-state').textContent=label;$('#cloud-state').classList.toggle('warn',kind==='warning');
-        $('#header-storage-status').textContent=cloudReady?'試算表已同步':'Excel · 資料管理';
+        $('#header-storage-status').textContent=cloudReady&&kind!=='warning'?'雙向同步中':'Excel · 資料管理';
         $('#storage-dot').classList.toggle('connected',cloudReady&&kind!=='warning');$('#storage-dot').classList.toggle('warning',kind==='warning');
         $('#cloud-updated').textContent=updated||label;
-        $('#library-storage-caption').textContent=cloudReady?'☁ 已連線 Google 試算表 · 本機亦有備份':'☼ 儲存於此瀏覽器 · 可用 Excel 或 JSON 備份';
+        $('#library-storage-caption').textContent=cloudReady?'☁ Google 試算表雙向同步 · 本機亦有備份':'☼ 儲存於此瀏覽器 · 可用 Excel 或 JSON 備份';
       }
       function jsonpRead(){
         return new Promise((resolve,reject)=>{
-          const cb='__casaCloud'+(++activeJsonp)+'_'+Date.now();
-          const url=new URL(CLOUD_API);
+          const cb='__casaCloud'+(++activeJsonp)+'_'+Date.now(),url=new URL(CLOUD_API);
           url.searchParams.set('action','read');url.searchParams.set('callback',cb);
           let ended=false;const script=document.createElement('script');
           const cleanup=()=>{delete window[cb];script.remove();clearTimeout(timeout)};
-          window[cb]=(result)=>{if(ended)return;ended=true;cleanup();if(result?.ok)resolve(result.result);else reject(Error(result?.error||'讀取失敗'))};
+          window[cb]=(response)=>{if(ended)return;ended=true;cleanup();response?.ok?resolve(response.result):reject(Error(response?.error||'讀取失敗'))};
           script.onerror=()=>{if(!ended){ended=true;cleanup();reject(Error('無法連上 Apps Script，請檢查部署權限與網址'))}};
-          const timeout=setTimeout(()=>{if(!ended){ended=true;cleanup();reject(Error('連線逾時，請檢查網路或部署狀態'))}},15000);
+          const timeout=setTimeout(()=>{if(!ended){ended=true;cleanup();reject(Error('連線逾時，請檢查網路'))}},18000);
           script.src=url.toString();document.head.append(script);
         });
       }
       async function cloudCall(name,arg){
         if(name==='getDashboardData')return jsonpRead();
         if(name!=='saveDashboardData')throw Error('未知的雲端操作');
-        // Cross-origin Apps Script redirects cannot be read via regular fetch/CORS.
-        // Send a simple no-cors POST, then independently read back to verify the saved revision.
         const expected=Number(arg.revision)+1;
-        const payload={action:'save',revision:arg.revision,data:arg.data};
-        await fetch(CLOUD_API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(payload),redirect:'follow'});
-        let latest=null;
-        for(let attempt=0;attempt<6;attempt++){
-          await new Promise(r=>setTimeout(r,650+attempt*350));
-          latest=await jsonpRead();
-          if(Number(latest.revision)>=expected){
-            if(Number(latest.revision)!==expected||!sameData(normalizeData(latest.data||{}),normalizeData(arg.data)))throw Error('VERSION_CONFLICT：雲端資料與本機不同，請手動確認');
+        await fetch(CLOUD_API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({action:'save',revision:arg.revision,data:arg.data}),redirect:'follow'});
+        // The no-cors POST has an opaque response; independently verify the write.
+        for(let attempt=0;attempt<7;attempt++){
+          await new Promise(r=>setTimeout(r,600+attempt*320));
+          const latest=await jsonpRead();
+          if(Number(latest.revision)>Number(arg.revision)){
+            if(!sameData(normalizeData(latest.data||{}),normalizeData(arg.data)))throw Error('VERSION_CONFLICT');
             return {revision:latest.revision,updatedAt:latest.updatedAt};
           }
         }
-        throw Error('無法確認試算表已寫入。請先檢查 Apps Script 部署設定，不要重複覆蓋資料。');
+        throw Error('寫入未獲確認，請查看 Apps Script 執行記錄');
       }
-      function userHasLocalData(d){return d.projects.length>0||d.todos.length>0||d.events.length>0||d.quickLinks.some(x=>x.id!==DEFAULT_LINK.id)}
-      function sameData(a,b){return JSON.stringify(a)===JSON.stringify(b)}
-      function scheduleCloudSave(){clearTimeout(cloudTimer);cloudTimer=setTimeout(flushCloudSave,850)}
-      async function flushCloudSave(){if(!cloudEnabled||!cloudReady||cloudBusy)return;if(!cloudPending)return;cloudBusy=true;cloudPending=false;const payload=JSON.parse(JSON.stringify(data));updateCloudStatus('正在將變更儲存到 Google 試算表…');try{
-          const result=await cloudCall('saveDashboardData',{revision:cloudRevision,data:payload});cloudRevision=result.revision;cloudLastSaved=result.updatedAt||'';if(!cloudPending)updateCloudStatus('已同步到 Google 試算表','normal',`最近同步：${cloudLastSaved}`);
-        }catch(err){cloudPending=true;cloudReady=false;const conflict=String(err.message||err).includes('VERSION_CONFLICT');updateCloudStatus(conflict?'雲端已有其他裝置的新資料。請選擇「載入雲端」或「上傳本機」。':'同步失敗：'+(err.message||err),'warning');notify('雲端未同步，本機資料仍保留')}finally{cloudBusy=false;if(cloudReady&&cloudPending)scheduleCloudSave()}}
-      async function initialCloudLoad(){$('#cloud-details').textContent='GitHub Pages 網站正在透過 Apps Script 與 Google 試算表同步。';updateCloudStatus('正在檢查 Google 試算表…');try{const remote=await cloudCall('getDashboardData');const remoteData=normalizeData(remote.data||{});cloudRevision=Number(remote.revision)||0;cloudLastSaved=remote.updatedAt||'';
-        if(cloudRevision===0&&!userHasLocalData(remoteData)){if(userHasLocalData(data)){cloudReady=false;updateCloudStatus('試算表尚無資料；可按「上傳本機」將舊資料搬到雲端。','warning')}else{cloudReady=true;updateCloudStatus('已連上空白試算表，下一次編輯將自動同步。')}}
-        else if(!userHasLocalData(data)||sameData(data,remoteData)){data=remoteData;saveLocalOnly();refreshAllData();cloudReady=true;updateCloudStatus('已載入 Google 試算表','normal',`最近同步：${cloudLastSaved}`)}
-        else{cloudReady=false;updateCloudStatus('本機與試算表內容不同：請決定要保留哪一份。未經確認不會覆蓋。','warning')}
-      }catch(err){cloudReady=false;updateCloudStatus('尚未能連接試算表：'+(err.message||err),'warning')}}
-      function saveLocalOnly(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}catch(e){console.warn(e)}}
-      async function loadFromCloud(){if(cloudBusy)return;cloudBusy=true;updateCloudStatus('正在讀取試算表…');try{const response=await cloudCall('getDashboardData');const next=normalizeData(response.data||{});if(!sameData(data,next)&&userHasLocalData(data)&&!confirm('載入試算表資料會覆蓋目前這台裝置的本機資料。你確定嗎？'))return;data=next;saveLocalOnly();refreshAllData();cloudRevision=Number(response.revision)||0;cloudReady=true;cloudPending=false;updateCloudStatus('已由 Google 試算表載入','normal',`最近同步：${response.updatedAt||'剛剛'}`);notify('已載入雲端資料')}catch(err){updateCloudStatus('雲端讀取失敗：'+(err.message||err),'warning')}finally{cloudBusy=false}}
-      async function uploadToCloud(){if(cloudBusy)return;cloudBusy=true;updateCloudStatus('正在檢查雲端版本…');try{const latest=await cloudCall('getDashboardData');const latestData=normalizeData(latest.data||{});if(Number(latest.revision)>0&&!sameData(data,latestData)&&!confirm('這會用本機資料完整覆蓋 Google 試算表的作品、待辦、日程和捷徑。建議先備份，確定覆蓋嗎？'))return;const result=await cloudCall('saveDashboardData',{revision:Number(latest.revision)||0,data:JSON.parse(JSON.stringify(data))});cloudRevision=result.revision;cloudReady=true;cloudPending=false;updateCloudStatus('已將本機資料上傳到 Google 試算表','normal',`最近同步：${result.updatedAt||'剛剛'}`);notify('雲端儲存完成')}catch(err){cloudReady=false;updateCloudStatus('上傳失敗：'+(err.message||err),'warning')}finally{cloudBusy=false}}
+      // ID-level three-way merge keeps independent changes on either side.
+      // If the SAME record is edited on both sides, stop rather than lose data.
+      function mergeRows(base,local,remote){
+        const b=new Map(base.map(x=>[String(x.id),x]));
+        const l=new Map(local.map(x=>[String(x.id),x]));
+        const r=new Map(remote.map(x=>[String(x.id),x]));
+        const ids=new Set([...b.keys(),...l.keys(),...r.keys()]);
+        const merged=[];let conflicts=0;
+        for(const id of ids){
+          const previous=b.get(id),mine=l.get(id),theirs=r.get(id);
+          const localChanged=!sameData(previous??null,mine??null);
+          const remoteChanged=!sameData(previous??null,theirs??null);
+          let chosen;
+          if(localChanged&&remoteChanged){if(sameData(mine??null,theirs??null))chosen=mine;else{conflicts++;chosen=mine;}}
+          else chosen=localChanged?mine:theirs;
+          if(chosen)merged.push(chosen);
+        }
+        return {rows:merged,conflicts};
+      }
+      function mergeAll(base,local,remote){
+        const result={};let conflicts=0;
+        for(const key of ['projects','todos','events','quickLinks']){
+          const m=mergeRows(base[key]||[],local[key]||[],remote[key]||[]);
+          result[key]=m.rows;conflicts+=m.conflicts;
+        }
+        return {data:normalizeData(result),conflicts};
+      }
+      function applyRemote(result){
+        const latest=normalizeData(result.data||{});
+        const previous=cloudBaseline;
+        const localChanged=previous&&!sameData(data,previous);
+        let next=latest;
+        if(localChanged){
+          const merged=mergeAll(previous,data,latest);
+          if(merged.conflicts){cloudReady=false;cloudPending=true;preserveLocal('同步衝突');updateCloudStatus('兩邊修改了同一筆資料；已保留本機內容，請先確認差異。','warning');return false;}
+          next=merged.data;
+        }
+        // On first upgrade with an unknown baseline, trust the existing cloud
+        // but back up any different local copy rather than silently discard it.
+        if(!previous&&userHasLocalData(data)&&!sameData(data,latest)&&userHasLocalData(latest))preserveLocal('首次同步：本機與雲端不同');
+        data=next;saveLocalOnly();refreshAllData();
+        cloudRevision=Number(result.revision)||0;cloudLastSaved=result.updatedAt||'';
+        setBaseline(latest);cloudReady=true;
+        cloudPending=!sameData(next,latest);
+        updateCloudStatus(cloudPending?'正在合併兩端的變更…':'雙向同步已啟用','normal',`最近更新：${cloudLastSaved||'剛剛'}`);
+        if(cloudPending)scheduleCloudSave();
+        return true;
+      }
+      function scheduleCloudSave(){clearTimeout(cloudTimer);cloudTimer=setTimeout(flushCloudSave,900)}
+      async function flushCloudSave(){
+        if(!cloudEnabled||!cloudReady||cloudBusy||!cloudPending)return;
+        cloudBusy=true;clearTimeout(cloudTimer);cloudTimer=null;
+        try{
+          // Before every write, detect a manual edit in Google Sheets.
+          const latest=await cloudCall('getDashboardData');
+          if(!applyRemote(latest))return;
+          if(!cloudPending)return;
+          const payload=JSON.parse(JSON.stringify(data));
+          cloudPending=false;
+          updateCloudStatus('正在自動儲存變更…');
+          const saved=await cloudCall('saveDashboardData',{revision:cloudRevision,data:payload});
+          cloudRevision=Number(saved.revision);cloudLastSaved=saved.updatedAt||'';
+          setBaseline(payload);
+          // Data might have changed while the write was in flight.
+          if(!sameData(data,payload))cloudPending=true;
+          updateCloudStatus(cloudPending?'還有變更待同步…':'兩邊資料已同步','normal',`最近更新：${cloudLastSaved}`);
+        }catch(err){
+          cloudPending=true;
+          const conflict=String(err.message||err).includes('VERSION_CONFLICT');
+          updateCloudStatus(conflict?'偵測到同時修改，正在重新比對…':'自動同步暫時失敗：'+(err.message||err),'warning');
+          if(conflict){cloudReady=true;setTimeout(()=>pollCloud(),900)}
+        }finally{cloudBusy=false;if(cloudReady&&cloudPending)scheduleCloudSave()}
+      }
+      async function pollCloud(){
+        if(!cloudEnabled||cloudBusy||document.hidden)return;
+        cloudBusy=true;
+        try{
+          const result=await cloudCall('getDashboardData');
+          if(!cloudReady||!cloudBaseline||Number(result.revision)!==cloudRevision||cloudPending){applyRemote(result);}
+        }catch(err){updateCloudStatus('等待重新連線：'+(err.message||err),'warning')}
+        finally{cloudBusy=false}
+      }
+      async function initialCloudLoad(){
+        $('#cloud-details').textContent='網站與 Google 試算表雙向自動同步；試算表新增資料後約 12 秒內更新網站。';
+        updateCloudStatus('正在連接 Google 試算表…');
+        try{
+          const latest=await cloudCall('getDashboardData');
+          const remote=normalizeData(latest.data||{});
+          if(!cloudBaseline&&!userHasLocalData(remote)&&userHasLocalData(data)){
+            // Existing browser-only data can be migrated automatically to an empty sheet.
+            cloudRevision=Number(latest.revision)||0;
+            setBaseline(remote);cloudReady=true;cloudPending=true;
+            scheduleCloudSave();
+          }else applyRemote(latest);
+        }catch(err){updateCloudStatus('連線失敗，會自動重試：'+(err.message||err),'warning')}
+      }
+      async function loadFromCloud(){await pollCloud()}
+      async function uploadToCloud(){
+        // Preserve the old UI button for troubleshooting only; normal usage is automatic.
+        if(!cloudReady){await initialCloudLoad();return}
+        cloudPending=true;scheduleCloudSave();notify('已排入自動同步');
+      }
       $('#cloud-load').disabled=false;$('#cloud-upload').disabled=false;$('#cloud-save').disabled=false;
-      $('#cloud-load').addEventListener('click',loadFromCloud);$('#cloud-upload').addEventListener('click',uploadToCloud);
-      $('#cloud-save').addEventListener('click',()=>{if(!cloudReady){notify('請先選擇「載入雲端」或「上傳本機」');return}cloudPending=true;flushCloudSave()});
+      $('#cloud-load').textContent='↻ 檢查同步';
+      $('#cloud-upload').textContent='↑ 重試上傳';
+      $('#cloud-save').textContent='☁ 同步狀態';
+      $('#cloud-load').addEventListener('click',pollCloud);
+      $('#cloud-upload').addEventListener('click',uploadToCloud);
+      $('#cloud-save').addEventListener('click',pollCloud);
+      setInterval(pollCloud,CLOUD_POLL_MS);
+      document.addEventListener('visibilitychange',()=>{if(!document.hidden)pollCloud()});
+      window.addEventListener('online',pollCloud);
       initialCloudLoad();
     })();
   </script>
