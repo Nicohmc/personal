@@ -696,6 +696,73 @@
 #v9-words .cm-word-audio-help{max-width:115px;line-height:1.35}
 @media(max-width:940px){#library-overlay .library-card-title strong{font-size:16px}}
 @media(max-width:650px){#library-overlay .library-card-title strong{font-size:15px}}
+
+/* v10.3 countdown: fixed edit hit target and wide/right-side labels */
+.casa-unified-layout #v9-countdowns .cm-countdown-event{
+ position:relative;display:grid;grid-template-columns:82px minmax(0,1fr);
+ grid-template-rows:1fr 1fr;align-items:center;justify-items:stretch;
+ padding:10px 40px 10px 10px;gap:10px;min-height:100px;overflow:hidden;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-visual{
+ grid-column:1;grid-row:1/3;align-self:center;justify-self:center;width:72px;height:72px;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-title{
+ grid-column:2;grid-row:1;align-self:end;text-align:left;
+ font-family:'Noto Serif TC','DM Serif Display',Georgia,serif;
+ font-size:clamp(14px,1.25vw,20px);font-weight:800;line-height:1.35;
+ max-width:100%;word-break:break-word;overflow-wrap:anywhere;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-date{
+ grid-column:2;grid-row:2;align-self:start;text-align:left;font-size:clamp(10px,.9vw,12px);margin-top:4px;
+}
+.casa-unified-layout #v9-countdowns .cm-count-edit{
+ position:absolute!important;top:8px!important;right:8px!important;
+ left:auto!important;bottom:auto!important;transform:none!important;
+ display:grid!important;place-items:center!important;width:27px!important;height:27px!important;
+ padding:0!important;line-height:1!important;border-radius:50%!important;
+ background:#fffaf1!important;border:1px solid #cda590!important;
+ color:#885861!important;font-size:14px!important;box-sizing:border-box!important;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-list{grid-auto-rows:minmax(101px,auto);align-content:start}
+@media(min-width:941px){
+ .casa-unified-layout #v9-countdowns .cm-countdown-list{grid-auto-rows:minmax(0,1fr)}
+ .casa-unified-layout #v9-countdowns.cm-count-many .cm-countdown-list{grid-auto-rows:minmax(101px,auto)}
+}
+@media(max-width:470px){
+ .casa-unified-layout #v9-countdowns .cm-countdown-event{grid-template-columns:64px minmax(0,1fr);grid-template-rows:1fr 1fr;padding:7px 33px 7px 6px;gap:5px;min-height:96px}
+ .casa-unified-layout #v9-countdowns .cm-countdown-visual{grid-column:1;grid-row:1/3;width:57px;height:57px}
+ .casa-unified-layout #v9-countdowns .cm-countdown-title{grid-column:2;grid-row:1;text-align:left;font-size:13px}
+ .casa-unified-layout #v9-countdowns .cm-countdown-date{grid-column:2;grid-row:2;text-align:left;font-size:10px}
+ .casa-unified-layout #v9-countdowns .cm-count-edit{top:5px!important;right:5px!important;width:23px!important;height:23px!important}
+}
+/* Audio: two compact controls, no UK/US duplicate buttons */
+#v9-words .cm-word-sounds{gap:8px;align-items:stretch;min-width:96px}
+#v9-words .cm-word-sounds .cm-word-audio{width:100%;min-width:96px;height:auto;min-height:36px;padding:8px 9px;font-size:11px;white-space:normal}
+@media(max-width:500px){#v9-words .cm-word-sticky{gap:7px}#v9-words .cm-word-sounds{min-width:84px}#v9-words .cm-word-sounds .cm-word-audio{min-width:84px;font-size:10px;padding:7px 5px}}
+/* My WEB: editorial postcard tiles using brand palette, scalable serif titles */
+#library-overlay .library-list{gap:13px}
+#library-overlay .library-card{
+ position:relative;isolation:isolate;overflow:hidden;
+ min-height:165px;padding:17px 15px 15px;gap:12px;
+ border:1px solid rgba(110,90,76,.13);border-radius:17px;
+ background:#F9E8D2;color:#224C61;box-shadow:0 7px 18px rgba(89,70,55,.08);
+ transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+#library-overlay .library-card:nth-child(4n+1){background:#E2ECE7}
+#library-overlay .library-card:nth-child(4n+2){background:#FBE1D4}
+#library-overlay .library-card:nth-child(4n+3){background:#F6EBC8}
+#library-overlay .library-card:nth-child(4n+4){background:#D9EBEF}
+#library-overlay .library-card:before{content:'✦';position:absolute;font-family:Georgia,serif;font-size:90px;line-height:1;color:rgba(36,92,128,.075);right:-9px;bottom:-18px;z-index:-1;pointer-events:none}
+#library-overlay .library-card:after{content:'';height:5px;position:absolute;left:0;right:0;top:0;background:linear-gradient(90deg,#245C80 0 39%,#83C1CA 39% 65%,#F19F85 65% 82%,#E7C36C 82%)}
+#library-overlay .library-card:hover,#library-overlay .library-card:focus-visible{transform:translateY(-4px);box-shadow:0 15px 24px rgba(68,82,84,.18);border-color:#5C99A8}
+#library-overlay .library-card-title strong{font-family:'Noto Serif TC','DM Serif Display',Georgia,serif;font-size:clamp(17px,1.4vw,22px);font-weight:700;line-height:1.38;letter-spacing:.1px;color:#27576A;-webkit-line-clamp:3;white-space:normal}
+#library-overlay .library-category{font-family:'Noto Serif TC',Georgia,serif;color:#A36F62;font-size:12px;font-weight:700;margin-top:7px}
+#library-overlay .library-desc{font-family:'Noto Serif TC',Georgia,serif;color:#637780;font-size:12px;line-height:1.6;-webkit-line-clamp:2}
+#library-overlay .library-controls{gap:4px}
+#library-overlay .library-controls button{background:rgba(255,253,248,.8);border:1px solid rgba(63,91,103,.12);border-radius:9px;min-width:28px;min-height:28px;display:grid;place-items:center}
+#library-overlay .library-controls button:hover{background:#fff;border-color:#82AAB4}
+@media(max-width:700px){#library-overlay .library-card-title strong{font-size:17px}}
+
 </style>
 </head>
 <body>
@@ -761,7 +828,7 @@
     </main>
 <section class="v9-space" aria-label="Casa Marina v9 生活小花園">
   <section class="v9-card v9-words" id="v9-words"><div class="overline">08 / THREE WORDS A DAY</div><h2>每日單字 📖</h2><p class="muted">每天從 Vocabulary 單字庫隨機選三個，英文、中文與例句就像海邊的便利貼。</p><div id="v9-words-list" class="v9-stack">正在讀取今日單字…</div>
-    <div class="v9-controls"><span class="muted" id="v9-audio-source" role="status" aria-live="polite">點 🇺🇸／🇬🇧 可在本站聽單字：優先真人字典錄音，找不到時改用裝置英文朗讀。</span></div></section>
+    <div class="v9-controls"><span class="muted" id="v9-audio-source" role="status" aria-live="polite">點「單字發音」或「例句朗讀」，就能直接在便利貼聽英文。</span></div></section>
   <section class="v9-card v9-ideas" id="v9-ideas"><div class="overline">09 / LITTLE IDEAS</div><h2>靈感漂流瓶 💡</h2><p class="muted">平常只展示你已收藏的漂流瓶；想新增時，再打開表單慢慢寫下來。</p>
     <div id="v9-idea-list" class="cm-bottle-grid" aria-live="polite"></div>
     <div class="cm-bottle-actions"><button id="v9-idea-open" class="cm-bottle-add" type="button" aria-haspopup="dialog">＋ 新增漂流瓶</button></div></section>
@@ -1267,103 +1334,83 @@ function renderWords(){
  const day=today(),progress=collection('WordProgress').filter(p=>p.date===day);
  $('#v9-words-list').innerHTML=words.length?words.map((w,i)=>{
   const p=progress.find(p=>String(p.wordId)===String(w.id));
-  return `<article class="cm-word-sticky"><div class="cm-word-content"><div class="cm-word-count">WORD 0${i+1} · LITTLE WORD OF TODAY</div><div class="cm-word-title">${esc(w.word)}</div><div class="cm-word-meaning">${esc(w.meaning||'尚未填中文意思')}</div>${w.example?`<div class="cm-word-example">${esc(w.example)}</div>`:''}<div class="cm-word-buttons"><button type="button" data-known="${esc(w.id)}">${p?.known?'✓ 已學會':'○ 記住了'}</button><button type="button" data-fav="${esc(w.id)}">${p?.favorite?'★ 已收藏':'☆ 收藏'}</button></div></div><div class="cm-word-sounds"><button type="button" class="cm-word-audio" data-word-audio="${esc(w.id)}" data-accent="us" aria-label="播放 ${esc(w.word)} 的美式發音">🇺🇸 美式 🔊</button><button type="button" class="cm-word-audio" data-word-audio="${esc(w.id)}" data-accent="uk" aria-label="播放 ${esc(w.word)} 的英式發音">🇬🇧 英式 🔊</button><span class="cm-word-audio-help">字典錄音／英文語音</span></div></article>`;
+  return `<article class="cm-word-sticky"><div class="cm-word-content"><div class="cm-word-count">WORD 0${i+1} · LITTLE WORD OF TODAY</div><div class="cm-word-title">${esc(w.word)}</div><div class="cm-word-meaning">${esc(w.meaning||'尚未填中文意思')}</div>${w.example?`<div class="cm-word-example">${esc(w.example)}</div>`:''}<div class="cm-word-buttons"><button type="button" data-known="${esc(w.id)}">${p?.known?'✓ 已學會':'○ 記住了'}</button><button type="button" data-fav="${esc(w.id)}">${p?.favorite?'★ 已收藏':'☆ 收藏'}</button></div></div><div class="cm-word-sounds"><button type="button" class="cm-word-audio" data-word-audio="${esc(w.id)}" aria-label="播放 ${esc(w.word)} 的英文發音">🔊 單字發音</button>${w.example?`<button type="button" class="cm-word-audio" data-example-audio="${esc(w.id)}" aria-label="朗讀 ${esc(w.word)} 的英文例句">▶ 例句朗讀</button>`:''}</div></article>`;
  }).join(''):'<p class="muted">Vocabulary 工作表還沒有可用的單字，請新增 word、meaning 和 example。</p>';
 }
-/* v10.2: prefetch recorded pronunciation, with immediate English TTS fallback.
-   Audio playback is initiated inside the button click, without waiting for fetch. */
-const wordAudioCache=new Map();
+/* v10.3: one word and one sentence control. Speech synthesis starts in the
+   user click; dictionary recording is a fallback for single words. */
 let activeWordAudio=null;
-let activeSpeechUtterance=null;
-let cachedEnglishVoices=[];
-function refreshEnglishVoices(){
+let currentUtterance=null;
+let speechSequence=0;
+const recordingCache=new Map();
+function englishVoices(){
  if(!('speechSynthesis' in window))return [];
- cachedEnglishVoices=window.speechSynthesis.getVoices().filter(v=>/^en(?:-|$)/i.test(v.lang));
- return cachedEnglishVoices;
+ return window.speechSynthesis.getVoices().filter(v=>/^en(?:-|$)/i.test(v.lang));
 }
-refreshEnglishVoices();
-if('speechSynthesis' in window){
- window.speechSynthesis.addEventListener?.('voiceschanged',refreshEnglishVoices);
+function findEnglishVoice(){
+ const voices=englishVoices();
+ const exact=voices.filter(v=>v.lang.toLowerCase()==='en-us');
+ const preferred=/microsoft.*(aria|jenny|guy|davis)|google.*us english|samantha|ava|allison|alex/i;
+ return exact.find(v=>preferred.test(v.name))||exact.find(v=>v.localService)||exact[0]||voices.find(v=>v.lang.toLowerCase()==='en-gb')||voices[0]||null;
 }
-function accentOfDictionaryAudio(item){
- const a=String(item.audio||'').toLowerCase();
- const t=String(item.text||'').toLowerCase();
- if(/(?:[_-](?:us|en-us|american|usa)(?:[_./-]|$)|\/us\/)/i.test(a)||/american|united states|u\.s\./i.test(t))return 'us';
- if(/(?:[_-](?:uk|gb|en-gb|british)(?:[_./-]|$)|\/uk\/)/i.test(a)||/british|united kingdom|u\.k\./i.test(t))return 'uk';
- return 'unknown';
-}
-function prefetchDictionaryAudio(word){
- const key=String(word||'').trim().toLowerCase();
- if(!key)return;
- if(wordAudioCache.has(key))return;
- const record={state:'loading',files:[],error:null};wordAudioCache.set(key,record);
- fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(key),{headers:{Accept:'application/json'}})
- .then(r=>{if(!r.ok)throw new Error('字典暫時無法連線');return r.json()})
- .then(entries=>{
-   record.files=(Array.isArray(entries)?entries:[]).flatMap(e=>Array.isArray(e.phonetics)?e.phonetics:[])
-    .filter(p=>p&&typeof p.audio==='string'&&p.audio.trim())
-    .map(p=>({...p,audio:p.audio.startsWith('//') ?'https:'+p.audio:p.audio}))
-    .filter(p=>/^https:\/\//i.test(p.audio));
-   record.state='ready';
- }).catch(e=>{record.state='error';record.error=e});
-}
-function choosePronunciationVoice(accent){
- const locale=accent==='uk'?'en-GB':'en-US';
- const voices=refreshEnglishVoices();
- const exact=voices.filter(v=>v.lang.toLowerCase()===locale.toLowerCase());
- const preferred=/microsoft (aria|jenny|guy|ryan|sonia)|google (us|uk) english|samantha|daniel|karen|moira|ava|allison/i;
- return exact.find(v=>preferred.test(v.name))||exact[0]||voices.find(v=>v.lang.toLowerCase().startsWith('en-'))||null;
-}
-function speakEnglishNow(word,accent,statusEl){
- if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){
-  statusEl.textContent='此瀏覽器沒有英文語音功能；請確認使用最新版 Chrome、Edge 或 Safari。';return;
- }
- try{
-  const synth=window.speechSynthesis;synth.cancel();
-  const u=new SpeechSynthesisUtterance(word);
-  u.lang=accent==='uk'?'en-GB':'en-US';u.rate=.88;u.pitch=1;u.volume=1;
-  const voice=choosePronunciationVoice(accent);if(voice)u.voice=voice;
-  activeSpeechUtterance=u;
-  u.onstart=()=>{statusEl.textContent='🔊 正在播放「'+word+'」的英文語音（'+(accent==='uk'?'英式':'美式')+'）'};
-  u.onerror=()=>{statusEl.textContent='英文語音播放失敗，請確認裝置沒有靜音，並檢查瀏覽器已安裝英文語音。'};
-  u.onend=()=>{if(activeSpeechUtterance===u)activeSpeechUtterance=null};
-  synth.speak(u);
-  statusEl.textContent='🔊 使用'+(voice?voice.name:'裝置預設英文')+'朗讀「'+word+'」';
- }catch(err){statusEl.textContent='發音功能暫時無法播放：'+(err.message||'請檢查瀏覽器語音設定')}
-}
-function playDictionaryWord(id,accent,button){
- const word=collection('Vocabulary').find(w=>String(w.id)===String(id));if(!word)return;
- const statusEl=$('#v9-audio-source');
- const wordText=String(word.word||'').trim();if(!wordText)return;
+if('speechSynthesis' in window){window.speechSynthesis.getVoices();window.speechSynthesis.addEventListener?.('voiceschanged',()=>window.speechSynthesis.getVoices())}
+function notifyWordAudio(message){const el=$('#v9-audio-source');if(el)el.textContent=message}
+function cancelWordAudio(){
  if(activeWordAudio){activeWordAudio.pause();activeWordAudio=null}
  if('speechSynthesis' in window)window.speechSynthesis.cancel();
- const cached=wordAudioCache.get(wordText.toLowerCase());
- const files=cached?.state==='ready'?cached.files:[];
- const sameAccent=files.find(p=>accentOfDictionaryAudio(p)===accent);
- const unlabeled=files.find(p=>accentOfDictionaryAudio(p)==='unknown');
- const chosen=sameAccent||unlabeled;
- if(chosen){
-  try{
-   const audio=new Audio(chosen.audio);activeWordAudio=audio;
-   audio.onended=()=>{if(activeWordAudio===audio)activeWordAudio=null};
-   audio.onerror=()=>{if(activeWordAudio===audio)activeWordAudio=null;speakEnglishNow(wordText,accent,statusEl)};
-   const playback=audio.play();
-   statusEl.textContent='🔊 正在播放「'+wordText+'」的真人字典錄音'+(sameAccent?'（'+(accent==='uk'?'英式':'美式')+'）':'（未標示口音）');
-   if(playback&&typeof playback.catch==='function')playback.catch(()=>{if(activeWordAudio===audio)activeWordAudio=null;speakEnglishNow(wordText,accent,statusEl)});
-   return;
-  }catch(e){/* falls through to TTS */}
+ currentUtterance=null;
+}
+async function dictionaryWordFallback(text,token){
+ const key=text.trim().toLowerCase();
+ try{
+  let records=recordingCache.get(key);
+  if(!records){
+   const r=await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(key));
+   if(!r.ok)throw Error('字典沒有這個字的錄音');
+   const entries=await r.json();
+   records=(Array.isArray(entries)?entries:[]).flatMap(e=>e.phonetics||[]).map(p=>p.audio||'').filter(Boolean).map(x=>x.startsWith('//')?'https:'+x:x).filter(x=>x.startsWith('https://'));
+   recordingCache.set(key,records);
+  }
+  if(token!==speechSequence)return;
+  if(!records.length)throw Error('找不到真人錄音');
+  const chosen=records.find(u=>/[_-](?:us|en-us)[_./-]/i.test(u))||records[0];
+  const audio=new Audio(chosen);
+  audio.preload='auto';activeWordAudio=audio;
+  audio.onplaying=()=>notifyWordAudio('🔊 正在播放字典音檔：'+text);
+  audio.onerror=()=>notifyWordAudio('這個字的錄音暫時無法播放，請檢查網路及裝置音量。');
+  audio.onended=()=>{if(activeWordAudio===audio)activeWordAudio=null};
+  await audio.play();
+ }catch(error){if(token===speechSequence)notifyWordAudio('發音未能播放：'+(error?.message||'請確認音量、網路和裝置英文語音設定'))}
+}
+function speakVocabulary(text,kind){
+ const phrase=String(text||'').trim();if(!phrase)return;
+ speechSequence++;const token=speechSequence;cancelWordAudio();
+ if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){
+  notifyWordAudio('此瀏覽器未提供朗讀功能。'+(kind==='word'?'正在嘗試字典錄音。':''));
+  if(kind==='word')dictionaryWordFallback(phrase,token);
+  return;
  }
- // Launch speech immediately during the original user click. Delaying with await
- // can lose user activation on mobile browsers and produce silent playback.
- speakEnglishNow(wordText,accent,statusEl);
- if(!cached)prefetchDictionaryAudio(wordText);
+ try{
+  const synth=window.speechSynthesis;
+  const voice=findEnglishVoice();
+  const u=new SpeechSynthesisUtterance(phrase);
+  u.lang='en-US';u.rate=kind==='word'?.88:.92;u.pitch=1;u.volume=1;
+  if(voice)u.voice=voice;
+  currentUtterance=u;
+  u.onstart=()=>{if(token===speechSequence)notifyWordAudio('🔊 正在朗讀'+(kind==='word'?'單字':'例句')+'（'+(voice?.name||'裝置英文語音')+'）')};
+  u.onend=()=>{if(currentUtterance===u)currentUtterance=null};
+  u.onerror=()=>{
+   if(token!==speechSequence)return;
+   if(kind==='word'){notifyWordAudio('裝置朗讀失敗，正在嘗試字典真人錄音…');dictionaryWordFallback(phrase,token)}
+   else notifyWordAudio('例句朗讀失敗；請檢查瀏覽器的英文語音與裝置音量。');
+  };
+  notifyWordAudio('🔊 已送出'+(kind==='word'?'單字':'例句')+'朗讀，正在播放…');
+  synth.speak(u);
+ }catch(error){
+  if(kind==='word')dictionaryWordFallback(phrase,token);
+  else notifyWordAudio('例句朗讀無法啟動：'+(error?.message||'未知錯誤'));
+ }
 }
-function prefetchTodayPronunciations(){
- const ids=extras?.dailyWordIds||[];
- ids.map(id=>collection('Vocabulary').find(w=>String(w.id)===String(id)))
- .filter(Boolean).forEach(w=>prefetchDictionaryAudio(w.word));
-}
-
 function renderIdeas(){const items=collection('Ideas').sort((a,b)=>Number(b.createdAt)-Number(a.createdAt));
  $('#v9-idea-list').innerHTML=items.length?items.slice(0,12).map(x=>{const summary=String(x.text||'').replace(/\s+/g,' ').trim();
   return `<button type="button" class="cm-bottle-card" data-idea-open="${esc(x.id)}" aria-label="打開漂流瓶：${esc(summary.slice(0,30)||'未命名')}？"><div class="cm-bottle-shape"><div class="cm-bottle-cork"></div><div class="cm-bottle-neck"></div><div class="cm-bottle-body"><div class="cm-bottle-note"><div class="cm-bottle-note-text">${esc(summary)}</div></div><div class="cm-bottle-gloss"></div></div>${x.url?'<span class="cm-bottle-linkflag" aria-hidden="true">↗</span>':''}</div><div class="cm-bottle-caption"><strong>${esc(summary.slice(0,30)||(x.category||'漂流瓶'))}</strong><span>${esc(x.category||'隨手記錄')}${x.url?' · 有連結':''}</span></div></button>`
@@ -1391,7 +1438,7 @@ $('#v9-theme-picker').addEventListener('click',e=>{const b=e.target.closest('[da
 function renderCountdown(){const items=collection('Countdowns').map(x=>({...x,days:daysUntil(x.date,x.yearly)})).filter(x=>x.days!==null&&x.days>=0).sort((a,b)=>a.days-b.days);
  $('#v9-countdowns').classList.toggle('cm-count-many',items.length>4);
  $('#v9-count-list').innerHTML=items.length?items.slice(0,8).map(x=>{const t=casaTheme(x.theme),count=String(x.days);
- return `<article class="cm-countdown-event" style="--count-bg:${t.bg};--count-top:${t.top};--count-ink:${t.ink};--count-soft:${t.soft}"><button type="button" class="cm-count-edit" data-count-edit="${esc(x.id)}" aria-label="編輯 ${esc(x.title)}" title="編輯日期、名稱和配色">✎</button><div class="cm-countdown-visual" aria-label="${esc(x.title)}，倒數 ${x.days} 天"><div class="cm-countdown-calendar"><div class="cm-countdown-binding"></div><div class="cm-countdown-number ${count.length>3?'many':''}">${count}</div><div class="cm-countdown-days">${x.days===0?'TODAY!':'DAYS TO GO'}</div></div><span class="cm-countdown-decoration" aria-hidden="true">${t.icon}</span></div><div class="cm-countdown-title">${esc(x.title)}</div><div class="cm-countdown-date">${esc(x.date)} ${x.yearly?' · 每年重複':''}</div></article>`}).join(''):'<div class="cm-countdown-empty">還沒有倒數日。新增一個值得期待的小日子，再挑選喜歡的節慶配色吧。🍋</div>'}
+ return `<article class="cm-countdown-event" style="--count-bg:${t.bg};--count-top:${t.top};--count-ink:${t.ink};--count-soft:${t.soft}"><button type="button" class="cm-count-edit" data-count-edit="${esc(x.id)}" aria-label="編輯 ${esc(x.title)}" title="編輯日期、名稱和配色"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L9 17l-4 1 1-4Z"/></svg></button><div class="cm-countdown-visual" aria-label="${esc(x.title)}，倒數 ${x.days} 天"><div class="cm-countdown-calendar"><div class="cm-countdown-binding"></div><div class="cm-countdown-number ${count.length>3?'many':''}">${count}</div><div class="cm-countdown-days">${x.days===0?'TODAY!':'DAYS TO GO'}</div></div><span class="cm-countdown-decoration" aria-hidden="true">${t.icon}</span></div><div class="cm-countdown-title">${esc(x.title)}</div><div class="cm-countdown-date">${esc(x.date)} ${x.yearly?' · 每年重複':''}</div></article>`}).join(''):'<div class="cm-countdown-empty">還沒有倒數日。新增一個值得期待的小日子，再挑選喜歡的節慶配色吧。🍋</div>'}
 function renderHabits(){const habits=collection('Habits').filter(x=>x.active!==false&&String(x.active).toLowerCase()!=='false');const logs=collection('HabitLogs').filter(x=>x.date===today()&&x.done);
  $('#v9-habit-list').innerHTML=habits.length?habits.map(h=>{const done=logs.some(l=>String(l.habitId)===String(h.id));return `<div class="v9-item"><span style="flex:1">${esc(h.emoji||'🌱')} ${esc(h.name)} <small class="v9-faded">${(()=>{const n=new Set(collection('HabitLogs').filter(l=>String(l.habitId)===String(h.id)&&l.done).map(l=>l.date)).size;return (n>=30?'🌸':n>=10?'🌿':n>=3?'🌱':'🌰')+' 累積 '+n+' 天'})()}</small></span><button data-habit="${esc(h.id)}" aria-label="習慣打卡">${done?'✅ 已完成':'○ 打卡'}</button></div>`}).join(''):'<p class="muted">到 Habits 工作表新增想培養的習慣吧。</p>';
  $('#v9-habit-progress').textContent=`今日已照顧 ${habits.filter(h=>logs.some(l=>String(l.habitId)===String(h.id))).length} / ${habits.length} 項習慣。`}
@@ -1416,10 +1463,10 @@ function renderQuote(){
  const pair=pool[((quoteOffset%pool.length)+pool.length)%pool.length];
  $('#v9-quote-line').textContent=pair[0];$('#v9-quote-en').textContent=pair[1];
 }
-function render(){renderWords();prefetchTodayPronunciations();renderIdeas();renderCountdown();renderHabits();renderQuote()}
+function render(){renderWords();renderIdeas();renderCountdown();renderHabits();renderQuote()}
 $('#v9-words-list').onclick=async e=>{
- const audioButton=e.target.closest('[data-word-audio]');
- if(audioButton){await playDictionaryWord(audioButton.dataset.wordAudio,audioButton.dataset.accent,audioButton);return}
+ const audioButton=e.target.closest('[data-word-audio],[data-example-audio]');
+ if(audioButton){const isExample=audioButton.hasAttribute('data-example-audio');const audioId=isExample?audioButton.dataset.exampleAudio:audioButton.dataset.wordAudio;const audioWord=collection('Vocabulary').find(w=>String(w.id)===String(audioId));if(audioWord)speakVocabulary(isExample?audioWord.example:audioWord.word,isExample?'example':'word');return}
  const b=e.target.closest('[data-reveal],[data-known],[data-fav]');if(!b)return;
  const kind=['reveal','known','fav'].find(k=>b.dataset[k]!==undefined),word=collection('Vocabulary').find(w=>String(w.id)===String(b.dataset[kind]));if(!word)return;
  if(kind==='reveal'){shown.has(word.id)?shown.delete(word.id):shown.add(word.id);renderWords();return}
