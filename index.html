@@ -461,7 +461,7 @@
     <div id="v9-focus-list" class="v9-stack">正在讀取待辦…</div><div class="v9-controls"><button id="v9-edit-focus" type="button">✎ 選擇今天三件事</button><span id="v9-focus-status" class="muted"></span></div>
     <form id="v9-focus-form" class="v9-form" hidden><label for="v9-focus-select1">選擇三件待辦（可留白）</label><select id="v9-focus-select1"></select><select id="v9-focus-select2"></select><select id="v9-focus-select3"></select><button type="submit">儲存今日選擇</button></form></section>
   <section class="v9-card v9-words" id="v9-words"><div class="overline">08 / THREE WORDS A DAY</div><h2>每日拾字 📖</h2><p class="muted">每天從 Vocabulary 單字庫隨機選三個，英文、中文與例句就像海邊的便利貼。</p><div id="v9-words-list" class="v9-stack">正在讀取今日單字…</div>
-    <div class="v9-controls"><button id="v9-accent" type="button">🇺🇸 美式發音</button><button id="v9-speed" type="button">正常語速</button><span class="muted">每張便利貼都有完整意思及例句</span></div></section>
+    <div class="v9-controls"><button id="v9-accent" type="button">🇺🇸 美式發音</button><button id="v9-speed" type="button">正常語速</button><span class="muted" id="v9-audio-source" role="status" aria-live="polite">單字優先使用字典真人錄音；例句使用裝置英文語音</span></div></section>
   <section class="v9-card v9-ideas" id="v9-ideas"><div class="overline">09 / LITTLE IDEAS</div><h2>靈感漂流瓶 💡</h2><p class="muted">平常只展示你已收藏的漂流瓶；想新增時，再打開表單慢慢寫下來。</p>
     <div id="v9-idea-list" class="cm-bottle-grid" aria-live="polite"></div>
     <div class="cm-bottle-actions"><button id="v9-idea-open" class="cm-bottle-add" type="button" aria-haspopup="dialog">＋ 新增漂流瓶</button></div></section>
@@ -971,28 +971,90 @@ function renderWords(){
   return `<article class="cm-word-sticky"><div class="cm-word-content"><div class="cm-word-count">WORD 0${i+1} · LITTLE WORD OF TODAY</div><div class="cm-word-title">${esc(w.word)}</div><div class="cm-word-meaning">${esc(w.meaning||'尚未填中文意思')}</div>${w.example?`<div class="cm-word-example">${esc(w.example)}</div>`:''}<div class="cm-word-buttons"><button type="button" data-known="${esc(w.id)}">${p?.known?'✓ 已學會':'○ 記住了'}</button><button type="button" data-fav="${esc(w.id)}">${p?.favorite?'★ 已收藏':'☆ 收藏'}</button></div></div><div class="cm-word-sounds"><button type="button" data-speak="${esc(w.id)}" title="播放單字發音" aria-label="播放 ${esc(w.word)} 發音">🔊</button>${w.example?`<button type="button" data-example="${esc(w.id)}" title="播放例句" aria-label="播放 ${esc(w.word)} 例句">♫</button>`:''}</div></article>`;
  }).join(''):'<p class="muted">Vocabulary 工作表還沒有可用的單字，請新增 word、meaning 和 example。</p>';
 }
-function playSpeech(text){if(!('speechSynthesis' in window)){status('瀏覽器沒有朗讀功能',true);return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=accent;u.rate=slow?.77:1;const voices=speechSynthesis.getVoices();const matching=voices.filter(v=>v.lang.toLowerCase().startsWith(accent.slice(0,2).toLowerCase()));u.voice=matching.find(v=>v.lang===accent&&/Google|Samantha|Aria|Jenny|Daniel|Karen/i.test(v.name))||matching.find(v=>v.lang===accent)||matching[0]||null;speechSynthesis.speak(u)}
-const audioCache=new Map();
+/* v9.5 — prefer matching dictionary recordings; otherwise use exact-accent device TTS. */
+let currentPronunciationAudio=null;
+let pronunciationRequest=0;
+const dictionaryAudioCache=new Map();
+function cancelPronunciation(){
+ pronunciationRequest++;
+ if(currentPronunciationAudio){try{currentPronunciationAudio.pause();currentPronunciationAudio.currentTime=0}catch(e){}currentPronunciationAudio=null}
+ if('speechSynthesis' in window)window.speechSynthesis.cancel();
+}
+function preferredEnglishVoice(locale){
+ if(!('speechSynthesis' in window))return null;
+ const voices=speechSynthesis.getVoices()||[];
+ const exact=voices.filter(v=>String(v.lang||'').toLowerCase().replace('_','-')===locale.toLowerCase());
+ // Explicitly prefer natural voices when installed, then native locale voices.
+ const quality=v=>{
+  const name=(v.name||'').toLowerCase();
+  return (/natural|neural|premium|enhanced/.test(name)?100:0)+
+   (/microsoft (aria|jenny|guy|sonia|ryan)|google (us|uk|english)|samantha|daniel|karen|serena|alex/.test(name)?40:0)+
+   (!v.localService?10:0);
+ };
+ exact.sort((a,b)=>quality(b)-quality(a));
+ return exact[0]||null;
+}
+function announceAudioSource(msg){const target=document.querySelector('#v9-audio-source');if(target)target.textContent=msg}
+function playSpeech(text,{singleWord=false}={}){
+ const content=String(text||'').trim();if(!content)return;
+ cancelPronunciation();
+ if(!('speechSynthesis' in window)){status('這個瀏覽器不支援語音合成',true);announceAudioSource('無法朗讀：裝置不支援');return}
+ const voice=preferredEnglishVoice(accent);
+ const utterance=new SpeechSynthesisUtterance(content);
+ utterance.lang=accent;
+ utterance.rate=slow?.84:.98;
+ utterance.pitch=1;
+ if(voice)utterance.voice=voice;
+ announceAudioSource((singleWord?'單字':'例句')+'｜'+(voice?'使用 '+voice.name+'（'+accent+'）':'使用瀏覽器 '+accent+' 預設語音'));
+ utterance.onerror=()=>{announceAudioSource('語音播放失敗，請確認瀏覽器有啟用語音')};
+ speechSynthesis.speak(utterance);
+}
+function audioAccentScore(url,locale){
+ const u=String(url||'').toLowerCase();
+ const path=u.split(/[?#]/)[0];
+ if(locale==='en-US'){
+  if(/(?:^|[\/_-])(?:us|en-us|american)(?:[\/_-]|\.|$)/.test(path))return 100;
+  if(/(?:^|[\/_-])(?:uk|gb|en-gb|british)(?:[\/_-]|\.|$)/.test(path))return -100;
+ }else{
+  if(/(?:^|[\/_-])(?:uk|gb|en-gb|british)(?:[\/_-]|\.|$)/.test(path))return 100;
+  if(/(?:^|[\/_-])(?:us|en-us|american)(?:[\/_-]|\.|$)/.test(path))return -100;
+ }
+ return 0;
+}
+async function getDictionaryRecordings(word){
+ const key=String(word||'').trim().toLowerCase();
+ if(dictionaryAudioCache.has(key))return dictionaryAudioCache.get(key);
+ const response=await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(key));
+ if(!response.ok)throw Error('字典沒有這個單字');
+ const entries=await response.json();
+ const clips=(Array.isArray(entries)?entries:[]).flatMap(entry=>(entry.phonetics||[]).map(p=>({audio:p.audio||'',text:p.text||''}))).filter(p=>p.audio);
+ const audio=clips.map(p=>({...p,audio:p.audio.startsWith('//')?'https:'+p.audio:p.audio})).filter(p=>/^https:\/\//i.test(p.audio));
+ dictionaryAudioCache.set(key,audio);
+ return audio;
+}
 async function playWordPronunciation(word){
-  const key=String(word||'').trim().toLowerCase();
-  if(!key)return;
-  try{
-    let phonetics=audioCache.get(key);
-    if(!phonetics){
-      const response=await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(key));
-      if(!response.ok)throw Error('找不到字典音檔');
-      const entries=await response.json();
-      phonetics=entries.flatMap(x=>x.phonetics||[]).filter(x=>x.audio&&/^https?:|^\/\//i.test(x.audio));
-      audioCache.set(key,phonetics);
-    }
-    const want=accent==='en-US'?'_us':'_gb';
-    const candidate=phonetics.find(x=>String(x.audio).toLowerCase().includes(want))||phonetics[0];
-    if(!candidate)throw Error('沒有真人發音');
-    const url=candidate.audio.startsWith('//')?'https:'+candidate.audio:candidate.audio;
-    if(!url.startsWith('https://'))throw Error('無法安全播放音檔');
-    const audio=new Audio(url);audio.playbackRate=slow?.8:1;
-    await audio.play();
-  }catch(e){playSpeech(word);}
+ const key=String(word||'').trim();if(!key)return;
+ cancelPronunciation();
+ const request=pronunciationRequest;
+ announceAudioSource('正在尋找 '+(accent==='en-US'?'美式':'英式')+'單字發音…');
+ try{
+  const recordings=await getDictionaryRecordings(key);
+  if(request!==pronunciationRequest)return;
+  // Unknown-accent recordings are not treated as confirmed US/UK recordings.
+  const desired=recordings.filter(r=>audioAccentScore(r.audio,accent)>0);
+  const clip=desired[0];
+  if(!clip)throw Error('沒有確認口音的字典錄音');
+  const player=new Audio(clip.audio);
+  currentPronunciationAudio=player;
+  player.playbackRate=slow?.85:1;
+  player.onended=()=>{if(currentPronunciationAudio===player)currentPronunciationAudio=null};
+  player.onerror=()=>{if(request!==pronunciationRequest)return;playSpeech(key,{singleWord:true})};
+  await player.play();
+  if(request!==pronunciationRequest){player.pause();return}
+  announceAudioSource('單字｜字典真人錄音 · '+(accent==='en-US'?'美式 🇺🇸':'英式 🇬🇧'));
+ }catch(e){
+  if(request===pronunciationRequest)playSpeech(key,{singleWord:true});
+ }
 }
 function renderIdeas(){const items=collection('Ideas').sort((a,b)=>Number(b.createdAt)-Number(a.createdAt));
  $('#v9-idea-list').innerHTML=items.length?items.slice(0,12).map(x=>{const summary=String(x.text||'').replace(/\s+/g,' ').trim();
@@ -1030,8 +1092,8 @@ function render(){renderFocus();renderWords();renderIdeas();renderCountdown();re
 $('#v9-edit-focus').onclick=()=>{$('#v9-focus-form').hidden=!$('#v9-focus-form').hidden};
 $('#v9-focus-form').addEventListener('submit',async e=>{e.preventDefault();const ids=[1,2,3].map(i=>$('#v9-focus-select'+i).value).filter(Boolean);const record=collection('DailyFocus').find(x=>x.date===today());const ok=await write('DailyFocus',{id:record?.id||'focus_'+today(),date:today(),todoIds:[...new Set(ids)].join(','),deletedAt:''});if(ok)$('#v9-focus-form').hidden=true});
 $('#v9-focus-list').onclick=e=>{const b=e.target.closest('[data-corecheck]');if(b)window.CasaCore?.toggleTodo?.(b.dataset.corecheck)};
-$('#v9-accent').onclick=()=>{accent=accent==='en-US'?'en-GB':'en-US';$('#v9-accent').textContent=accent==='en-US'?'🇺🇸 美式發音':'🇬🇧 英式發音'};
-$('#v9-speed').onclick=()=>{slow=!slow;$('#v9-speed').textContent=slow?'慢速發音':'正常語速'};
+$('#v9-accent').onclick=()=>{cancelPronunciation();accent=accent==='en-US'?'en-GB':'en-US';$('#v9-accent').textContent=accent==='en-US'?'🇺🇸 美式發音':'🇬🇧 英式發音';announceAudioSource('目前選擇 '+(accent==='en-US'?'美式':'英式')+'發音')};
+$('#v9-speed').onclick=()=>{slow=!slow;$('#v9-speed').textContent=slow?'慢速發音':'正常語速';announceAudioSource('已切換成'+(slow?'慢速':'正常')+'發音')};
 $('#v9-words-list').onclick=async e=>{
  const b=e.target.closest('[data-speak],[data-example],[data-reveal],[data-known],[data-fav]');if(!b)return;
  const kind=['speak','example','reveal','known','fav'].find(k=>b.dataset[k]!==undefined),word=collection('Vocabulary').find(w=>String(w.id)===String(b.dataset[kind]));if(!word)return;
