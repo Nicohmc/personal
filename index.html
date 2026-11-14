@@ -266,6 +266,36 @@
 .v9-card .muted{font-size:12px;opacity:.8;line-height:1.7}
 .v9-focus{background:#F6D3C3;color:#755057}.v9-words{background:#FFE5AB;color:#715849}
 .v9-ideas{background:#FFDFC7;color:#7B5357}.v9-countdown{background:#D8EBE6;color:#3D6C73}
+/* v9.3: drift bottle ideas */
+.cm-bottle-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px;margin-top:16px}
+.cm-bottle-card{border:1px solid #ebc8b0;background:rgba(255,250,241,.72);border-radius:18px;padding:14px 12px 12px;display:flex;flex-direction:column;align-items:center;gap:10px;min-height:252px;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease;background-image:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,244,231,.76))}
+.cm-bottle-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(122,83,87,.10)}
+.cm-bottle-actions{display:flex;justify-content:flex-end;margin-top:12px}
+.cm-bottle-add{width:auto!important;padding:8px 13px!important;font-size:12px!important;background:#fff8ed!important;border:1px solid #e1b99d!important;color:#975f60!important;border-radius:999px!important;box-shadow:none!important}
+.cm-bottle-add:hover{background:#ffe8da!important}
+.cm-bottle-shape{position:relative;width:128px;height:175px}
+.cm-bottle-cork{position:absolute;left:36px;top:0;width:57px;height:26px;background:linear-gradient(135deg,#cf9a60,#b57f46 60%,#d8a66d);border-radius:4px 4px 8px 8px;transform:rotate(-5deg);box-shadow:0 2px 0 rgba(0,0,0,.06)}
+.cm-bottle-neck{position:absolute;left:34px;top:20px;width:60px;height:22px;background:#d5d0bd;border-radius:18px;z-index:3;box-shadow:inset 0 -3px 0 rgba(129,117,92,.24)}
+.cm-bottle-body{position:absolute;left:18px;top:28px;width:95px;height:136px;background:linear-gradient(180deg,rgba(206,235,245,.86),rgba(230,241,247,.56) 55%,rgba(185,223,236,.74));border:2px solid rgba(169,204,218,.85);border-radius:25px 25px 22px 22px / 20px 20px 16px 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -10px 24px rgba(126,181,201,.16)}
+.cm-bottle-body:before{content:"";position:absolute;left:11px;right:11px;top:-14px;height:27px;background:linear-gradient(180deg,rgba(208,234,244,.88),rgba(227,240,246,.56));border:2px solid rgba(169,204,218,.85);border-bottom:none;border-radius:18px 18px 10px 10px;z-index:-1}
+.cm-bottle-gloss{position:absolute;right:11px;top:18px;width:18px;height:74px;border-radius:999px;background:rgba(255,255,255,.42);filter:blur(.2px)}
+.cm-bottle-note{position:absolute;left:17px;top:28px;width:62px;height:92px;background:linear-gradient(180deg,#fbfdff,#f2f5fa);border:1px solid #e6e6ef;border-radius:10px;transform:rotate(-24deg);box-shadow:0 7px 16px rgba(100,122,136,.12);display:flex;align-items:center;justify-content:center;padding:10px 8px}
+.cm-bottle-note:before,.cm-bottle-note:after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:22px;height:5px;background:#d5b17e;border-radius:8px}
+.cm-bottle-note:before{top:25px}.cm-bottle-note:after{bottom:24px}
+.cm-bottle-note-text{font-size:10px;line-height:1.42;color:#6f6f77;text-align:center;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.cm-bottle-caption{width:100%;text-align:center}
+.cm-bottle-caption strong{display:block;font-size:12px;color:#7b5357;line-height:1.45;max-height:2.9em;overflow:hidden}
+.cm-bottle-caption span{display:block;margin-top:4px;font-size:10px;color:#a07d70}
+.cm-bottle-linkflag{position:absolute;right:8px;bottom:9px;display:grid;place-items:center;width:24px;height:24px;border-radius:999px;background:#fff6e7;border:1px solid #efc69c;color:#a8635b;font-size:13px;box-shadow:0 4px 10px rgba(166,99,91,.11)}
+.cm-bottle-empty{grid-column:1/-1;padding:16px;background:#fff9f0;border-radius:14px;color:#906a65;font-size:12px}
+.cm-bottle-detail{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:start}
+.cm-bottle-detail-art{display:flex;justify-content:center;padding-top:4px}
+.cm-bottle-detail-copy{min-width:0}
+.cm-bottle-detail-label{display:inline-flex;align-items:center;gap:6px;background:#fff7ea;border:1px solid #ead2bb;border-radius:999px;padding:6px 10px;color:#956557;font-size:11px;font-weight:700;margin-bottom:10px}
+.cm-bottle-detail-text{margin:0;font-size:14px;line-height:1.9;color:#664e53;white-space:pre-wrap;overflow-wrap:anywhere}
+.cm-bottle-detail-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+@media(max-width:760px){.cm-bottle-detail{grid-template-columns:1fr}.cm-bottle-detail-art{order:-1}.cm-bottle-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:470px){.cm-bottle-grid{grid-template-columns:1fr 1fr}.cm-bottle-card{min-height:228px;padding:12px 10px}.cm-bottle-shape{transform:scale(.93);transform-origin:top center;width:120px;height:164px}}
 .v9-garden{background:#E4EDD4;color:#536D53}.v9-quote{background:#FFFAF0;color:#865E67}
 .v9-item{padding:10px 12px;border-radius:12px;background:#ffffffad;margin:7px 0;display:flex;gap:9px;align-items:center;min-width:0;font-size:12px}
 .v9-item span{min-width:0;overflow-wrap:anywhere}.v9-item button{margin-left:auto;flex-shrink:0}
@@ -281,12 +311,80 @@
 .v9-stack{max-height:230px;overflow:auto;margin-top:10px;scrollbar-width:thin}
 .v9-words-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:9px 0;padding:12px;border-radius:12px;background:#fffcf6}
 .v9-words-row .word-label{font-family:Georgia,serif;font-size:19px;font-weight:700}
+
+/* v9.4: Three daily horizontal sticky notes */
+#v9-words{background:linear-gradient(150deg,#FFF1CC,#FFE6BD 66%,#FFDCC5)}
+#v9-words-list{max-height:none;overflow:visible;display:grid;grid-template-columns:1fr;gap:13px;margin-top:17px}
+.cm-word-sticky{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:19px 18px 16px;border-radius:6px 18px 17px 7px;min-width:0;box-shadow:3px 5px 0 #735b4a14,0 12px 24px #8e745625;transform:rotate(-.35deg);border:1px solid #d8bfa66b}
+.cm-word-sticky:nth-child(1){background:#FFE3AD}
+.cm-word-sticky:nth-child(2){background:#FFCFC4;transform:rotate(.4deg)}
+.cm-word-sticky:nth-child(3){background:#DCE9D2;transform:rotate(-.25deg)}
+.cm-word-sticky:before{content:"";position:absolute;top:-7px;left:46%;width:49px;height:14px;background:#ffffff85;transform:rotate(-3deg);box-shadow:0 1px 2px #745a4015}
+.cm-word-content{flex:1;min-width:0}
+.cm-word-count{font-size:9px;letter-spacing:1.6px;color:#996d60;font-weight:800}
+.cm-word-title{font:700 clamp(22px,2vw,29px)/1.2 Georgia,serif;color:#654b54;margin:5px 0 3px;overflow-wrap:anywhere}
+.cm-word-meaning{font-size:14px;font-weight:700;color:#805957;line-height:1.55;margin:6px 0}
+.cm-word-example{font-size:12px;line-height:1.65;color:#7b6861;font-style:italic;overflow-wrap:anywhere;margin-top:7px}
+.cm-word-buttons{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:11px}
+#v9-words .cm-word-buttons button{background:#ffffffa8;border-color:#ffffff9b;padding:5px 9px;font-size:10px;border-radius:999px;color:#795859}
+.cm-word-sounds{display:flex;flex-direction:column;gap:7px;flex-shrink:0}
+#v9-words .cm-word-sounds button{background:#fffaf0b5;color:#945c55;border:1px solid #ebc4ab;border-radius:999px;width:35px;height:35px;padding:0;display:grid;place-items:center;font-size:16px}
+@media(max-width:500px){.cm-word-sticky{padding:17px 13px}.cm-word-title{font-size:23px}.cm-word-example{font-size:11px}}
+
 .v9-controls{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px}
 .v9-links{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .v9-sync{margin-top:8px;font-size:11px;color:#7e8180;min-height:16px}
 .v9-faded{opacity:.6}
 @media(max-width:850px){.v9-card{grid-column:span 12}}
 @media(max-width:620px){.v9-space{margin-top:12px;gap:11px}.v9-card{padding:17px}.v9-card h2{font-size:18px}.v9-form .v9-fields{grid-template-columns:1fr 1fr}}
+
+
+/* v9.1: Mediterranean / seasonal countdown calendar */
+.v9-countdown{background:linear-gradient(145deg,#ffefdb,#fff7e9 60%,#f8e1cc);color:#78505c}
+.v9-countdown h2{color:#7b4c57}
+.cm-countdown-actions{display:flex;justify-content:flex-end;margin-top:12px}
+.v9-countdown .cm-count-add{width:auto!important;padding:8px 13px!important;font-size:12px!important;background:#fff8ed!important;border:1px solid #e1b99d!important;color:#975f60!important;border-radius:999px!important;box-shadow:none!important}
+.v9-countdown .cm-count-add:hover{background:#ffe5d4!important}
+.cm-count-dialog{position:fixed;inset:0;margin:auto;width:min(580px,calc(100vw - 24px));max-height:min(86vh,780px);overflow-y:auto;border:1px solid #e8c9ae;border-radius:20px;background:linear-gradient(150deg,#fff0df,#fff9ed 64%,#ffe3d3);color:#78505c;padding:22px;box-shadow:0 25px 90px #1e344657;z-index:9999}
+.cm-count-dialog::backdrop{background:rgba(20,38,50,.58);backdrop-filter:blur(4px)}
+.cm-count-dialog-head{display:flex;align-items:start;justify-content:space-between;gap:14px;margin-bottom:17px}
+.cm-count-dialog-head h3{color:#764953;font-size:21px;line-height:1.4;margin:7px 0}
+.cm-count-dialog-head p{margin:0;line-height:1.65}
+.cm-count-dialog .cm-count-dialog-close{flex:0 0 auto;width:35px!important;height:35px!important;padding:0!important;border:1px solid #dfc0ad!important;border-radius:50%!important;color:#865e5b!important;background:#fffaf2!important}
+.cm-count-dialog .v9-form{display:flex;flex-direction:column;gap:9px}
+.cm-count-dialog .v9-form>label{font-size:12px;font-weight:700;color:#875c5b}
+.cm-count-dialog .cm-count-yearly{display:flex;align-items:center;gap:7px;font-weight:500;white-space:nowrap}
+.cm-count-dialog .cm-count-yearly input{width:auto;flex-shrink:0}
+.cm-count-dialog .v9-fields{align-items:center}
+@media(max-width:540px){.cm-count-dialog{padding:16px;max-height:88dvh}.cm-count-dialog-head h3{font-size:18px}}
+
+.cm-theme-label{font-size:11px;font-weight:750;color:#916a65;display:block;margin:2px 0 7px}
+.cm-theme-picker{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.cm-theme-choice{min-width:0;border:2px solid transparent!important;border-radius:13px!important;padding:8px 3px!important;background:#fff9f1!important;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px!important;color:#74545b!important}
+.cm-theme-choice[aria-pressed="true"]{border-color:#c27b6c!important;background:#ffe8d5!important;box-shadow:0 0 0 2px #fff8ed inset}
+.cm-theme-swatch{display:block;width:29px;height:29px;border-radius:50%;border:3px solid #ffffffaa;background:var(--swatch-bg);position:relative;box-shadow:0 1px 5px #3b24351a}
+.cm-theme-swatch:after{content:"";position:absolute;top:5px;left:7px;width:11px;height:14px;border-radius:2px;background:linear-gradient(var(--swatch-top) 0 30%,white 30% 100%);box-shadow:0 1px 2px #0002}
+.cm-theme-name{line-height:1.25;text-align:center;overflow-wrap:anywhere}
+.cm-countdown-list{max-height:none;overflow:visible;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.cm-countdown-event{--count-bg:#2d9dca;--count-top:#f6d367;--count-ink:#1f465e;--count-soft:#fef6dc;background:var(--count-soft);border:1px solid #e7d8c4;border-radius:17px;padding:15px;min-width:0;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 8px 18px #67504d0b}
+.cm-countdown-visual{width:155px;height:155px;border-radius:50%;background:var(--count-bg);display:flex;align-items:center;justify-content:center;position:relative;box-shadow:inset 0 -8px 20px #122e3e19}
+.cm-countdown-decoration{position:absolute;font-size:26px;right:2px;bottom:11px;transform:rotate(-12deg)}
+.cm-countdown-calendar{width:91px;min-height:112px;border-radius:11px 11px 10px 10px;background:white;box-shadow:0 8px 16px #0002;position:relative;display:flex;flex-direction:column;align-items:center;overflow:visible}
+.cm-countdown-calendar:before,.cm-countdown-calendar:after{content:"";width:10px;height:23px;background:white;border-radius:8px;position:absolute;top:-9px;z-index:2;box-shadow:0 1px 3px #0002}
+.cm-countdown-calendar:before{left:18px}.cm-countdown-calendar:after{right:18px}
+.cm-countdown-binding{height:28px;width:100%;background:var(--count-top);border-radius:10px 10px 0 0}
+.cm-countdown-number{font-family:Arial,Helvetica,sans-serif;font-size:48px;line-height:1.12;font-weight:900;letter-spacing:-2px;color:#162632;margin-top:8px;font-variant-numeric:tabular-nums}
+.cm-countdown-number.many{font-size:37px;letter-spacing:-1px;margin-top:15px}
+.cm-countdown-days{color:#18242b;font-size:11px;font-weight:900;letter-spacing:.4px;line-height:1.1;margin-bottom:8px}
+.cm-countdown-title{font-size:15px;font-weight:800;color:var(--count-ink);text-align:center;overflow-wrap:anywhere}
+.cm-countdown-date{font-size:11px;color:#896e70;text-align:center}
+.cm-countdown-bottom{display:flex;gap:6px;align-items:center;justify-content:space-between;width:100%;border-top:1px solid #84604b25;padding-top:10px}
+.cm-countdown-event .cm-count-theme{flex:1;min-width:0;width:auto;background:#fff!important;color:#654d4c!important;font-size:11px!important;padding:7px!important;border:1px solid #debdab!important;border-radius:8px!important}
+.cm-countdown-event button.cm-count-delete{background:transparent!important;border:1px solid #ddb7a5!important;color:#ac6a61!important;padding:7px!important}
+.cm-countdown-empty{grid-column:1/-1;padding:14px;background:#fff9f0;border-radius:12px;color:#906a65;font-size:12px}
+@media(max-width:1180px){.cm-countdown-list{grid-template-columns:1fr}.cm-theme-picker{grid-template-columns:repeat(5,1fr)}}
+@media(max-width:850px){.cm-countdown-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.cm-countdown-list{grid-template-columns:1fr}.cm-theme-picker{grid-template-columns:repeat(5,minmax(0,1fr))}.cm-theme-choice{font-size:9px!important;padding:7px 2px!important}}
 
 </style>
 </head>
@@ -362,12 +460,18 @@
   <section class="v9-card v9-focus" id="v9-today"><div class="overline">07 / TODAY, GENTLY</div><h2>今天，只要三件小事。</h2><p class="muted">從你的待辦中挑三件最重要的事，慢慢完成就好。</p>
     <div id="v9-focus-list" class="v9-stack">正在讀取待辦…</div><div class="v9-controls"><button id="v9-edit-focus" type="button">✎ 選擇今天三件事</button><span id="v9-focus-status" class="muted"></span></div>
     <form id="v9-focus-form" class="v9-form" hidden><label for="v9-focus-select1">選擇三件待辦（可留白）</label><select id="v9-focus-select1"></select><select id="v9-focus-select2"></select><select id="v9-focus-select3"></select><button type="submit">儲存今日選擇</button></form></section>
-  <section class="v9-card v9-words" id="v9-words"><div class="overline">08 / THREE WORDS A DAY</div><h2>每日拾字 📖</h2><p class="muted">每天從試算表 Vocabulary 單字庫抽選三個，優先使用字典音檔發音。</p><div id="v9-words-list" class="v9-stack">正在讀取今日單字…</div>
-    <div class="v9-controls"><button id="v9-accent" type="button">🇺🇸 美式發音</button><button id="v9-speed" type="button">正常語速</button><span class="muted">點「顯示」查看意思</span></div></section>
-  <section class="v9-card v9-ideas" id="v9-ideas"><div class="overline">09 / LITTLE IDEAS</div><h2>靈感漂流瓶 💡</h2><p class="muted">有些想法不必急著實現，先替它們留個位置。</p>
-    <form id="v9-idea-form" class="v9-form"><textarea id="v9-idea-text" required maxlength="1400" placeholder="今天有什麼新想法？"></textarea><div class="v9-fields"><input id="v9-idea-category" placeholder="分類（選填）"><input id="v9-idea-url" placeholder="網址（選填）"></div><button type="submit">＋ 收進漂流瓶</button></form><div class="v9-stack" id="v9-idea-list"></div></section>
-  <section class="v9-card v9-countdown" id="v9-countdowns"><div class="overline">10 / DAYS TO LOOK FORWARD TO</div><h2>期待的日子 ♡</h2><p class="muted">沒有整個月曆，只有那些值得期待的日期。</p>
-    <form id="v9-count-form" class="v9-form"><input id="v9-count-title" placeholder="例如：海邊小旅行" required maxlength="100"><div class="v9-fields"><input id="v9-count-date" type="date" required><label class="muted" style="display:flex;align-items:center;gap:6px"><input id="v9-count-yearly" type="checkbox" style="width:auto"> 每年重複</label></div><button type="submit">＋ 新增期待的日子</button></form><div class="v9-stack" id="v9-count-list"></div></section>
+  <section class="v9-card v9-words" id="v9-words"><div class="overline">08 / THREE WORDS A DAY</div><h2>每日拾字 📖</h2><p class="muted">每天從 Vocabulary 單字庫隨機選三個，英文、中文與例句就像海邊的便利貼。</p><div id="v9-words-list" class="v9-stack">正在讀取今日單字…</div>
+    <div class="v9-controls"><button id="v9-accent" type="button">🇺🇸 美式發音</button><button id="v9-speed" type="button">正常語速</button><span class="muted">每張便利貼都有完整意思及例句</span></div></section>
+  <section class="v9-card v9-ideas" id="v9-ideas"><div class="overline">09 / LITTLE IDEAS</div><h2>靈感漂流瓶 💡</h2><p class="muted">平常只展示你已收藏的漂流瓶；想新增時，再打開表單慢慢寫下來。</p>
+    <div id="v9-idea-list" class="cm-bottle-grid" aria-live="polite"></div>
+    <div class="cm-bottle-actions"><button id="v9-idea-open" class="cm-bottle-add" type="button" aria-haspopup="dialog">＋ 新增漂流瓶</button></div></section>
+  <section class="v9-card v9-countdown" id="v9-countdowns"><div class="overline">10 / DAYS TO LOOK FORWARD TO</div><h2>期待的日子 ♡</h2><p class="muted">每一個值得等待的日子，都有專屬的節慶色彩。</p>
+    <div id="v9-count-list" class="cm-countdown-list" aria-live="polite"></div>
+    <div class="cm-countdown-actions"><button id="v9-count-open" class="cm-count-add" type="button" aria-haspopup="dialog">＋ 新增倒數日</button></div>
+    <dialog id="v9-count-dialog" class="cm-count-dialog" aria-labelledby="v9-count-dialog-title">
+      <div class="cm-count-dialog-head"><div><div class="overline">A LITTLE DAY TO LOOK FORWARD TO</div><h3 id="v9-count-dialog-title">收藏一個期待的日子 ♡</h3><p class="muted">為這一天取個名字，選擇日期與喜歡的節慶色彩。</p></div><button type="button" id="v9-count-close" class="cm-count-dialog-close" aria-label="關閉新增倒數日視窗">✕</button></div>
+      <form id="v9-count-form" class="v9-form"><label for="v9-count-title">日子的名稱</label><input id="v9-count-title" placeholder="例如：海邊小旅行" required maxlength="100"><label for="v9-count-date">日期</label><div class="v9-fields"><input id="v9-count-date" type="date" required><label class="muted cm-count-yearly"><input id="v9-count-yearly" type="checkbox"> 每年重複</label></div><label class="cm-theme-label">選一個喜歡的節慶／季節配色</label><div id="v9-theme-picker" class="cm-theme-picker" role="group" aria-label="倒數日配色選擇"></div><input type="hidden" id="v9-count-theme" value="summer"><button type="submit">儲存這個期待的日子 ♡</button></form>
+    </dialog></section>
   <section class="v9-card v9-garden" id="v9-garden"><div class="overline">11 / LITTLE THINGS GROW</div><h2>小小習慣花園 🌱</h2><p class="muted">每天澆一點水，生活就會慢慢開花。習慣名稱可以直接在 Habits 工作表修改。</p>
     <div id="v9-habit-list" class="v9-stack"></div><p class="muted" id="v9-habit-progress"></p></section>
   <section class="v9-card v9-quote" id="v9-quotes"><div class="overline">12 / A GENTLE REMINDER</div><h2>每日溫柔提醒 ♡</h2><p class="muted" id="v9-quote-line" style="font-family:Georgia,'Noto Serif TC',serif;font-size:18px;margin:16px 0;line-height:1.8">願你在日常裡，也能找到自己的海。</p><div class="v9-controls"><button id="v9-next-quote" type="button">↻ 再看一句</button><span class="muted">可於 GentleQuotes 工作表新增自己的句子</span></div></section>
@@ -390,6 +494,20 @@
         <div class="library-list" id="library-list"></div>
       </div>
       <div class="modal-footer"><span id="library-storage-caption">☼ 自動儲存於此瀏覽器 · 可使用 Excel 備份</span><button type="button" class="neutral-btn" id="library-storage-open">▤ 試算表 / 備份設定</button></div>
+    </section>
+  </div>
+
+  <div class="overlay" id="idea-overlay" hidden>
+    <section class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="idea-modal-title">
+      <div class="modal-header"><div class="modal-headline"><div><div class="modal-kicker">把突然想起來的好點子，收進海邊的小瓶子裡</div><h2 class="modal-title" id="idea-modal-title">新增漂流瓶</h2><p class="modal-description">只有在你想新增的時候，才打開這個小小表單。</p></div><button class="modal-close" data-close-modal aria-label="關閉新增漂流瓶視窗">✕</button></div></div>
+      <div class="modal-main"><form id="v9-idea-form" class="simple-form"><div class="field-grid"><div class="field wide"><label for="v9-idea-text">漂流瓶內容 *</label><textarea id="v9-idea-text" required maxlength="1400" placeholder="今天有什麼新想法？或想收藏什麼片刻？"></textarea></div><div class="field"><label for="v9-idea-category">分類</label><input id="v9-idea-category" maxlength="60" placeholder="例如：網站靈感、生活片段"></div><div class="field"><label for="v9-idea-url">相關連結</label><input id="v9-idea-url" inputmode="url" maxlength="2048" placeholder="https://example.com"></div></div><div class="editor-actions"><button type="button" class="neutral-btn" data-close-modal>取消</button><button type="submit" class="primary-btn">把它放進漂流瓶 ♡</button></div></form></div>
+    </section>
+  </div>
+
+  <div class="overlay" id="idea-view-overlay" hidden>
+    <section class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="idea-view-title">
+      <div class="modal-header"><div class="modal-headline"><div><div class="modal-kicker">DRIFT BOTTLE · LITTLE IDEA</div><h2 class="modal-title" id="idea-view-title">漂流瓶內容</h2><p class="modal-description" id="idea-view-meta">有些小念頭，值得好好收藏。</p></div><button class="modal-close" data-close-modal aria-label="關閉漂流瓶內容">✕</button></div></div>
+      <div class="modal-main"><div class="cm-bottle-detail"><div class="cm-bottle-detail-art"><div class="cm-bottle-shape"><div class="cm-bottle-cork"></div><div class="cm-bottle-neck"></div><div class="cm-bottle-body"><div class="cm-bottle-note"><div id="idea-view-preview" class="cm-bottle-note-text"></div></div><div class="cm-bottle-gloss"></div></div></div></div><div class="cm-bottle-detail-copy"><div class="cm-bottle-detail-label" id="idea-view-category">隨手記錄</div><p id="idea-view-text" class="cm-bottle-detail-text"></p><div class="cm-bottle-detail-actions"><a id="idea-view-link" class="primary-btn" href="#" target="_blank" rel="noopener noreferrer" hidden>↗ 前往連結</a><button type="button" class="neutral-btn" id="idea-view-todo">轉成待辦</button><button type="button" class="neutral-btn" id="idea-view-project" hidden>加入 My WEB x My World</button><button type="button" class="neutral-btn" id="idea-view-delete">移除漂流瓶</button></div></div></div></div>
     </section>
   </div>
 
@@ -844,12 +962,14 @@ function renderFocus(){const items=todayFocus();$('#v9-focus-list').innerHTML=it
   select.value=existing||items[i-1]?.id||'';
  }
 }
-function renderWords(){const ids=extras?.dailyWordIds||[];const words=ids.map(id=>collection('Vocabulary').find(w=>String(w.id)===String(id))).filter(Boolean);
- const day=today();const progress=collection('WordProgress').filter(p=>p.date===day);
+function renderWords(){
+ const ids=extras?.dailyWordIds||[];
+ const words=ids.map(id=>collection('Vocabulary').find(w=>String(w.id)===String(id))).filter(Boolean);
+ const day=today(),progress=collection('WordProgress').filter(p=>p.date===day);
  $('#v9-words-list').innerHTML=words.length?words.map((w,i)=>{
- const p=progress.find(p=>String(p.wordId)===String(w.id));
- return `<div class="v9-words-row"><div style="min-width:0"><div class="muted">WORD 0${i+1}</div><div class="word-label">${esc(w.word)}</div>${shown.has(w.id)?`<div class="muted">${esc(w.pronunciation||'')} · ${esc(w.meaning||'尚未填中文意思')}</div><div class="muted"><i>${esc(w.example||'')}</i></div>`:''}<div class="v9-controls"><button type="button" data-reveal="${esc(w.id)}">${shown.has(w.id)?'收起':'顯示'}</button><button type="button" data-known="${esc(w.id)}">${p?.known?'✓ 已學會':'○ 記住了'}</button><button type="button" data-fav="${esc(w.id)}">${p?.favorite?'★ 已收藏':'☆ 收藏'}</button></div></div><div style="display:flex;flex-direction:column;gap:5px"><button type="button" data-speak="${esc(w.id)}">🔊 單字</button>${w.example?`<button type="button" data-example="${esc(w.id)}">例句</button>`:''}</div></div>`;
- }).join(''):'<p class="muted">Vocabulary 工作表尚未有單字。新增 word 和 meaning 後，就會開始每日選字。</p>';
+  const p=progress.find(p=>String(p.wordId)===String(w.id));
+  return `<article class="cm-word-sticky"><div class="cm-word-content"><div class="cm-word-count">WORD 0${i+1} · LITTLE WORD OF TODAY</div><div class="cm-word-title">${esc(w.word)}</div><div class="cm-word-meaning">${esc(w.meaning||'尚未填中文意思')}</div>${w.example?`<div class="cm-word-example">${esc(w.example)}</div>`:''}<div class="cm-word-buttons"><button type="button" data-known="${esc(w.id)}">${p?.known?'✓ 已學會':'○ 記住了'}</button><button type="button" data-fav="${esc(w.id)}">${p?.favorite?'★ 已收藏':'☆ 收藏'}</button></div></div><div class="cm-word-sounds"><button type="button" data-speak="${esc(w.id)}" title="播放單字發音" aria-label="播放 ${esc(w.word)} 發音">🔊</button>${w.example?`<button type="button" data-example="${esc(w.id)}" title="播放例句" aria-label="播放 ${esc(w.word)} 例句">♫</button>`:''}</div></article>`;
+ }).join(''):'<p class="muted">Vocabulary 工作表還沒有可用的單字，請新增 word、meaning 和 example。</p>';
 }
 function playSpeech(text){if(!('speechSynthesis' in window)){status('瀏覽器沒有朗讀功能',true);return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=accent;u.rate=slow?.77:1;const voices=speechSynthesis.getVoices();const matching=voices.filter(v=>v.lang.toLowerCase().startsWith(accent.slice(0,2).toLowerCase()));u.voice=matching.find(v=>v.lang===accent&&/Google|Samantha|Aria|Jenny|Daniel|Karen/i.test(v.name))||matching.find(v=>v.lang===accent)||matching[0]||null;speechSynthesis.speak(u)}
 const audioCache=new Map();
@@ -874,10 +994,33 @@ async function playWordPronunciation(word){
     await audio.play();
   }catch(e){playSpeech(word);}
 }
-function renderIdeas(){const items=collection('Ideas').sort((a,b)=>Number(b.createdAt)-Number(a.createdAt));$('#v9-idea-list').innerHTML=items.length?items.slice(0,12).map(x=>`<div class="v9-item"><div style="flex:1;min-width:0"><strong>${esc(x.text)}</strong><div class="muted">${esc(x.category||'隨手記錄')}${x.url?' · '+esc(x.url):''}</div></div><div style="display:flex;flex-direction:column;gap:5px"><button data-idea-todo="${esc(x.id)}">轉待辦</button>${x.url?`<button data-idea-project="${esc(x.id)}">轉作品</button>`:''}<button data-extra-del="Ideas|${esc(x.id)}">刪除</button></div></div>`).join(''):'<p class="muted">漂流瓶是空的，第一個小想法正在等你。</p>'}
+function renderIdeas(){const items=collection('Ideas').sort((a,b)=>Number(b.createdAt)-Number(a.createdAt));
+ $('#v9-idea-list').innerHTML=items.length?items.slice(0,12).map(x=>{const summary=String(x.text||'').replace(/\s+/g,' ').trim();
+  return `<button type="button" class="cm-bottle-card" data-idea-open="${esc(x.id)}" aria-label="打開漂流瓶：${esc(summary.slice(0,30)||'未命名')}？"><div class="cm-bottle-shape"><div class="cm-bottle-cork"></div><div class="cm-bottle-neck"></div><div class="cm-bottle-body"><div class="cm-bottle-note"><div class="cm-bottle-note-text">${esc(summary)}</div></div><div class="cm-bottle-gloss"></div></div>${x.url?'<span class="cm-bottle-linkflag" aria-hidden="true">↗</span>':''}</div><div class="cm-bottle-caption"><strong>${esc(summary.slice(0,30)||(x.category||'漂流瓶'))}</strong><span>${esc(x.category||'隨手記錄')}${x.url?' · 有連結':''}</span></div></button>`
+ }).join(''):'<div class="cm-bottle-empty">漂流瓶還是空的。等你把第一個喜歡的想法收進來。🫙</div>'}
+function formatIdeaTime(ts){const n=Number(ts);if(!n)return '';const d=new Date(n);return Number.isNaN(d.getTime())?'':d.toLocaleString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}
+function openIdeaDetail(ideaId){const idea=collection('Ideas').find(x=>String(x.id)===String(ideaId));if(!idea)return;$('#idea-view-title').textContent=idea.category||'漂流瓶內容';$('#idea-view-meta').textContent=[idea.category||'隨手記錄',formatIdeaTime(idea.createdAt)].filter(Boolean).join(' · ');$('#idea-view-category').textContent=idea.category||'隨手記錄';$('#idea-view-text').textContent=idea.text||'';$('#idea-view-preview').textContent=idea.text||'';const link=$('#idea-view-link');if(idea.url){link.hidden=false;link.href=idea.url}else{link.hidden=true;link.removeAttribute('href')}const todoBtn=$('#idea-view-todo'),projectBtn=$('#idea-view-project'),delBtn=$('#idea-view-delete');todoBtn.dataset.ideaTodo=idea.id;projectBtn.dataset.ideaProject=idea.id;projectBtn.hidden=!idea.url;delBtn.dataset.extraDel='Ideas|'+idea.id;openModal('idea-view-overlay')}
 function daysUntil(date,yearly){if(!/^\d{4}-\d\d-\d\d$/.test(date))return null;const base=new Date(today()+'T12:00:00+08:00');let d=new Date(date+'T12:00:00+08:00');if(Number.isNaN(d.getTime()))return null;if(yearly){d.setFullYear(base.getFullYear());if(d<base)d.setFullYear(base.getFullYear()+1)}return Math.round((d.getTime()-base.getTime())/86400000)}
+const CASA_THEMES={
+ summer:{name:'夏日',bg:'#329FC9',top:'#F7CE5F',ink:'#275C80',soft:'#FFF8E5',icon:'🍋'},
+ christmas:{name:'聖誕',bg:'#246547',top:'#C73547',ink:'#28563B',soft:'#F0F5E9',icon:'🎄'},
+ thanksgiving:{name:'感恩節',bg:'#D77B42',top:'#854B33',ink:'#894C32',soft:'#FFF0D9',icon:'🎃'},
+ autumn:{name:'秋天',bg:'#E9AE4F',top:'#B3633D',ink:'#89562C',soft:'#FFF3DA',icon:'🍁'},
+ easter:{name:'復活節',bg:'#DCC7EC',top:'#F49BBB',ink:'#875C95',soft:'#FFF0FA',icon:'🐣'},
+ newyear:{name:'新年',bg:'#183D6B',top:'#D7AA51',ink:'#24466D',soft:'#F0F0F9',icon:'🎆'},
+ spring:{name:'春日',bg:'#B4D4B6',top:'#E69AAC',ink:'#4D765D',soft:'#F2F9E9',icon:'🌸'},
+ winter:{name:'冬雪',bg:'#91BFD8',top:'#6389C2',ink:'#3C5B80',soft:'#EFF7FF',icon:'❄️'},
+ valentine:{name:'情人節',bg:'#F4AFC3',top:'#D45D7B',ink:'#9A4A68',soft:'#FFF0F5',icon:'💗'},
+ halloween:{name:'萬聖節',bg:'#6A4B7D',top:'#E78E42',ink:'#65416E',soft:'#F5EDF6',icon:'🎃'}
+};
+function casaTheme(t){return CASA_THEMES[t]||CASA_THEMES.summer}
+function renderThemePicker(){const current=$('#v9-count-theme').value;
+ $('#v9-theme-picker').innerHTML=Object.entries(CASA_THEMES).map(([key,t])=>`<button type="button" class="cm-theme-choice" data-theme-pick="${key}" aria-pressed="${current===key}" title="${t.name}"><span class="cm-theme-swatch" style="--swatch-bg:${t.bg};--swatch-top:${t.top}"></span><span class="cm-theme-name">${t.name}</span></button>`).join('')}
+renderThemePicker();
+$('#v9-theme-picker').addEventListener('click',e=>{const b=e.target.closest('[data-theme-pick]');if(!b)return;$('#v9-count-theme').value=b.dataset.themePick;renderThemePicker()});
 function renderCountdown(){const items=collection('Countdowns').map(x=>({...x,days:daysUntil(x.date,x.yearly)})).filter(x=>x.days!==null&&x.days>=0).sort((a,b)=>a.days-b.days);
- $('#v9-count-list').innerHTML=items.length?items.slice(0,8).map(x=>`<div class="v9-item"><span style="flex:1"><strong>${esc(x.title)}</strong> · ${esc(x.date)} ${x.yearly?'(每年)':''}</span><strong>${x.days===0?'就是今天':'還有 '+x.days+' 天'}</strong><button data-extra-del="Countdowns|${esc(x.id)}">移除</button></div>`).join(''):'<p class="muted">還沒有倒數日，試著收藏下一件令人期待的小事。</p>'}
+ $('#v9-count-list').innerHTML=items.length?items.slice(0,8).map(x=>{const t=casaTheme(x.theme),count=String(x.days);
+ return `<article class="cm-countdown-event" style="--count-bg:${t.bg};--count-top:${t.top};--count-ink:${t.ink};--count-soft:${t.soft}"><div class="cm-countdown-visual" aria-label="${esc(x.title)}，倒數 ${x.days} 天"><div class="cm-countdown-calendar"><div class="cm-countdown-binding"></div><div class="cm-countdown-number ${count.length>3?'many':''}">${count}</div><div class="cm-countdown-days">${x.days===0?'TODAY!':'DAYS TO GO'}</div></div><span class="cm-countdown-decoration" aria-hidden="true">${t.icon}</span></div><div class="cm-countdown-title">${esc(x.title)}</div><div class="cm-countdown-date">${esc(x.date)} ${x.yearly?' · 每年重複':''} ${x.days===0?'· 就是今天！':''}</div><div class="cm-countdown-bottom"><select class="cm-count-theme" data-count-theme="${esc(x.id)}" aria-label="${esc(x.title)}配色">${Object.entries(CASA_THEMES).map(([key,v])=>`<option value="${key}" ${((x.theme||'summer')===key?'selected':'')}>${v.icon} ${v.name}</option>`).join('')}</select><button type="button" class="cm-count-delete" data-extra-del="Countdowns|${esc(x.id)}">移除</button></div></article>`}).join(''):'<div class="cm-countdown-empty">還沒有倒數日。新增一個值得期待的小日子，再挑選喜歡的節慶配色吧。🍋</div>'}
 function renderHabits(){const habits=collection('Habits').filter(x=>x.active!==false&&String(x.active).toLowerCase()!=='false');const logs=collection('HabitLogs').filter(x=>x.date===today()&&x.done);
  $('#v9-habit-list').innerHTML=habits.length?habits.map(h=>{const done=logs.some(l=>String(l.habitId)===String(h.id));return `<div class="v9-item"><span style="flex:1">${esc(h.emoji||'🌱')} ${esc(h.name)} <small class="v9-faded">${(()=>{const n=new Set(collection('HabitLogs').filter(l=>String(l.habitId)===String(h.id)&&l.done).map(l=>l.date)).size;return (n>=30?'🌸':n>=10?'🌿':n>=3?'🌱':'🌰')+' 累積 '+n+' 天'})()}</small></span><button data-habit="${esc(h.id)}" aria-label="習慣打卡">${done?'✅ 已完成':'○ 打卡'}</button></div>`}).join(''):'<p class="muted">到 Habits 工作表新增想培養的習慣吧。</p>';
  $('#v9-habit-progress').textContent=`今日已照顧 ${habits.filter(h=>logs.some(l=>String(l.habitId)===String(h.id))).length} / ${habits.length} 項習慣。`}
@@ -897,10 +1040,17 @@ $('#v9-words-list').onclick=async e=>{
  const record=collection('WordProgress').find(x=>x.date===today()&&String(x.wordId)===String(word.id));
  await write('WordProgress',{id:record?.id||'word_'+today()+'_'+word.id,date:today(),wordId:word.id,known:kind==='known'?!record?.known:!!record?.known,favorite:kind==='fav'?!record?.favorite:!!record?.favorite,deletedAt:''});
 };
-$('#v9-idea-list').addEventListener('click',e=>{const b=e.target.closest('[data-idea-todo],[data-idea-project]');if(!b)return;const idea=collection('Ideas').find(x=>String(x.id)===String(b.dataset.ideaTodo||b.dataset.ideaProject));if(!idea)return;try{if(b.dataset.ideaTodo)window.CasaCore?.addTodo?.(idea.text);else window.CasaCore?.addProject?.(idea.text.slice(0,70),idea.url,idea.category||'靈感漂流瓶');status('已加入原本的待辦／作品，正在自動同步')}catch(err){status(err.message,true)}});
-$('#v9-idea-form').addEventListener('submit',async e=>{e.preventDefault();const text=$('#v9-idea-text').value.trim();if(!text)return;const url=$('#v9-idea-url').value.trim();if(url&&!/^https?:\/\//i.test(url)){status('網址請以 https:// 開頭',true);return}const ok=await write('Ideas',{id:id(),text,category:$('#v9-idea-category').value.trim(),url,createdAt:Date.now(),deletedAt:''});if(ok)e.target.reset()});
-$('#v9-count-form').addEventListener('submit',async e=>{e.preventDefault();const ok=await write('Countdowns',{id:id(),title:$('#v9-count-title').value.trim(),date:$('#v9-count-date').value,yearly:$('#v9-count-yearly').checked,deletedAt:''});if(ok)e.target.reset()});
-for(const name of ['v9-idea-list','v9-count-list']){$('#'+name).onclick=async e=>{const b=e.target.closest('[data-extra-del]');if(!b)return;const [table,id]=b.dataset.extraDel.split('|');if(!confirm('確定移除這筆內容？'))return;await write(table,{id},'delete')}}
+$('#v9-idea-open').addEventListener('click',()=>{const f=$('#v9-idea-form');f.reset();openModal('idea-overlay')});
+$('#v9-idea-list').addEventListener('click',e=>{const b=e.target.closest('[data-idea-open]');if(!b)return;openIdeaDetail(b.dataset.ideaOpen)});
+$('#idea-view-overlay').addEventListener('click',async e=>{const b=e.target.closest('[data-idea-todo],[data-idea-project],[data-extra-del]');if(!b)return;if(b.dataset.extraDel){if(!confirm('確定移除這個漂流瓶嗎？'))return;const ok=await write('Ideas',{id:b.dataset.extraDel.split('|')[1]},'delete');if(ok)closeModal();return}const idea=collection('Ideas').find(x=>String(x.id)===String(b.dataset.ideaTodo||b.dataset.ideaProject));if(!idea)return;try{if(b.dataset.ideaTodo)window.CasaCore?.addTodo?.(idea.text);else window.CasaCore?.addProject?.((idea.text||'').slice(0,70),idea.url,idea.category||'靈感漂流瓶');status('已加入原本的待辦／作品，正在自動同步')}catch(err){status(err.message,true)}});
+$('#v9-idea-form').addEventListener('submit',async e=>{e.preventDefault();const text=$('#v9-idea-text').value.trim();if(!text)return;const url=$('#v9-idea-url').value.trim();if(url&&!/^https?:\/\//i.test(url)){status('網址請以 https:// 開頭',true);return}const ok=await write('Ideas',{id:id(),text,category:$('#v9-idea-category').value.trim(),url,createdAt:Date.now(),deletedAt:''});if(ok){e.target.reset();closeModal()}});
+const countDialog=$('#v9-count-dialog');
+$('#v9-count-open').addEventListener('click',()=>{if(!countDialog.open){countDialog.showModal();$('#v9-count-title').focus()}});
+$('#v9-count-close').addEventListener('click',()=>countDialog.close());
+countDialog.addEventListener('click',e=>{if(e.target===countDialog){const r=countDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)countDialog.close()}});
+$('#v9-count-form').addEventListener('submit',async e=>{e.preventDefault();const submit=e.target.querySelector('[type=submit]');submit.disabled=true;try{const ok=await write('Countdowns',{id:id(),title:$('#v9-count-title').value.trim(),date:$('#v9-count-date').value,yearly:$('#v9-count-yearly').checked,theme:$('#v9-count-theme').value,deletedAt:''});if(ok){e.target.reset();$('#v9-count-theme').value='summer';renderThemePicker();countDialog.close()}}finally{submit.disabled=false}});
+$('#v9-count-list').addEventListener('change',async e=>{const s=e.target.closest('[data-count-theme]');if(!s)return;const item=collection('Countdowns').find(x=>String(x.id)===String(s.dataset.countTheme));if(!item)return;const desired=s.value;const ok=await write('Countdowns',{...item,theme:desired});if(!ok){s.value=item.theme||'summer'}});
+for(const name of ['v9-count-list']){$('#'+name).onclick=async e=>{const b=e.target.closest('[data-extra-del]');if(!b)return;const [table,id]=b.dataset.extraDel.split('|');if(!confirm('確定移除這筆內容？'))return;await write(table,{id},'delete')}}
 $('#v9-habit-list').onclick=async e=>{const b=e.target.closest('[data-habit]');if(!b)return;const habitId=b.dataset.habit;const record=collection('HabitLogs').find(x=>String(x.habitId)===habitId&&x.date===today());await write('HabitLogs',{id:record?.id||'habitlog_'+today()+'_'+habitId,habitId,date:today(),done:!record?.done,deletedAt:''})};
 $('#v9-next-quote').onclick=()=>{quoteOffset++;renderQuote()};
 document.querySelectorAll('[data-v9-jump]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.v9Jump)?.scrollIntoView({behavior:'smooth',block:'start'})));
