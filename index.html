@@ -308,15 +308,15 @@
     <section class="modal storage-modal" role="dialog" aria-modal="true" aria-labelledby="storage-title">
       <div class="modal-header"><div class="modal-headline"><div><div class="modal-kicker">讓每一份努力，都有安心的歸處</div><h2 class="modal-title" id="storage-title">試算表與資料管理</h2><p class="modal-description">Excel 檔案備份・Google 試算表雲端同步</p></div><button class="modal-close" data-close-modal aria-label="關閉資料管理視窗">✕</button></div></div>
       <div class="modal-main">
-        <div class="storage-alert" id="cloud-state" role="status">目前資料會自動保存在這個瀏覽器中。</div>
+        <div class="storage-alert" id="cloud-state" role="status">資料會先儲存在瀏覽器中，並自動嘗試同步 Google 試算表。</div>
         <div class="storage-options">
           <section class="storage-option"><h3>▤ Excel .xlsx</h3><p>匯出四個工作表：作品庫、待辦、日程與常用捷徑；也能把編輯後的 Excel 匯入網站。</p>
             <div class="option-actions"><button type="button" class="primary-btn" id="export-excel">↓ 下載 Excel</button><button type="button" class="neutral-btn" id="import-excel">↑ 匯入 Excel</button></div>
             <input id="excel-file" class="sr-only" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-label="選擇 Excel 試算表" />
             <div class="storage-note">提醒：Excel 匯入會覆蓋目前資料，系統會先詢問確認。</div>
           </section>
-          <section class="storage-option"><h3>☁ Google 試算表</h3><p id="cloud-details">這個 GitHub 網站會直接連線你已建立的 Google 試算表。初次開啟請輸入同步密碼（不會放到 GitHub 程式碼）。</p>
-            <div class="option-actions"><button type="button" class="primary-btn" id="cloud-connect">🔐 連接試算表</button><button type="button" class="neutral-btn" id="cloud-load">↓ 載入雲端</button><button type="button" class="neutral-btn" id="cloud-upload">↑ 上傳本機</button><button type="button" class="primary-btn" id="cloud-save">↻ 立即同步</button></div>
+          <section class="storage-option"><h3>☁ Google 試算表</h3><p id="cloud-details">網站會自動讀取並儲存到你已連接的 Google 試算表，不必登入或輸入密碼。請不要在公開同步的資料表儲存敏感內容。</p>
+            <div class="option-actions"><button type="button" class="neutral-btn" id="cloud-load">↓ 載入雲端</button><button type="button" class="neutral-btn" id="cloud-upload">↑ 上傳本機</button><button type="button" class="primary-btn" id="cloud-save">↻ 立即同步</button></div>
             <div class="storage-note" id="cloud-updated">尚未連線</div>
           </section>
         </div>
@@ -413,7 +413,7 @@ window.CasaWorkbook = (() => {
       let data=loadData();
       const CLOUD_API = 'https://script.google.com/macros/s/AKfycbyCWfet5FE7ZetyOI-eryL2m5K5xl4z6TNEh1spBCzys0MO0MgDfc390IBw38UwvQtP/exec';
       const cloudEnabled = true;
-      let syncPassword = ''; // Only in memory; never committed to GitHub or localStorage.
+      // No login or password: the configured Apps Script endpoint is publicly accessible.
       let activeJsonp = 0;
       let cloudReady=false,cloudRevision=null,cloudBusy=false,cloudPending=false,cloudTimer=null,cloudLastSaved='';
       function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}catch(e){notify('瀏覽器無法儲存，請使用備份功能');console.warn(e)}if(cloudEnabled){if(cloudReady){cloudPending=true;scheduleCloudSave()}else{updateCloudStatus('已保存在本機；雲端尚待處理','warning')}}}
@@ -520,8 +520,8 @@ window.CasaWorkbook = (() => {
       $('#storage-export-json').addEventListener('click',()=>$('#export-data').click());
       $('#storage-import-json').addEventListener('click',()=>$('#import-data').click());
 
-      // google.script.run is only present when the HTML is hosted as a Google Apps Script web app.
-      // Use the native authenticated bridge: no public write endpoint / API keys in browser code.
+      // Public Apps Script web API. No sign-in or password is required.
+      // Warning: anonymous API access means spreadsheet contents are not private.
       function updateCloudStatus(label,kind='normal',updated=''){
         $('#cloud-state').textContent=label;$('#cloud-state').classList.toggle('warn',kind==='warning');
         $('#header-storage-status').textContent=cloudReady?'試算表已同步':'Excel · 資料管理';
@@ -531,10 +531,9 @@ window.CasaWorkbook = (() => {
       }
       function jsonpRead(){
         return new Promise((resolve,reject)=>{
-          if(!syncPassword){reject(Error('請先連接試算表'));return}
           const cb='__casaCloud'+(++activeJsonp)+'_'+Date.now();
           const url=new URL(CLOUD_API);
-          url.searchParams.set('action','read');url.searchParams.set('key',syncPassword);url.searchParams.set('callback',cb);
+          url.searchParams.set('action','read');url.searchParams.set('callback',cb);
           let ended=false;const script=document.createElement('script');
           const cleanup=()=>{delete window[cb];script.remove();clearTimeout(timeout)};
           window[cb]=(result)=>{if(ended)return;ended=true;cleanup();if(result?.ok)resolve(result.result);else reject(Error(result?.error||'讀取失敗'))};
@@ -544,13 +543,12 @@ window.CasaWorkbook = (() => {
         });
       }
       async function cloudCall(name,arg){
-        if(!syncPassword)throw Error('請先連接試算表');
         if(name==='getDashboardData')return jsonpRead();
         if(name!=='saveDashboardData')throw Error('未知的雲端操作');
         // Cross-origin Apps Script redirects cannot be read via regular fetch/CORS.
         // Send a simple no-cors POST, then independently read back to verify the saved revision.
         const expected=Number(arg.revision)+1;
-        const payload={action:'save',key:syncPassword,revision:arg.revision,data:arg.data};
+        const payload={action:'save',revision:arg.revision,data:arg.data};
         await fetch(CLOUD_API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(payload),redirect:'follow'});
         let latest=null;
         for(let attempt=0;attempt<6;attempt++){
@@ -569,15 +567,14 @@ window.CasaWorkbook = (() => {
       async function flushCloudSave(){if(!cloudEnabled||!cloudReady||cloudBusy)return;if(!cloudPending)return;cloudBusy=true;cloudPending=false;const payload=JSON.parse(JSON.stringify(data));updateCloudStatus('正在將變更儲存到 Google 試算表…');try{
           const result=await cloudCall('saveDashboardData',{revision:cloudRevision,data:payload});cloudRevision=result.revision;cloudLastSaved=result.updatedAt||'';if(!cloudPending)updateCloudStatus('已同步到 Google 試算表','normal',`最近同步：${cloudLastSaved}`);
         }catch(err){cloudPending=true;cloudReady=false;const conflict=String(err.message||err).includes('VERSION_CONFLICT');updateCloudStatus(conflict?'雲端已有其他裝置的新資料。請選擇「載入雲端」或「上傳本機」。':'同步失敗：'+(err.message||err),'warning');notify('雲端未同步，本機資料仍保留')}finally{cloudBusy=false;if(cloudReady&&cloudPending)scheduleCloudSave()}}
-      async function initialCloudLoad(){if(!syncPassword){updateCloudStatus('目前保存在本機。點「連接試算表」輸入同步密碼，即可啟用 Google 試算表同步。');return}$('#cloud-details').textContent='GitHub Pages 網站正在透過 Apps Script 與 Google 試算表同步。';updateCloudStatus('正在檢查 Google 試算表…');try{const remote=await cloudCall('getDashboardData');const remoteData=normalizeData(remote.data||{});cloudRevision=Number(remote.revision)||0;cloudLastSaved=remote.updatedAt||'';
+      async function initialCloudLoad(){$('#cloud-details').textContent='GitHub Pages 網站正在透過 Apps Script 與 Google 試算表同步。';updateCloudStatus('正在檢查 Google 試算表…');try{const remote=await cloudCall('getDashboardData');const remoteData=normalizeData(remote.data||{});cloudRevision=Number(remote.revision)||0;cloudLastSaved=remote.updatedAt||'';
         if(cloudRevision===0&&!userHasLocalData(remoteData)){if(userHasLocalData(data)){cloudReady=false;updateCloudStatus('試算表尚無資料；可按「上傳本機」將舊資料搬到雲端。','warning')}else{cloudReady=true;updateCloudStatus('已連上空白試算表，下一次編輯將自動同步。')}}
         else if(!userHasLocalData(data)||sameData(data,remoteData)){data=remoteData;saveLocalOnly();refreshAllData();cloudReady=true;updateCloudStatus('已載入 Google 試算表','normal',`最近同步：${cloudLastSaved}`)}
         else{cloudReady=false;updateCloudStatus('本機與試算表內容不同：請決定要保留哪一份。未經確認不會覆蓋。','warning')}
       }catch(err){cloudReady=false;updateCloudStatus('尚未能連接試算表：'+(err.message||err),'warning')}}
       function saveLocalOnly(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}catch(e){console.warn(e)}}
-      async function loadFromCloud(){if(!syncPassword){notify('請先點「連接試算表」');return}if(cloudBusy)return;cloudBusy=true;updateCloudStatus('正在讀取試算表…');try{const response=await cloudCall('getDashboardData');const next=normalizeData(response.data||{});if(!sameData(data,next)&&userHasLocalData(data)&&!confirm('載入試算表資料會覆蓋目前這台裝置的本機資料。你確定嗎？'))return;data=next;saveLocalOnly();refreshAllData();cloudRevision=Number(response.revision)||0;cloudReady=true;cloudPending=false;updateCloudStatus('已由 Google 試算表載入','normal',`最近同步：${response.updatedAt||'剛剛'}`);notify('已載入雲端資料')}catch(err){updateCloudStatus('雲端讀取失敗：'+(err.message||err),'warning')}finally{cloudBusy=false}}
-      async function uploadToCloud(){if(!syncPassword){notify('請先點「連接試算表」');return}if(cloudBusy)return;cloudBusy=true;updateCloudStatus('正在檢查雲端版本…');try{const latest=await cloudCall('getDashboardData');const latestData=normalizeData(latest.data||{});if(Number(latest.revision)>0&&!sameData(data,latestData)&&!confirm('這會用本機資料完整覆蓋 Google 試算表的作品、待辦、日程和捷徑。建議先備份，確定覆蓋嗎？'))return;const result=await cloudCall('saveDashboardData',{revision:Number(latest.revision)||0,data:JSON.parse(JSON.stringify(data))});cloudRevision=result.revision;cloudReady=true;cloudPending=false;updateCloudStatus('已將本機資料上傳到 Google 試算表','normal',`最近同步：${result.updatedAt||'剛剛'}`);notify('雲端儲存完成')}catch(err){cloudReady=false;updateCloudStatus('上傳失敗：'+(err.message||err),'warning')}finally{cloudBusy=false}}
-      $('#cloud-connect').addEventListener('click',async()=>{const input=prompt('請輸入你在 Apps Script 產生的 Casa Marina 同步密碼（只保留在目前這個分頁）');if(!input)return;syncPassword=input.trim();cloudReady=false;$('#cloud-connect').disabled=true;try{await initialCloudLoad();if(cloudReady||cloudRevision!==null){notify('已檢查試算表連線')}else{syncPassword='';notify('連線失敗，請確認密碼與部署')}}finally{$('#cloud-connect').disabled=false}});
+      async function loadFromCloud(){if(cloudBusy)return;cloudBusy=true;updateCloudStatus('正在讀取試算表…');try{const response=await cloudCall('getDashboardData');const next=normalizeData(response.data||{});if(!sameData(data,next)&&userHasLocalData(data)&&!confirm('載入試算表資料會覆蓋目前這台裝置的本機資料。你確定嗎？'))return;data=next;saveLocalOnly();refreshAllData();cloudRevision=Number(response.revision)||0;cloudReady=true;cloudPending=false;updateCloudStatus('已由 Google 試算表載入','normal',`最近同步：${response.updatedAt||'剛剛'}`);notify('已載入雲端資料')}catch(err){updateCloudStatus('雲端讀取失敗：'+(err.message||err),'warning')}finally{cloudBusy=false}}
+      async function uploadToCloud(){if(cloudBusy)return;cloudBusy=true;updateCloudStatus('正在檢查雲端版本…');try{const latest=await cloudCall('getDashboardData');const latestData=normalizeData(latest.data||{});if(Number(latest.revision)>0&&!sameData(data,latestData)&&!confirm('這會用本機資料完整覆蓋 Google 試算表的作品、待辦、日程和捷徑。建議先備份，確定覆蓋嗎？'))return;const result=await cloudCall('saveDashboardData',{revision:Number(latest.revision)||0,data:JSON.parse(JSON.stringify(data))});cloudRevision=result.revision;cloudReady=true;cloudPending=false;updateCloudStatus('已將本機資料上傳到 Google 試算表','normal',`最近同步：${result.updatedAt||'剛剛'}`);notify('雲端儲存完成')}catch(err){cloudReady=false;updateCloudStatus('上傳失敗：'+(err.message||err),'warning')}finally{cloudBusy=false}}
       $('#cloud-load').disabled=false;$('#cloud-upload').disabled=false;$('#cloud-save').disabled=false;
       $('#cloud-load').addEventListener('click',loadFromCloud);$('#cloud-upload').addEventListener('click',uploadToCloud);
       $('#cloud-save').addEventListener('click',()=>{if(!cloudReady){notify('請先選擇「載入雲端」或「上傳本機」');return}cloudPending=true;flushCloudSave()});
