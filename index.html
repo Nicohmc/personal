@@ -763,6 +763,46 @@
 #library-overlay .library-controls button:hover{background:#fff;border-color:#82AAB4}
 @media(max-width:700px){#library-overlay .library-card-title strong{font-size:17px}}
 
+
+/* v10.4 / countdown: one-line labels and dates within the card width */
+.casa-unified-layout #v9-countdowns .cm-countdown-event{
+ grid-template-columns:64px minmax(0,1fr)!important;
+ grid-template-rows:1fr 1fr!important;
+ padding:8px 9px!important;
+ gap:7px!important;
+ min-height:98px;align-items:center!important;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-visual{
+ grid-column:1!important;grid-row:1 / 3!important;width:58px!important;height:58px!important;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-title{
+ grid-column:2!important;grid-row:1!important;display:block!important;
+ align-self:end!important;margin:0!important;padding:0 25px 0 0!important;
+ width:100%;max-width:100%;min-width:0;
+ font-size:clamp(12px,1.15vw,17px)!important;line-height:1.2!important;
+ white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+ word-break:normal!important;overflow-wrap:normal!important;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-date{
+ grid-column:2!important;grid-row:2!important;align-self:start!important;
+ font-size:11px!important;line-height:1.25!important;margin:2px 0 0!important;
+ display:block!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+ min-width:0;width:100%;letter-spacing:0!important;
+}
+.casa-unified-layout #v9-countdowns .cm-count-edit{
+ top:7px!important;right:7px!important;width:23px!important;height:23px!important;
+ border-radius:50%!important;z-index:5!important;
+}
+@media(max-width:470px){
+ .casa-unified-layout #v9-countdowns .cm-countdown-event{grid-template-columns:51px minmax(0,1fr)!important;padding:6px 6px!important;gap:4px!important}
+ .casa-unified-layout #v9-countdowns .cm-countdown-visual{width:48px!important;height:48px!important}
+ .casa-unified-layout #v9-countdowns .cm-countdown-title{font-size:12px!important;padding-right:18px!important}
+ .casa-unified-layout #v9-countdowns .cm-countdown-date{font-size:9px!important}
+ .casa-unified-layout #v9-countdowns .cm-count-edit{top:4px!important;right:4px!important;width:19px!important;height:19px!important}
+}
+/* Prevent unnecessary motion while sync messages change. */
+#v9-audio-source{min-height:2em}
+
 </style>
 </head>
 <body>
@@ -1109,7 +1149,7 @@ window.CasaWorkbook = (() => {
       // become visible on next poll or tab focus. No login/password UI.
       const CLOUD_BASELINE_KEY=STORAGE_KEY+'.syncBaseline.v2';
       const CLOUD_RECOVERY_KEY=STORAGE_KEY+'.recovery';
-      const CLOUD_POLL_MS=12000;
+      const CLOUD_POLL_MS=20000;
       const DELETIONS_KEY=STORAGE_KEY+'.explicitDeletes.v9';
       let pendingDeletes;try{pendingDeletes=JSON.parse(localStorage.getItem(DELETIONS_KEY)||'{}')}catch(e){pendingDeletes={}}
       function markDeleted(tab,id){if(!pendingDeletes[tab])pendingDeletes[tab]=[];if(!pendingDeletes[tab].includes(id))pendingDeletes[tab].push(id);localStorage.setItem(DELETIONS_KEY,JSON.stringify(pendingDeletes))}
@@ -1283,7 +1323,7 @@ const today=()=>{
 };
 const later=(a,b)=>String(a||'').localeCompare(String(b||''));
 const id=()=> 'cm_'+(crypto.randomUUID?crypto.randomUUID():Date.now()+'_'+Math.random().toString(36).slice(2));
-let extras=null,busy=false,reading=false,queued=false,accent='en-US',slow=false,shown=new Set(),quoteOffset=0,lastDate=today();
+let extras=null,busy=false,reading=false,queued=false,extraSignature="",accent='en-US',slow=false,shown=new Set(),quoteOffset=0,lastDate=today();
 function status(s,error=false){$('#v9-sync-state').textContent=(error?'⚠ ':'☁ ')+s;$('#v9-sync-state').style.color=error?'#a74f4c':'#65837b'}
 function collection(name){return (extras?.collections?.[name]||[]).filter(x=>!x.deletedAt)}
 function jsonp(action){return new Promise((resolve,reject)=>{
@@ -1296,14 +1336,29 @@ function jsonp(action){return new Promise((resolve,reject)=>{
  script.src=u.toString();document.head.append(script);
  });}
 async function poll(){if(reading||busy||document.hidden)return;reading=true;
- try{const result=await jsonp('extrasRead');extras=result;render();status('新功能已連接 Google 試算表 · 自動更新')}
- catch(e){status('新功能讀取失敗：'+e.message,true)}finally{reading=false}}
+ try{
+   const result=await jsonp('extrasRead');
+   const signature=JSON.stringify(result);
+   if(signature!==extraSignature){extras=result;extraSignature=signature;render();try{sessionStorage.setItem('casa.v104.extras',JSON.stringify({savedAt:Date.now(),result}))}catch(e){}}
+   status('新功能已連接 Google 試算表 · 自動更新');
+ }catch(e){status('試算表暫時讀取失敗：'+e.message,true)}finally{reading=false}}
 async function write(collectionName,item,op='upsert'){
  if(busy)return false;
  busy=true;
  const old=collection(collectionName).find(x=>String(x.id)===String(item.id));
  const expectedVersion=old?old._version:'';
- status('正在寫入 '+collectionName+'…');
+ const original=extras;
+ // Fast UI update; server remains authoritative after verification.
+ if(extras){
+  const collections={...extras.collections};
+  const rows=[...(collections[collectionName]||[])];
+  const idx=rows.findIndex(x=>String(x.id)===String(item.id));
+  const optimistic={...(idx>=0?rows[idx]:{}),...item};
+  if(op==='delete')optimistic.deletedAt=new Date().toISOString();
+  if(idx>=0)rows[idx]=optimistic;else rows.push(optimistic);
+  collections[collectionName]=rows;extras={...extras,collections};render();
+ }
+ status('已更新畫面，正在確認試算表儲存…');
  try{
   const body={action:'extraWrite',collection:collectionName,op,item,expectedVersion};
   await fetch(api,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(body)});
@@ -1313,12 +1368,12 @@ async function write(collectionName,item,op='upsert'){
     const next=await jsonp('extrasRead');
     const found=next.collections[collectionName].find(x=>String(x.id)===String(item.id));
     if(found && (op==='delete'?!!found.deletedAt:(!old||found._version!==expectedVersion))){
-      extras=next;confirmed=true;break;
+      extras=next;extraSignature=JSON.stringify(next);confirmed=true;break;
     }
   }
   if(!confirmed)throw Error('寫入未獲確認：可能資料衝突或被拒絕。請檢查試算表再重試。');
-  render();status('已儲存到 Google 試算表');return true;
- }catch(e){status(e.message,true);return false}finally{busy=false}
+  render();try{sessionStorage.setItem('casa.v104.extras',JSON.stringify({savedAt:Date.now(),result:extras}))}catch(e){}status('已儲存到 Google 試算表');return true;
+ }catch(e){extras=original;extraSignature='';if(original)render();status(e.message,true);return false}finally{busy=false}
 }
 function coreTodos(){return window.CasaCore?.getTodos?.()||[]}
 function todayFocus(){const record=collection('DailyFocus').find(x=>x.date===today());const all=coreTodos().filter(x=>!x.done);
@@ -1337,79 +1392,128 @@ function renderWords(){
   return `<article class="cm-word-sticky"><div class="cm-word-content"><div class="cm-word-count">WORD 0${i+1} · LITTLE WORD OF TODAY</div><div class="cm-word-title">${esc(w.word)}</div><div class="cm-word-meaning">${esc(w.meaning||'尚未填中文意思')}</div>${w.example?`<div class="cm-word-example">${esc(w.example)}</div>`:''}<div class="cm-word-buttons"><button type="button" data-known="${esc(w.id)}">${p?.known?'✓ 已學會':'○ 記住了'}</button><button type="button" data-fav="${esc(w.id)}">${p?.favorite?'★ 已收藏':'☆ 收藏'}</button></div></div><div class="cm-word-sounds"><button type="button" class="cm-word-audio" data-word-audio="${esc(w.id)}" aria-label="播放 ${esc(w.word)} 的英文發音">🔊 單字發音</button>${w.example?`<button type="button" class="cm-word-audio" data-example-audio="${esc(w.id)}" aria-label="朗讀 ${esc(w.word)} 的英文例句">▶ 例句朗讀</button>`:''}</div></article>`;
  }).join(''):'<p class="muted">Vocabulary 工作表還沒有可用的單字，請新增 word、meaning 和 example。</p>';
 }
-/* v10.3: one word and one sentence control. Speech synthesis starts in the
-   user click; dictionary recording is a fallback for single words. */
+/* v10.4: speech with bounded states (no indefinite "playing" label).
+   First use device English voice for sentences and words. A word additionally
+   has a dictionary-audio fallback; if the device has no English voice for a
+   sentence, report that honestly. */
 let activeWordAudio=null;
 let currentUtterance=null;
 let speechSequence=0;
+let speechWatchdog=null;
+let speechEndWatchdog=null;
 const recordingCache=new Map();
+function notifyWordAudio(message){const el=$('#v9-audio-source');if(el)el.textContent=message}
 function englishVoices(){
  if(!('speechSynthesis' in window))return [];
- return window.speechSynthesis.getVoices().filter(v=>/^en(?:-|$)/i.test(v.lang));
+ try{return window.speechSynthesis.getVoices().filter(v=>/^en(?:-|$)/i.test(v.lang))}catch(e){return []}
 }
 function findEnglishVoice(){
- const voices=englishVoices();
- const exact=voices.filter(v=>v.lang.toLowerCase()==='en-us');
- const preferred=/microsoft.*(aria|jenny|guy|davis)|google.*us english|samantha|ava|allison|alex/i;
- return exact.find(v=>preferred.test(v.name))||exact.find(v=>v.localService)||exact[0]||voices.find(v=>v.lang.toLowerCase()==='en-gb')||voices[0]||null;
+ const voices=englishVoices(), exact=voices.filter(v=>/^en-US$/i.test(v.lang));
+ const preferred=/microsoft.*(aria|jenny|guy|davis)|samantha|ava|alex|allison/i;
+ return exact.find(v=>v.localService&&preferred.test(v.name))||
+        exact.find(v=>v.localService)||exact.find(v=>preferred.test(v.name))||exact[0]||
+        voices.find(v=>v.localService)||voices[0]||null;
 }
-if('speechSynthesis' in window){window.speechSynthesis.getVoices();window.speechSynthesis.addEventListener?.('voiceschanged',()=>window.speechSynthesis.getVoices())}
-function notifyWordAudio(message){const el=$('#v9-audio-source');if(el)el.textContent=message}
+if('speechSynthesis' in window){
+ window.speechSynthesis.getVoices();
+ window.speechSynthesis.addEventListener?.('voiceschanged',()=>window.speechSynthesis.getVoices());
+}
+function clearSpeechWatchdogs(){
+ if(speechWatchdog){clearTimeout(speechWatchdog);speechWatchdog=null}
+ if(speechEndWatchdog){clearTimeout(speechEndWatchdog);speechEndWatchdog=null}
+}
 function cancelWordAudio(){
+ clearSpeechWatchdogs();
  if(activeWordAudio){activeWordAudio.pause();activeWordAudio=null}
- if('speechSynthesis' in window)window.speechSynthesis.cancel();
+ if('speechSynthesis' in window){try{window.speechSynthesis.cancel()}catch(e){}}
  currentUtterance=null;
 }
-async function dictionaryWordFallback(text,token){
- const key=text.trim().toLowerCase();
+function prefetchDictionaryWord(word){
+ const key=String(word||'').trim().toLowerCase();
+ if(!key||recordingCache.has(key))return;
+ const entry={state:'loading',files:[]};recordingCache.set(key,entry);
+ fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(key))
+  .then(r=>{if(!r.ok)throw Error('No recording');return r.json()})
+  .then(items=>{
+    entry.files=(Array.isArray(items)?items:[]).flatMap(x=>x.phonetics||[])
+       .map(p=>String(p?.audio||'')).filter(Boolean)
+       .map(x=>x.startsWith('//')?'https:'+x:x)
+       .filter(x=>/^https:\/\//i.test(x));
+    entry.state='ready';
+  }).catch(()=>{entry.state='error'});
+}
+function dictionaryWordFallback(word,token){
+ const key=String(word||'').trim().toLowerCase(),entry=recordingCache.get(key);
+ if(token!==speechSequence)return;
+ if(!entry||entry.state==='loading'){
+   if(!entry)prefetchDictionaryWord(key);
+   const started=Date.now();
+   const waiting=setInterval(()=>{
+     if(token!==speechSequence||Date.now()-started>3500){clearInterval(waiting);if(token===speechSequence)notifyWordAudio('此字的字典錄音未能載入。請檢查網路或裝置聲音。');return}
+     const v=recordingCache.get(key);
+     if(v?.state==='ready'||v?.state==='error'){clearInterval(waiting);dictionaryWordFallback(word,token)}
+   },250);return;
+ }
+ const files=entry.files;
+ const chosen=files.find(x=>/[_-](?:us|en-us)[_.\/-]/i.test(x))||files[0];
+ if(!chosen){notifyWordAudio('此字沒有可用的字典錄音；裝置英文語音也未成功啟動。');return}
  try{
-  let records=recordingCache.get(key);
-  if(!records){
-   const r=await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(key));
-   if(!r.ok)throw Error('字典沒有這個字的錄音');
-   const entries=await r.json();
-   records=(Array.isArray(entries)?entries:[]).flatMap(e=>e.phonetics||[]).map(p=>p.audio||'').filter(Boolean).map(x=>x.startsWith('//')?'https:'+x:x).filter(x=>x.startsWith('https://'));
-   recordingCache.set(key,records);
-  }
-  if(token!==speechSequence)return;
-  if(!records.length)throw Error('找不到真人錄音');
-  const chosen=records.find(u=>/[_-](?:us|en-us)[_./-]/i.test(u))||records[0];
-  const audio=new Audio(chosen);
-  audio.preload='auto';activeWordAudio=audio;
-  audio.onplaying=()=>notifyWordAudio('🔊 正在播放字典音檔：'+text);
-  audio.onerror=()=>notifyWordAudio('這個字的錄音暫時無法播放，請檢查網路及裝置音量。');
-  audio.onended=()=>{if(activeWordAudio===audio)activeWordAudio=null};
-  await audio.play();
- }catch(error){if(token===speechSequence)notifyWordAudio('發音未能播放：'+(error?.message||'請確認音量、網路和裝置英文語音設定'))}
+  const audio=new Audio();audio.src=chosen;audio.preload='auto';activeWordAudio=audio;
+  let started=false;
+  audio.onplaying=()=>{if(token!==speechSequence)return;started=true;notifyWordAudio('🔊 正在播放字典錄音：'+word)};
+  audio.onended=()=>{if(token===speechSequence)notifyWordAudio('✓ 單字錄音播放完成：'+word);if(activeWordAudio===audio)activeWordAudio=null};
+  audio.onerror=()=>{if(token===speechSequence)notifyWordAudio('字典錄音無法播放。請檢查瀏覽器的聲音權限。')};
+  audio.play().catch(()=>{if(token===speechSequence)notifyWordAudio('字典音檔被瀏覽器阻擋，請再按一次發音。')});
+  setTimeout(()=>{if(token===speechSequence&&!started)notifyWordAudio('字典音檔尚未開始播放，請檢查網路或音量。')},4000);
+ }catch(e){notifyWordAudio('無法播放字典錄音：'+(e.message||'未知原因'))}
 }
 function speakVocabulary(text,kind){
  const phrase=String(text||'').trim();if(!phrase)return;
- speechSequence++;const token=speechSequence;cancelWordAudio();
+ speechSequence++;const token=speechSequence;
+ cancelWordAudio();
+ const fallback=(reason)=>{
+   if(token!==speechSequence)return;
+   clearSpeechWatchdogs();
+   if(kind==='word'){
+     try{window.speechSynthesis?.cancel()}catch(e){}
+     notifyWordAudio(reason+'，正在嘗試真人字典錄音…');
+     dictionaryWordFallback(phrase,token);
+   }else notifyWordAudio(reason+'。這台裝置的瀏覽器未能啟動例句朗讀，請確認已安裝英文語音。');
+ };
  if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){
-  notifyWordAudio('此瀏覽器未提供朗讀功能。'+(kind==='word'?'正在嘗試字典錄音。':''));
-  if(kind==='word')dictionaryWordFallback(phrase,token);
-  return;
+   fallback('瀏覽器不支援語音合成');return;
  }
  try{
-  const synth=window.speechSynthesis;
-  const voice=findEnglishVoice();
-  const u=new SpeechSynthesisUtterance(phrase);
-  u.lang='en-US';u.rate=kind==='word'?.88:.92;u.pitch=1;u.volume=1;
-  if(voice)u.voice=voice;
-  currentUtterance=u;
-  u.onstart=()=>{if(token===speechSequence)notifyWordAudio('🔊 正在朗讀'+(kind==='word'?'單字':'例句')+'（'+(voice?.name||'裝置英文語音')+'）')};
-  u.onend=()=>{if(currentUtterance===u)currentUtterance=null};
-  u.onerror=()=>{
-   if(token!==speechSequence)return;
-   if(kind==='word'){notifyWordAudio('裝置朗讀失敗，正在嘗試字典真人錄音…');dictionaryWordFallback(phrase,token)}
-   else notifyWordAudio('例句朗讀失敗；請檢查瀏覽器的英文語音與裝置音量。');
-  };
-  notifyWordAudio('🔊 已送出'+(kind==='word'?'單字':'例句')+'朗讀，正在播放…');
-  synth.speak(u);
- }catch(error){
-  if(kind==='word')dictionaryWordFallback(phrase,token);
-  else notifyWordAudio('例句朗讀無法啟動：'+(error?.message||'未知錯誤'));
- }
+   const synth=window.speechSynthesis;
+   const voice=findEnglishVoice();
+   const u=new SpeechSynthesisUtterance(phrase);
+   u.lang='en-US';u.rate=.92;u.pitch=1;u.volume=1;
+   if(voice)u.voice=voice;
+   currentUtterance=u;
+   let began=false,finished=false;
+   u.onstart=()=>{
+     if(token!==speechSequence)return;
+     began=true;clearTimeout(speechWatchdog);speechWatchdog=null;
+     notifyWordAudio('🔊 正在朗讀'+(kind==='word'?'單字':'例句')+'（'+(voice?.name||'英文語音')+'）');
+     speechEndWatchdog=setTimeout(()=>{
+       if(token===speechSequence&&!finished){notifyWordAudio('語音朗讀沒有收到完成回報；若沒聽到聲音，請檢查瀏覽器語音設定。');}
+     },Math.max(6000,Math.min(30000,phrase.length*240)));
+   };
+   u.onend=()=>{if(token!==speechSequence)return;finished=true;clearSpeechWatchdogs();currentUtterance=null;notifyWordAudio('✓ '+(kind==='word'?'單字':'例句')+'朗讀完成')};
+   u.onerror=e=>{if(token===speechSequence&&!finished){finished=true;fallback('英文語音發生錯誤'+(e?.error?'（'+e.error+'）':''))}};
+   notifyWordAudio('準備英文朗讀…');
+   // No delayed speak: preserve user activation on mobile.
+   synth.speak(u);
+   if(synth.paused)synth.resume();
+   speechWatchdog=setTimeout(()=>{
+     if(token===speechSequence&&!began&&!finished){finished=true;fallback('英文語音未啟動')}
+   },3400);
+ }catch(e){fallback('英文語音無法啟動')}
+}
+function prefetchTodayPronunciations(){
+ const ids=extras?.dailyWordIds||[];
+ ids.map(id=>collection('Vocabulary').find(w=>String(w.id)===String(id))).filter(Boolean)
+    .forEach(w=>prefetchDictionaryWord(w.word));
 }
 function renderIdeas(){const items=collection('Ideas').sort((a,b)=>Number(b.createdAt)-Number(a.createdAt));
  $('#v9-idea-list').innerHTML=items.length?items.slice(0,12).map(x=>{const summary=String(x.text||'').replace(/\s+/g,' ').trim();
@@ -1438,7 +1542,7 @@ $('#v9-theme-picker').addEventListener('click',e=>{const b=e.target.closest('[da
 function renderCountdown(){const items=collection('Countdowns').map(x=>({...x,days:daysUntil(x.date,x.yearly)})).filter(x=>x.days!==null&&x.days>=0).sort((a,b)=>a.days-b.days);
  $('#v9-countdowns').classList.toggle('cm-count-many',items.length>4);
  $('#v9-count-list').innerHTML=items.length?items.slice(0,8).map(x=>{const t=casaTheme(x.theme),count=String(x.days);
- return `<article class="cm-countdown-event" style="--count-bg:${t.bg};--count-top:${t.top};--count-ink:${t.ink};--count-soft:${t.soft}"><button type="button" class="cm-count-edit" data-count-edit="${esc(x.id)}" aria-label="編輯 ${esc(x.title)}" title="編輯日期、名稱和配色"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L9 17l-4 1 1-4Z"/></svg></button><div class="cm-countdown-visual" aria-label="${esc(x.title)}，倒數 ${x.days} 天"><div class="cm-countdown-calendar"><div class="cm-countdown-binding"></div><div class="cm-countdown-number ${count.length>3?'many':''}">${count}</div><div class="cm-countdown-days">${x.days===0?'TODAY!':'DAYS TO GO'}</div></div><span class="cm-countdown-decoration" aria-hidden="true">${t.icon}</span></div><div class="cm-countdown-title">${esc(x.title)}</div><div class="cm-countdown-date">${esc(x.date)} ${x.yearly?' · 每年重複':''}</div></article>`}).join(''):'<div class="cm-countdown-empty">還沒有倒數日。新增一個值得期待的小日子，再挑選喜歡的節慶配色吧。🍋</div>'}
+ return `<article class="cm-countdown-event" style="--count-bg:${t.bg};--count-top:${t.top};--count-ink:${t.ink};--count-soft:${t.soft}"><button type="button" class="cm-count-edit" data-count-edit="${esc(x.id)}" aria-label="編輯 ${esc(x.title)}" title="編輯日期、名稱和配色"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L9 17l-4 1 1-4Z"/></svg></button><div class="cm-countdown-visual" aria-label="${esc(x.title)}，倒數 ${x.days} 天"><div class="cm-countdown-calendar"><div class="cm-countdown-binding"></div><div class="cm-countdown-number ${count.length>3?'many':''}">${count}</div><div class="cm-countdown-days">${x.days===0?'TODAY!':'DAYS TO GO'}</div></div><span class="cm-countdown-decoration" aria-hidden="true">${t.icon}</span></div><div class="cm-countdown-title" title="${esc(x.title)}">${esc(x.title)}</div><div class="cm-countdown-date" title="${esc(x.date)}${x.yearly?' · 每年重複':''}">${esc(x.date)}</div></article>`}).join(''):'<div class="cm-countdown-empty">還沒有倒數日。新增一個值得期待的小日子，再挑選喜歡的節慶配色吧。🍋</div>'}
 function renderHabits(){const habits=collection('Habits').filter(x=>x.active!==false&&String(x.active).toLowerCase()!=='false');const logs=collection('HabitLogs').filter(x=>x.date===today()&&x.done);
  $('#v9-habit-list').innerHTML=habits.length?habits.map(h=>{const done=logs.some(l=>String(l.habitId)===String(h.id));return `<div class="v9-item"><span style="flex:1">${esc(h.emoji||'🌱')} ${esc(h.name)} <small class="v9-faded">${(()=>{const n=new Set(collection('HabitLogs').filter(l=>String(l.habitId)===String(h.id)&&l.done).map(l=>l.date)).size;return (n>=30?'🌸':n>=10?'🌿':n>=3?'🌱':'🌰')+' 累積 '+n+' 天'})()}</small></span><button data-habit="${esc(h.id)}" aria-label="習慣打卡">${done?'✅ 已完成':'○ 打卡'}</button></div>`}).join(''):'<p class="muted">到 Habits 工作表新增想培養的習慣吧。</p>';
  $('#v9-habit-progress').textContent=`今日已照顧 ${habits.filter(h=>logs.some(l=>String(l.habitId)===String(h.id))).length} / ${habits.length} 項習慣。`}
@@ -1463,7 +1567,7 @@ function renderQuote(){
  const pair=pool[((quoteOffset%pool.length)+pool.length)%pool.length];
  $('#v9-quote-line').textContent=pair[0];$('#v9-quote-en').textContent=pair[1];
 }
-function render(){renderWords();renderIdeas();renderCountdown();renderHabits();renderQuote()}
+function render(){renderWords();prefetchTodayPronunciations();renderIdeas();renderCountdown();renderHabits();renderQuote()}
 $('#v9-words-list').onclick=async e=>{
  const audioButton=e.target.closest('[data-word-audio],[data-example-audio]');
  if(audioButton){const isExample=audioButton.hasAttribute('data-example-audio');const audioId=isExample?audioButton.dataset.exampleAudio:audioButton.dataset.wordAudio;const audioWord=collection('Vocabulary').find(w=>String(w.id)===String(audioId));if(audioWord)speakVocabulary(isExample?audioWord.example:audioWord.word,isExample?'example':'word');return}
@@ -1492,7 +1596,13 @@ $('#v9-next-quote').onclick=()=>{quoteOffset++;renderQuote()};
 document.querySelectorAll('[data-v9-jump]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.v9Jump)?.scrollIntoView({behavior:'smooth',block:'start'})));
 
 window.addEventListener('online',poll);document.addEventListener('visibilitychange',()=>{if(!document.hidden)poll()});
-setInterval(()=>{if(today()!==lastDate){lastDate=today();shown.clear()}poll()},18000);
+setInterval(()=>{if(today()!==lastDate){lastDate=today();shown.clear()}poll()},25000);
+try{
+ const cached=JSON.parse(sessionStorage.getItem('casa.v104.extras')||'null');
+ if(cached&&Date.now()-cached.savedAt<86400000&&cached.result?.collections){
+  extras=cached.result;extraSignature=JSON.stringify(cached.result);render();status('已載入上次資料，正在確認雲端更新…');
+ }
+}catch(e){}
 status('新功能正連接試算表…');poll();
 })();
 </script>
