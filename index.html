@@ -411,7 +411,7 @@ window.CasaWorkbook = (() => {
       }
       function loadData(){try{const raw=localStorage.getItem(STORAGE_KEY);return raw?normalizeData(JSON.parse(raw)):normalizeData({})}catch(err){console.warn('Unable to load browser data',err);return normalizeData({})}}
       let data=loadData();
-      const CLOUD_API = 'https://script.google.com/macros/s/AKfycbyCWfet5FE7ZetyOI-eryL2m5K5xl4z6TNEh1spBCzys0MO0MgDfc390IBw38UwvQtP/exec';
+      const CLOUD_API = 'https://script.google.com/macros/s/AKfycbwPjQ2mTGU5V7-M9Lv5VYJFzfR50icsvjtMgoBHuhmj-4Z6MYp4IUCCWjHkw804aWsu/exec';
       const cloudEnabled = true;
       // No login or password: the configured Apps Script endpoint is publicly accessible.
       let activeJsonp = 0;
