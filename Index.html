@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <base target="_blank" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#F7F0E6" />
+  <title>願每一天，都有一點海的自由。｜Casa Marina</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{--ink:#294451;--deep:#245C80;--sea:#73B3C2;--sky:#A5D0D7;--cream:#F7F0E6;--paper:#FFFDF8;--coral:#EB947C;--lemon:#E7C16E;--mint:#E8F1EA;--line:#DDD6C7;--muted:#788B8E;--radius:24px;--shadow:0 13px 35px rgba(58,75,76,.075);color-scheme:light}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;background:var(--cream);color:var(--ink);font-family:"DM Sans","Noto Sans TC",sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
+    button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.5}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #D5825C;outline-offset:3px}button,input{min-width:0}
+    .app-shell{width:min(1640px,100%);padding:24px 36px 26px;margin:auto;position:relative}
+    .masthead{height:87px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:14px;min-width:0}.brand-mark{width:50px;height:50px;flex-shrink:0;display:grid;place-items:center;background:var(--deep);border-radius:16px 16px 10px 16px;box-shadow:0 5px 0 #E8C99D;transform:translateY(-2px)}.brand-mark svg{width:29px;height:29px}
+    .brand h1{margin:0;font-family:"DM Serif Display",Georgia,serif;font-size:29px;font-weight:400;line-height:1;letter-spacing:-.5px}.brand small{display:block;font-size:10px;font-weight:700;letter-spacing:2.4px;color:#7D8D8C;margin-top:7px}
+    .masthead-right{display:flex;align-items:center;gap:18px}.header-note{font-family:"DM Serif Display",Georgia,serif;font-size:18px;font-style:italic;color:#71858B}.date-pill{display:flex;align-items:center;gap:10px;padding:11px 15px;background:rgba(255,255,255,.52);border:1px solid #E4DBCE;border-radius:50px;color:#526E75;font-size:12px;font-weight:700;white-space:nowrap}.status-dot{width:7px;height:7px;border-radius:50%;background:#84A98C;box-shadow:0 0 0 4px rgba(132,169,140,.13)}
+    .dashboard{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:minmax(180px,.8fr) minmax(205px,1fr) minmax(205px,1fr);gap:16px;height:calc(100dvh - 144px);min-height:635px;max-height:920px}
+    .card{position:relative;min-width:0;min-height:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);padding:25px 25px 23px;isolation:isolate}
+    .card-header{display:flex;justify-content:space-between;align-items:start;gap:8px;position:relative;z-index:1}.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:#829093}.card h2{margin:7px 0 0;font-weight:600;font-size:20px;line-height:1.3;letter-spacing:-.6px}.circle-btn{height:31px;width:31px;display:inline-grid;place-items:center;border-radius:50%;border:1px solid #E0DCCD;background:#FFFEFB;color:#506C77;flex-shrink:0}.circle-btn:hover{background:#F7EFE1}.circle-btn svg{width:16px;height:16px}.small-btn{display:inline-flex;gap:6px;align-items:center;justify-content:center;border:1px solid #DCD5C7;border-radius:99px;padding:7px 12px;background:#FFFCF6;color:#486778;font-size:11px;font-weight:700;white-space:nowrap}.small-btn:hover{background:#F0F3EF}.small-btn svg{height:14px;width:14px}
+    .hero{grid-column:span 5;background:linear-gradient(125deg,#275E80 0%,#276E8D 66%,#3F8FA1 100%);border-color:#276B86;color:white;padding:25px 28px}.hero:before{content:"";position:absolute;width:240px;height:240px;border:1px solid rgba(241,231,201,.23);border-radius:50%;right:-88px;top:-112px;box-shadow:0 0 0 28px rgba(255,255,255,.035),0 0 0 61px rgba(255,255,255,.025)}.hero:after{content:"";position:absolute;width:490px;height:140px;right:-130px;bottom:-112px;border:1px solid rgba(255,255,255,.29);border-radius:50%;transform:rotate(-14deg);box-shadow:0 -29px 0 -28px #c9e0da,0 -61px 0 -60px #dbe6db}
+    .hero .eyebrow{color:#C8DFDA}.hero-top{display:flex;justify-content:space-between;align-items:center}.hero-stamp{border:1px solid rgba(255,255,255,.32);border-radius:30px;padding:6px 10px;font-size:10px;letter-spacing:1.1px;color:#EDE7D9}.hero-main{position:relative;z-index:1;margin-top:10px}.hero-title{font-family:"DM Serif Display",Georgia,serif;font-size:clamp(29px,3.1vw,46px);font-weight:400;line-height:1.05;margin:3px 0 4px}.hero-subtitle{font-size:12px;color:#D6E6E5;letter-spacing:.3px}.time-row{display:flex;align-items:end;gap:14px;flex-wrap:wrap;margin-top:8px}.clock{font-family:"DM Serif Display",Georgia,serif;font-size:clamp(36px,4.4vw,62px);line-height:.93;letter-spacing:1.7px;font-variant-numeric:tabular-nums}.clock-date{font-size:11px;line-height:1.6;color:#E1ECE9;padding-bottom:6px}.hero-bottom{position:absolute;left:28px;bottom:23px;z-index:1;color:#E4EBE4;font-family:"DM Serif Display",Georgia,serif;font-style:italic;font-size:14px;letter-spacing:.2px}.hero-sun{width:72px;height:72px;right:26px;top:62px;position:absolute;border-radius:50%;background:#E4C078;opacity:.93;box-shadow:0 0 0 13px rgba(236,209,154,.10)}
+    .focus{grid-column:span 3;background:#F5D4C2;border-color:#EBC7AF;display:flex;flex-direction:column;align-items:center;padding:21px 18px 15px}.focus:before{content:"";position:absolute;inset:-60px auto auto -40px;width:200px;height:200px;border:1px solid rgba(196,111,88,.18);border-radius:50%;box-shadow:0 0 0 15px rgba(255,255,255,.11),0 0 0 42px rgba(255,255,255,.06)}.focus .card-header{width:100%}.focus .eyebrow{color:#A66F64}.focus h2{font-size:17px}.focus-body{display:flex;align-items:center;gap:12px;justify-content:center;width:100%;margin-top:auto;margin-bottom:auto}.timer-ring{position:relative;display:grid;place-items:center;width:105px;height:105px;flex-shrink:0}.timer-ring svg{width:100%;height:100%;transform:rotate(-90deg)}.timer-ring circle{fill:none;stroke-width:5}.timer-ring .timer-track{stroke:#E8B9A2}.timer-ring .timer-progress{stroke:#A65F52;stroke-linecap:round;transition:stroke-dashoffset .3s ease}.timer-text{position:absolute;display:flex;align-items:center;flex-direction:column}.timer-text strong{font-family:"DM Serif Display",Georgia,serif;font-size:24px;font-weight:400}.timer-text small{font-size:9px;color:#956F69;margin-top:-3px}.timer-controls{display:flex;flex-direction:column;gap:7px;min-width:87px}.timer-preset{border:1px solid #CFA892;background:rgba(255,255,255,.15);border-radius:99px;padding:6px 9px;font-size:11px;color:#805B55}.timer-preset.active{background:#FFF5E9;border-color:#D09F86}.timer-actions{display:flex;gap:6px}.timer-action{border:none;background:#9A6056;color:white;border-radius:30px;padding:7px 11px;font-size:11px;font-weight:700}.timer-action:hover{background:#80504A}.timer-reset{width:29px;height:29px;display:grid;place-items:center;border-radius:50%;background:#FBE8DB;border:1px solid #E1B59C;color:#96675D}.timer-reset svg{width:14px;height:14px}.focus-foot{font-size:10px;color:#9C766C;align-self:center;white-space:nowrap}
+    .weather{grid-column:span 4;background:#F4E9C9;border-color:#E6D8B7;padding:23px 24px}.weather:before{content:"";position:absolute;width:250px;height:250px;border-radius:50%;background:rgba(242,201,123,.35);right:-105px;top:-113px}.weather .eyebrow{color:#A28D62}.weather h2{font-size:20px}.city-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px;position:relative;z-index:1}.city-chip{background:transparent;border:1px solid #D8CBAF;color:#766E5B;border-radius:99px;font-size:10px;font-weight:700;padding:6px 10px}.city-chip.active{background:#2D677B;border-color:#2D677B;color:#FFFDF7}.weather-main{display:flex;align-items:center;gap:14px;position:relative;z-index:1;margin-top:10px}.weather-icon{font-size:47px;line-height:1;filter:drop-shadow(0 3px 0 rgba(255,255,255,.33));width:60px;text-align:center}.temperature{font-family:"DM Serif Display",Georgia,serif;font-size:48px;line-height:1;letter-spacing:-1px;color:#315D6B}.temp-desc{font-size:11px;color:#786F58}.weather-stats{display:flex;gap:18px;margin-top:10px;color:#7B715F;font-size:11px}.weather-stats b{color:#365D65}.weather-feedback{font-size:10px;position:absolute;right:22px;bottom:17px;color:#877D68}.weather-feedback a{text-decoration:underline}
+    .calendar{grid-column:span 4;grid-row:span 2;background:var(--paper);display:flex;flex-direction:column}.calendar h2{font-size:23px}.calendar-tools{display:flex;align-items:center;gap:6px}.calendar-tools .circle-btn{height:29px;width:29px}.calendar-month-head{display:flex;justify-content:space-between;align-items:center;margin-top:19px;margin-bottom:8px}.month-name{font-family:"DM Serif Display",Georgia,serif;font-size:27px;color:#335C6A}.month-arrows{display:flex;gap:7px}.month-arrow{border:none;background:#F6F1E8;border-radius:10px;color:#496775;display:grid;place-items:center;width:28px;height:28px;font-size:17px}.month-arrow:hover{background:#E8EBE5}.month-weekdays,.month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center}.month-weekdays{font-size:10px;color:#89969A;font-weight:700;margin-bottom:5px}.month-day{display:flex;align-items:center;justify-content:center;position:relative;height:29px;min-width:0;font-size:11px;color:#526A6F;border-radius:9px;cursor:default}.month-day.muted{opacity:.25}.month-day.today{background:var(--deep);color:white;font-weight:700}.month-day.event:after{content:"";position:absolute;height:3px;width:3px;background:var(--coral);border-radius:50%;bottom:2px}.month-day.today.event:after{background:var(--lemon)}.section-divider{margin-top:15px;border-top:1px solid #E8E2D8}.events-head{display:flex;justify-content:space-between;align-items:center;margin-top:13px;gap:6px}.events-head strong{font-size:12px}.events-list{display:flex;flex-direction:column;gap:8px;margin-top:9px;overflow:auto;min-height:0}.event{display:flex;align-items:center;gap:9px;background:#F7F4EE;border-radius:12px;padding:9px 10px}.event-bar{width:3px;height:28px;background:var(--coral);border-radius:5px}.event-info{flex:1;min-width:0}.event-name{font-size:11px;font-weight:700;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.event-date{font-size:10px;color:#899392;margin-top:2px}.event-count{font-size:10px;border-radius:99px;padding:5px 7px;color:#9D5B48;background:#FBE7D8;white-space:nowrap}.empty-event{font-size:11px;color:#9CA6A2;padding:11px 4px}.calendar-connect{margin-top:auto;padding-top:12px;display:flex;gap:7px;align-items:center;font-size:10px;color:#9B9F9C}.calendar-connect svg{width:14px;height:14px}.calendar-connect a{color:#35677A;text-decoration:underline;text-underline-offset:2px}
+    .todos{grid-column:span 4;grid-row:span 2;background:#FDFBF7;display:flex;flex-direction:column}.todos h2{font-size:23px}.task-count{display:flex;align-items:center;gap:7px;background:#E9F1EF;border-radius:99px;padding:7px 11px;color:#427583;font-size:11px;font-weight:700}.task-progress{height:5px;width:100%;background:#E8EBE6;border-radius:20px;margin:21px 0 14px;overflow:hidden}.task-progress>div{width:0;height:100%;background:#7BB7B8;border-radius:20px;transition:width .2s}.todo-input-row{display:flex;align-items:center;gap:9px;border:1px solid #E4E1D9;background:#FFF;border-radius:14px;padding:7px 7px 7px 14px}.todo-input-row input{width:100%;flex:1;border:none;background:transparent;outline:none;font-size:12px;color:var(--ink)}.todo-input-row input::placeholder{color:#9AA4A5}.todo-add{display:grid;place-items:center;width:32px;height:32px;flex-shrink:0;border:0;background:var(--deep);color:white;border-radius:10px}.todo-add:hover{background:#154B6A}.todo-add svg{width:16px;height:16px}.todo-list{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:4px;margin-top:11px;scrollbar-width:thin}.todo-item{display:flex;align-items:center;gap:9px;padding:10px 5px;border-bottom:1px solid #F1EEE7}.todo-item:last-child{border-bottom:0}.todo-check{width:19px;height:19px;border:1.5px solid #A7B5AF;background:#FFFEFC;border-radius:6px;display:grid;place-items:center;flex-shrink:0;color:white;padding:0}.todo-item.done .todo-check{background:#5E9BA4;border-color:#5E9BA4}.todo-check svg{width:12px;height:12px}.todo-label{flex:1;min-width:0;word-break:break-word;font-size:12px;color:#405D66}.todo-item.done .todo-label{text-decoration:line-through;color:#A9B1B0}.todo-remove{background:none;border:none;display:grid;place-items:center;color:#A6B0B0;padding:4px;opacity:.5}.todo-item:hover .todo-remove,.todo-remove:focus-visible{opacity:1}.todo-remove svg{width:15px;height:15px}.todo-empty{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;height:120px;color:#A2ACA8;text-align:center;font-size:12px}.todo-empty-symbol{font-family:"DM Serif Display",Georgia,serif;font-size:40px;color:#D5DFDA;font-style:italic}.todo-foot{margin-top:auto;padding-top:12px;border-top:1px solid #EEE9E1;color:#A4ABA8;font-size:10px;font-family:"DM Serif Display",Georgia,serif;font-style:italic;text-align:center}
+    .links{grid-column:span 4;background:#E5EFEC;border-color:#D1E1DC}.links h2{font-size:20px}.links-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px}.quick-link{display:flex;gap:10px;align-items:center;text-align:left;border:1px solid #D9E1DE;background:rgba(255,255,255,.75);border-radius:13px;padding:12px 10px;min-height:61px;overflow:hidden;transition:transform .15s,background .15s}.quick-link:hover{transform:translateY(-2px);background:white}.link-icon{height:34px;width:34px;background:#D3E4E3;border-radius:11px;display:grid;place-items:center;font-family:"DM Serif Display",Georgia,serif;color:#2F6E81;font-size:17px;flex-shrink:0}.link-icon svg{width:18px;height:18px}.quick-link-title{font-size:12px;font-weight:700;color:#355A64;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.quick-link-sub{font-size:10px;color:#84999A;margin-top:3px}.quick-link-add{border-style:dashed;background:rgba(255,255,255,.24);color:#6E918D;justify-content:center}.quick-link-add .link-icon{background:transparent;border:1px dashed #B4CFC7;color:#6F9D96}.quick-link-add span{font-size:11px;font-weight:700}
+    .projects{grid-column:span 4;background:linear-gradient(125deg,#255A73,#224960);border-color:#2A5A71;color:#FFF;display:flex;flex-direction:column;cursor:pointer;transition:transform .17s,box-shadow .17s}.projects:hover{transform:translateY(-2px);box-shadow:0 18px 38px rgba(37,81,96,.18)}.projects:before{content:"";width:145px;height:145px;border:22px solid rgba(241,207,148,.17);border-radius:50%;right:-45px;top:-65px;position:absolute;box-shadow:0 0 0 18px rgba(255,255,255,.035)}.projects:after{content:"";position:absolute;right:-70px;bottom:-91px;width:320px;height:150px;border-top:1px solid rgba(226,240,230,.26);border-radius:50%;transform:rotate(-20deg);box-shadow:0 -25px 0 -24px rgba(226,240,230,.4),0 -48px 0 -47px rgba(226,240,230,.4)}.projects .eyebrow{color:#C8DDDC}.projects h2{font-size:21px}.project-header-arrow{width:35px;height:35px;display:grid;place-items:center;border-radius:50%;background:#F0D6AE;color:#315F70}.project-header-arrow svg{width:19px;height:19px}.project-summary{display:flex;align-items:baseline;gap:10px;margin-top:13px;position:relative;z-index:1}.project-number{font-family:"DM Serif Display",Georgia,serif;font-size:44px;line-height:1}.project-summary span:last-child{color:#DBE9E4;font-size:11px}.project-preview{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;z-index:1;position:relative}.preview-pill{display:inline-flex;max-width:100%;align-items:center;gap:5px;background:rgba(255,255,255,.12);border-radius:99px;padding:6px 9px;color:#F0F4EC;font-size:10px;border:1px solid rgba(255,255,255,.18)}.preview-pill span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px}.project-cta{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#F5D6AC;margin-top:auto;position:relative;z-index:1}.project-cta svg{height:15px;width:15px}
+    /* Overlays */
+    .overlay[hidden],.project-editor[hidden],.modal-subsection[hidden]{display:none!important}.overlay{position:fixed;inset:0;z-index:100;background:rgba(25,48,56,.52);display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(7px)}.modal{background:#FFFCF6;border:1px solid #EEE4D5;border-radius:28px;box-shadow:0 35px 90px rgba(18,40,48,.26);width:min(100%,880px);max-height:min(90dvh,800px);display:flex;flex-direction:column;overflow:hidden;position:relative}.modal-small{width:min(100%,495px)}.modal-header{padding:25px 29px 19px;border-bottom:1px solid #EBE5DA;background:linear-gradient(120deg,#FBF4E8,#EFF1E7);flex-shrink:0}.modal-headline{display:flex;align-items:start;justify-content:space-between;gap:10px}.modal-kicker{font-size:10px;letter-spacing:2px;color:#9D8B78;font-weight:700}.modal-title{font-family:"DM Serif Display",Georgia,serif;font-size:34px;font-weight:400;margin:2px 0 4px;color:#285B73}.modal-description{margin:0;font-size:12px;color:#7F8B88}.modal-close{display:grid;place-items:center;border:1px solid #DDDACF;border-radius:50%;width:34px;height:34px;background:white;color:#55747D;flex-shrink:0}.modal-close svg{width:18px;height:18px}.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.primary-btn{border:none;background:#2B687C;color:white;border-radius:12px;padding:11px 14px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}.primary-btn:hover{background:#1E5066}.primary-btn svg{width:15px;height:15px}.neutral-btn{border:1px solid #E1D9CC;background:#FFFDF9;color:#59747A;border-radius:12px;padding:10px 12px;font-size:12px;display:inline-flex;align-items:center;gap:6px}.neutral-btn:hover{background:#F4F0E8}.neutral-btn svg{width:14px;height:14px}.modal-main{min-height:0;overflow:auto;padding:21px 29px 29px;scrollbar-width:thin}.search-row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.search-box{display:flex;align-items:center;gap:8px;background:#FFF;border:1px solid #E2DDD2;border-radius:12px;padding:0 12px;flex:1;min-width:180px}.search-box svg{width:16px;height:16px;color:#93A1A0}.search-box input{border:none;background:transparent;outline:none;min-height:42px;width:100%;font-size:12px;color:var(--ink)}.tag-list{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}.tag{border:1px solid #E1DACD;background:transparent;color:#7B8C8B;border-radius:99px;padding:7px 12px;font-size:11px;font-weight:700}.tag.active{border-color:#29677F;background:#29677F;color:white}.library-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#899592;font-size:11px;margin:17px 0 11px}.library-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.library-card{border:1px solid #E6E0D6;background:#FFF;min-width:0;border-radius:16px;padding:17px;display:flex;flex-direction:column;gap:9px}.library-card-top{display:flex;align-items:start;gap:9px}.library-symbol{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#E2EFEE;color:#2C687D;font-family:"DM Serif Display",Georgia,serif;font-size:18px;flex-shrink:0}.library-card-title{flex:1;min-width:0}.library-card-title strong{display:block;color:#344F58;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.library-category{color:#B17B60;font-size:10px;margin-top:4px}.library-controls{display:flex;gap:1px}.icon-btn{border:0;background:transparent;color:#93A1A1;border-radius:8px;padding:6px;display:grid;place-items:center}.icon-btn:hover{background:#F4F0EA;color:#2C687D}.icon-btn svg{width:15px;height:15px}.library-desc{margin:0;min-height:30px;font-size:11px;color:#81908F;line-height:1.5;overflow-wrap:anywhere}.visit-btn{display:flex;gap:7px;align-items:center;justify-content:space-between;color:#2B7184;font-size:11px;font-weight:700;border-top:1px solid #F0ECE5;padding-top:10px}.visit-btn svg{width:14px;height:14px}.library-empty{text-align:center;grid-column:1/-1;padding:40px 10px;color:#93A09C}.library-empty strong{display:block;font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:29px;color:#61838A}.library-empty span{display:block;margin-top:8px;font-size:12px}.project-editor{border:1px solid #E7D5C4;border-radius:16px;background:#FCF4EC;padding:16px;margin-bottom:18px}.editor-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;color:#3A6978;font-weight:700}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:6px}.field.wide{grid-column:1/-1}.field label{font-size:11px;color:#6E7776;font-weight:700}.field input,.field textarea{border:1px solid #DED7CC;border-radius:10px;background:#FFF;padding:10px 12px;width:100%;font-size:12px;outline:none;color:#344F58}.field input:focus,.field textarea:focus{border-color:#6AA4AF}.field textarea{min-height:75px;resize:vertical}.editor-actions{display:flex;justify-content:end;gap:8px;margin-top:14px}.form-hint{font-size:10px;color:#8D9997;margin-top:9px}.modal-footer{padding:12px 29px 16px;display:flex;align-items:center;gap:7px;justify-content:space-between;border-top:1px solid #EEE8DE;color:#9D9E95;font-size:10px}.backup-actions{display:flex;gap:8px}.backup-actions button{font-size:10px;border:none;background:transparent;color:#547A80;text-decoration:underline;text-underline-offset:3px;padding:4px}
+    .simple-form .field-grid{margin-top:3px}.simple-form .editor-actions{margin-top:17px}
+    .toast{position:fixed;bottom:23px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;z-index:140;background:#2D6170;color:white;border-radius:50px;padding:11px 18px;font-size:12px;box-shadow:0 12px 28px rgba(18,49,61,.18);transition:opacity .2s,transform .2s;max-width:calc(100% - 30px);text-align:center}.toast.visible{transform:translateX(-50%) translateY(0);opacity:1}
+    .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:1180px){.app-shell{padding:20px 23px 26px}.dashboard{gap:12px}.card{padding:19px 19px 17px}.hero{padding:22px}.hero-sun{width:54px;height:54px;right:20px;top:65px}.hero-bottom{left:22px;bottom:18px}.focus{padding:19px 12px 12px}.timer-ring{width:88px;height:88px}.timer-text strong{font-size:20px}.timer-controls{gap:4px}.weather{padding:19px}.weather-icon{font-size:35px;width:43px}.temperature{font-size:39px}.weather-stats{gap:9px;font-size:10px}.calendar h2,.todos h2{font-size:21px}.month-day{height:26px}.links-grid{margin-top:10px}.quick-link{min-height:51px;padding:8px}.links h2{font-size:18px}.project-number{font-size:39px}}
+    @media(max-width:950px){.masthead{height:80px}.header-note{display:none}.dashboard{height:auto;max-height:none;min-height:0;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:none;grid-auto-flow:row;grid-auto-rows:auto}.hero{grid-column:span 4;min-height:238px}.focus{grid-column:span 2;min-height:238px}.weather{grid-column:span 3;min-height:250px}.links{grid-column:span 3;min-height:250px}.calendar,.todos{grid-column:span 3;grid-row:auto;min-height:545px}.projects{grid-column:span 6;min-height:225px}.focus-body{flex-wrap:wrap}.weather-main{margin-top:17px}.quick-link{min-height:60px}}
+    @media(max-width:620px){.app-shell{padding:14px 13px 22px}.masthead{height:72px}.brand-mark{width:40px;height:40px;border-radius:12px}.brand-mark svg{width:24px;height:24px}.brand h1{font-size:23px}.brand small{font-size:8px;letter-spacing:1.4px}.date-pill{padding:9px 10px;font-size:10px}.dashboard{grid-template-columns:1fr 1fr;gap:11px}.card{border-radius:19px;padding:19px}.hero,.weather,.calendar,.todos,.links,.projects{grid-column:1/-1}.hero{min-height:260px}.hero-sun{right:23px;top:76px}.hero-title{font-size:39px}.clock{font-size:51px}.focus{grid-column:1/-1;min-height:188px}.focus-body{flex-wrap:nowrap;margin:4px auto}.timer-ring{height:88px;width:88px}.focus-foot{margin-top:3px}.weather{min-height:246px}.calendar,.todos{min-height:440px}.calendar .month-day{height:29px}.links{min-height:220px}.projects{min-height:236px}.overlay{padding:10px}.modal{max-height:94dvh;border-radius:20px}.modal-header{padding:19px 17px 16px}.modal-title{font-size:29px}.modal-main{padding:16px}.modal-footer{padding:11px 16px;flex-wrap:wrap}.library-list{grid-template-columns:1fr}.field-grid{grid-template-columns:1fr}.field.wide{grid-column:1}.search-row{display:block}.search-box{width:100%}.modal-actions{gap:6px}}
+    @media(max-height:800px) and (min-width:951px){.app-shell{padding-top:12px;padding-bottom:12px}.masthead{height:72px}.dashboard{height:calc(100dvh - 104px);min-height:590px}.card{padding-top:18px;padding-bottom:17px}.hero{padding-top:18px}.hero-main{margin-top:5px}.hero-title{font-size:36px}.hero-bottom{bottom:16px}.focus{padding-top:15px}.focus-body{margin-top:1px}.timer-ring{width:87px;height:87px}.weather-main{margin-top:4px}.weather-stats{margin-top:3px}.city-tabs{margin-top:7px}.calendar-month-head{margin-top:11px}.month-day{height:24px}.section-divider{margin-top:9px}.events-head{margin-top:8px}.todo-input-row{padding-top:5px;padding-bottom:5px}.task-progress{margin:13px 0 10px}.links-grid{margin-top:9px}.quick-link{min-height:48px}}
+
+    /* Layout correction v2: content gets its own flow and never overlaps decorative captions. */
+    .dashboard{
+      grid-template-rows:minmax(256px,0.98fr) minmax(220px,1fr) minmax(220px,1fr);
+      min-height:728px;
+    }
+    .hero{display:flex;flex-direction:column}
+    .hero-top{position:relative;z-index:2;flex:0 0 auto;gap:10px}
+    .hero-main{flex:0 0 auto;margin-top:clamp(13px,2vh,24px)}
+    .hero-title{font-size:clamp(28px,2.3vw,38px);line-height:1.14;margin:0 0 4px}
+    .hero-subtitle{font-size:clamp(11px,0.85vw,13px);line-height:1.55}
+    .time-row{margin-top:12px;gap:8px 16px;align-items:baseline}
+    .clock{font-size:clamp(42px,3.65vw,58px);line-height:1.04}
+    .clock-date{padding-bottom:0;line-height:1.4}
+    .hero-bottom{position:relative;left:auto;bottom:auto;z-index:2;margin-top:auto;padding-top:12px;font-size:12px;line-height:1.35}
+    .focus{gap:0}
+    .focus .card-header{flex:0 0 auto}
+    .focus-body{flex:1 1 auto;min-height:0;margin:12px 0 8px;gap:10px;align-items:center}
+    .timer-ring{width:clamp(82px,7.2vw,104px);height:auto;aspect-ratio:1}
+    .timer-controls{flex:0 1 auto;min-width:0;width:clamp(90px,8.5vw,122px)}
+    .timer-preset{padding:7px 8px;line-height:1.3;white-space:normal}
+    .timer-actions{justify-content:center}
+    .focus-foot{flex:0 0 auto;margin:0;line-height:1.4;text-align:center;white-space:normal;font-size:10px}
+    .weather{display:flex;flex-direction:column}
+    .weather .card-header{flex:0 0 auto}
+    .city-tabs{margin-top:12px}
+    .weather-main{margin-top:12px;gap:10px}
+    .temperature{font-size:clamp(38px,3.15vw,48px);line-height:1.05}
+    .weather-stats{margin-top:9px;gap:6px 15px;flex-wrap:wrap;line-height:1.35}
+    .weather-feedback{position:relative;right:auto;bottom:auto;flex:0 0 auto;margin-top:auto;padding-top:8px;text-align:right;line-height:1.35;overflow-wrap:anywhere}
+    /* On short desktops prefer a small scroll over invisible content. */
+    @media (max-height:800px) and (min-width:951px){
+      .dashboard{grid-template-rows:minmax(238px,0.98fr) minmax(214px,1fr) minmax(214px,1fr);min-height:698px}
+      .hero-main{margin-top:11px}
+      .hero-title{font-size:clamp(27px,2.2vw,35px)}
+      .time-row{margin-top:9px}
+      .clock{font-size:clamp(40px,3.55vw,54px)}
+      .hero-bottom{padding-top:8px}
+      .focus-body{margin:8px 0 5px}
+      .timer-ring{width:clamp(78px,6.7vw,96px)}
+      .focus-foot{font-size:9px}
+      .weather-main{margin-top:7px}
+      .city-tabs{margin-top:8px}
+      .weather-stats{margin-top:6px}
+      .weather-feedback{padding-top:6px}
+    }
+    /* Tablet uses natural card height instead of forcing the single-screen grid. */
+    @media (max-width:950px){
+      .dashboard{grid-template-rows:none;min-height:0}
+      .hero{min-height:260px}
+      .focus{min-height:260px}
+      .weather{min-height:270px}
+      .focus-body{margin:14px 0 10px}
+    }
+    @media (max-width:620px){
+      .hero{min-height:270px}
+      .hero-main{margin-top:18px}
+      .hero-title{font-size:clamp(31px,8vw,39px)}
+      .clock{font-size:clamp(43px,11vw,52px)}
+      .hero-bottom{padding-top:9px}
+      .focus{min-height:225px}
+      .focus-body{margin:10px 0 7px;flex-wrap:nowrap}
+      .timer-ring{width:94px}
+      .timer-controls{width:125px}
+      .weather{min-height:260px}
+      .weather-feedback{padding-top:10px}
+    }
+    @media (max-width:360px){
+      .hero-stamp{font-size:8px;letter-spacing:.3px;padding:6px 7px}
+      .hero-title{font-size:30px}
+      .clock{font-size:44px}
+      .clock-date{font-size:10px}
+      .weather-main{margin-top:8px}
+    }
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+    /* v3: mobile quick-jump ribbon and storage management. */
+    .mobile-quick-nav{display:none}
+    .storage-trigger{display:inline-flex;align-items:center;gap:8px;flex-shrink:0;padding:10px 13px;border:1px solid #D9CCB8;border-radius:999px;background:#FFFDF8;color:#2B6376;font-size:12px;font-weight:700;white-space:nowrap}
+    .storage-trigger:hover{background:#EFF3F0}
+    .storage-trigger svg{width:15px;height:15px}
+    .storage-dot{width:8px;height:8px;background:#D3AA64;border-radius:50%;flex-shrink:0}
+    .storage-dot.connected{background:#6EAA80}
+    .storage-dot.warning{background:#D88B68}
+    .storage-modal{width:min(100%,690px)}
+    .storage-options{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+    .storage-option{border:1px solid #E7DECF;border-radius:17px;background:#FFF;padding:17px;min-width:0}
+    .storage-option h3{margin:0 0 6px;color:#2C6179;font-size:17px}
+    .storage-option p{font-size:12px;color:#73878B;line-height:1.65;margin:0 0 13px}
+    .storage-option .option-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .storage-option .option-actions button{flex:1;min-width:110px}
+    .storage-alert{border-radius:12px;background:#E9F0EC;color:#355E66;padding:11px 13px;line-height:1.55;font-size:12px;margin-bottom:13px;overflow-wrap:anywhere}
+    .storage-alert.warn{background:#F9E9DE;color:#9A5A42}
+    .storage-footnote{margin:14px 0 0;font-size:11px;line-height:1.7;color:#7C8B8B}
+    .storage-help{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;align-items:center}
+    .storage-help a{text-decoration:underline;text-underline-offset:3px;color:#276579}
+    .storage-option button:disabled{opacity:.45}
+    .storage-note{font-size:11px;color:#7D8B88;margin-top:9px}
+    .card{scroll-margin-top:86px}
+    @media(max-width:950px){.masthead-right{gap:7px}.storage-trigger{font-size:11px;padding:9px 11px}}
+    @media(max-width:620px){
+      .app-shell{padding-top:9px}
+      .masthead{height:64px}
+      .masthead-right{display:none}
+      .mobile-quick-nav{display:flex;position:sticky;top:0;z-index:70;margin:0 -13px 12px;padding:9px 13px 10px;gap:7px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;scroll-snap-type:x proximity;border-bottom:1px solid rgba(206,195,175,.8);background:rgba(247,240,230,.96);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+      .mobile-quick-nav::-webkit-scrollbar{display:none}
+      .mobile-jump{display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:0 0 auto;scroll-snap-align:start;padding:9px 12px;border:1px solid #DCCFBC;border-radius:999px;background:#FFFDF8;color:#526E76;font-size:12px;font-weight:700;min-height:39px;white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
+      .mobile-jump.active,.mobile-jump[aria-current="location"]{background:#276B82;color:white;border-color:#276B82}
+      .mobile-jump:hover{border-color:#397B8B}
+      .card{scroll-margin-top:73px}
+      .storage-options{grid-template-columns:1fr}
+      .storage-option{padding:14px}
+      .storage-modal .modal-main{padding:15px}
+      .storage-modal .modal-title{font-size:27px}
+      .storage-option .option-actions button{min-width:0}
+    }
+    @media(max-width:360px){.mobile-jump{padding:8px 10px;font-size:11px}}
+  
+    /* Casa Marina gentle copy refresh: spacious and readable site masthead. */
+    .masthead{height:auto;min-height:110px;padding:11px 0 17px;align-items:center}
+    .brand{flex:1 1 auto;max-width:760px;gap:15px;align-items:center}
+    .brand-words{min-width:0}
+    .brand .brand-name{font-size:10px;line-height:1.3;letter-spacing:1.5px;font-weight:800;color:#8E9A91;margin-bottom:5px}
+    .brand h1{font-family:"Noto Serif TC","Songti TC",Georgia,serif;font-size:clamp(19px,1.65vw,27px);font-weight:600;line-height:1.3;letter-spacing:.3px;white-space:normal}
+    .brand-tagline{font-size:12px;color:#5F7C80;line-height:1.55;margin-top:5px}
+    .brand-tagline span{display:inline-block;margin-left:9px;color:#869997;font-family:Georgia,serif;font-style:italic;font-size:11px}
+    .masthead-right{flex:0 0 auto;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .header-note{max-width:180px;font-size:13px;line-height:1.4;text-align:right}
+    .dashboard{height:calc(100dvh - 174px)}
+    .hero-top .eyebrow,.card .eyebrow{letter-spacing:1.1px;line-height:1.5}
+    .hero-stamp{letter-spacing:.4px;white-space:nowrap}
+    @media(max-width:1160px){
+      .header-note{display:none}
+      .brand h1{font-size:21px}
+      .brand-tagline span{display:block;margin-left:0}
+      .masthead-right .date-pill{display:none}
+    }
+    @media(max-width:950px){
+      .masthead{min-height:0;padding:8px 0 13px}
+      .brand{max-width:none}
+      .masthead-right{align-self:center}
+      .brand h1{font-size:clamp(18px,2.7vw,24px)}
+    }
+    @media(max-width:620px){
+      .masthead{min-height:0;height:auto;align-items:flex-start;gap:8px;padding:5px 0 12px}
+      .brand{gap:10px;align-items:flex-start}
+      .brand-mark{width:35px;height:35px;flex-shrink:0}
+      .brand .brand-name{font-size:8px;letter-spacing:.8px;margin-bottom:5px}
+      .brand h1{font-size:clamp(17px,4.6vw,22px);line-height:1.32;letter-spacing:0}
+      .brand-tagline{font-size:11px;line-height:1.45;margin-top:6px}
+      .brand-tagline span{font-size:10px;margin-top:2px}
+      .masthead-right{align-self:flex-start}
+      .masthead-right .storage-trigger{font-size:0;padding:9px;width:36px;height:36px;white-space:nowrap;overflow:hidden}
+      .masthead-right .storage-trigger .storage-dot,.masthead-right .storage-trigger #header-storage-status{display:none}
+      .hero-stamp{max-width:47%;font-size:9px;padding:5px 8px}
+      .hero-top .eyebrow{font-size:9px;letter-spacing:.7px}
+    }
+    @media(max-width:370px){.brand h1{font-size:16px}.brand-tagline span{font-size:9px}.hero-stamp{display:none}}
+</style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="masthead">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none"><circle cx="27" cy="12" r="6.2" fill="#ECC77C"/><path d="M3 23C9 18 14 19 20 23C26 27 31 27 37 22M3 30C9 25 14 26 20 30C26 34 31 34 37 29" stroke="#F7ECDD" stroke-width="2.6" stroke-linecap="round"/></svg>
+        </div>
+        <div class="brand-words"><div class="brand-name">CASA MARINA · 一個屬於自己的小海灣</div><h1>願每一天，都有一點海的自由。</h1><div class="brand-tagline">把日子過成自己喜歡的模樣。<span>A gentle place for all your little things.</span></div></div>
+      </div>
+      <div class="masthead-right"><span class="header-note">慢慢生活，也自在閃閃發光。</span><div class="date-pill"><span class="status-dot"></span><span id="header-date">今天也是美好的一天</span></div><button type="button" class="storage-trigger" id="storage-trigger"><span class="storage-dot" id="storage-dot"></span><span id="header-storage-status">Excel · 資料管理</span> ⚙</button></div>
+    </header>
+
+
+    <nav class="mobile-quick-nav" aria-label="手機快速跳轉">
+      <button class="mobile-jump active" type="button" data-jump="hero" aria-current="location">⌂ 首頁</button>
+      <button class="mobile-jump" type="button" data-jump="focus">◷ 專注</button>
+      <button class="mobile-jump" type="button" data-jump="weather">☀ 天氣</button>
+      <button class="mobile-jump" type="button" data-jump="calendar">▦ 日程</button>
+      <button class="mobile-jump" type="button" data-jump="todos">✓ 待辦</button>
+      <button class="mobile-jump" type="button" data-jump="links">↗ 捷徑</button>
+      <button class="mobile-jump" type="button" data-open-library>✦ 作品庫</button>
+      <button class="mobile-jump" type="button" data-open-storage>▤ 試算表</button>
+    </nav>
+    <main class="dashboard" aria-label="個人數位指揮中心">
+      <section id="hero-section" class="card hero" aria-label="時間與問候">
+        <div class="hero-top"><span class="eyebrow">01 / 留給自己的片刻</span><span class="hero-stamp">好好生活 · 自在前行</span></div>
+        <div class="hero-sun" aria-hidden="true"></div>
+        <div class="hero-main"><h2 class="hero-title" id="greeting-italian">Buongiorno!</h2><div class="hero-subtitle" id="greeting-chinese">新的一天，從好心情開始。</div><div class="time-row"><span class="clock" id="live-clock">--:--</span><span class="clock-date" id="full-date">日期讀取中…</span></div></div>
+        <div class="hero-bottom">今天的你，也值得一點海風。 <span aria-hidden="true">✳</span></div>
+      </section>
+
+      <section id="focus-section" class="card focus" aria-label="專注計時器">
+        <div class="card-header"><div><div class="eyebrow">02 / 把心放在此刻</div><h2>慢慢來，比較快</h2></div></div>
+        <div class="focus-body">
+          <div class="timer-ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="timer-track" cx="50" cy="50" r="43"/><circle id="timer-progress" class="timer-progress" cx="50" cy="50" r="43" stroke-dasharray="270.176" stroke-dashoffset="0" /></svg><div class="timer-text"><strong id="timer-time">25:00</strong><small id="timer-mode-label">專注中</small></div></div>
+          <div class="timer-controls"><button class="timer-preset active" id="preset-focus" type="button">25 分鐘專注</button><button class="timer-preset" id="preset-break" type="button">5 分鐘休息</button><div class="timer-actions"><button class="timer-action" id="timer-toggle" type="button">▶ 開始</button><button class="timer-reset" id="timer-reset" type="button" title="重設計時器" aria-label="重設計時器"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></div></div>
+        </div>
+        <div class="focus-foot">一次做好一件事，就已經很好。</div>
+      </section>
+
+      <section id="weather-section" class="card weather" aria-label="城市即時天氣">
+        <div class="card-header"><div><div class="eyebrow">03 / 看看世界的晴雨</div><h2>窗外的晴雨</h2></div><button id="weather-retry" class="circle-btn" title="重新整理天氣" aria-label="重新整理天氣"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M5 9a8 8 0 0 1 13-3l2 6M4 12l2 6a8 8 0 0 0 13-3"/></svg></button></div>
+        <div class="city-tabs" role="group" aria-label="選擇天氣城市"><button class="city-chip active" data-city="tucheng">土城</button><button class="city-chip" data-city="taoyuan">桃園</button><button class="city-chip" data-city="zurich">蘇黎世</button></div>
+        <div class="weather-main"><div class="weather-icon" id="weather-icon" aria-hidden="true">◌</div><div><div class="temperature" id="weather-temp">--°</div><div class="temp-desc" id="weather-description">正在查詢當地天氣…</div></div></div>
+        <div class="weather-stats"><span>體感 <b id="weather-feels">--°</b></span><span>降雨機率 <b id="weather-rain">--%</b></span></div>
+        <div class="weather-feedback" id="weather-status">即時資料 · Open-Meteo</div>
+      </section>
+
+      <section id="calendar-section" class="card calendar" aria-label="行事曆和重要日程">
+        <div class="card-header"><div><div class="eyebrow">04 / 值得期待的日子</div><h2>接下來的日子</h2></div><div class="calendar-tools"><button class="circle-btn" type="button" id="add-event" aria-label="新增重要日程" title="新增重要日程"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+        <div class="calendar-month-head"><div id="month-name" class="month-name">November 2026</div><div class="month-arrows"><button type="button" class="month-arrow" id="previous-month" aria-label="上個月">‹</button><button type="button" class="month-arrow" id="current-month" aria-label="跳回本月" title="回本月">•</button><button type="button" class="month-arrow" id="next-month" aria-label="下個月">›</button></div></div>
+        <div class="month-weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+        <div class="month-grid" id="month-grid"></div>
+        <div class="section-divider"></div>
+        <div class="events-head"><strong>重要日程 · 倒數</strong><button class="small-btn" type="button" id="add-event-secondary">+ 新增</button></div>
+        <div class="events-list" id="events-list"><div class="empty-event">未來還留著許多空白，挑一天寫下期待吧。</div></div>
+        <div class="calendar-connect"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 3v4M17 3v4M3 10h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/></svg><span>Google Calendar 尚未連接 · <a href="https://calendar.google.com/" target="_blank" rel="noopener noreferrer">另開日曆 ↗</a></span></div>
+      </section>
+
+      <section id="todos-section" class="card todos" aria-label="快速待辦清單">
+        <div class="card-header"><div><div class="eyebrow">05 / 一點一點完成</div><h2>今天想完成的事</h2></div><div class="task-count"><span id="todo-completed">0 / 0</span><span>完成</span></div></div>
+        <div class="task-progress" role="progressbar" aria-label="待辦進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="todo-progress"><div id="todo-progress-fill"></div></div>
+        <form class="todo-input-row" id="todo-form"><input id="todo-input" maxlength="180" aria-label="輸入新待辦" placeholder="寫下一件想完成的小事…" required /><button type="submit" class="todo-add" aria-label="新增待辦"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></form>
+        <div class="todo-list" id="todo-list"><div class="todo-empty"><span class="todo-empty-symbol">Ciao!</span><span>今天還沒有待辦，也可以慢慢來。</span></div></div>
+        <div class="todo-foot">不必急著走很遠，每一步都算數。</div>
+      </section>
+
+      <section id="links-section" class="card links" aria-label="常用網站捷徑">
+        <div class="card-header"><div><div class="eyebrow">06 / 熟悉的好地方</div><h2>每天都會去的地方</h2></div><button class="circle-btn" type="button" id="manage-shortcuts" aria-label="管理常用捷徑" title="管理常用捷徑"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
+        <div class="links-grid" id="links-grid"></div>
+      </section>
+
+      <section class="card projects" id="projects-entry" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="library-overlay" aria-label="開啟我的作品與網址庫">
+        <div class="card-header"><div><div class="eyebrow">07 / 每個靈感都珍貴</div><h2>我的作品與網址庫</h2></div><span class="project-header-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+        <div class="project-summary"><span class="project-number" id="project-count">00</span><span>個珍藏中的作品</span></div>
+        <div class="project-preview" id="project-preview"><span class="preview-pill">✦ 每個小小的創作，都值得被珍藏</span></div>
+        <div class="project-cta">開啟全部作品・管理網址 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Works library -->
+  <div class="overlay" id="library-overlay" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="library-title">
+      <div class="modal-header"><div class="modal-headline"><div><div class="modal-kicker">把靈感收好，讓喜歡的事慢慢發芽</div><h2 class="modal-title" id="library-title">我的作品與網址庫</h2><p class="modal-description">收藏每一份好奇、勇氣，與慢慢完成的心意。</p></div><button class="modal-close" data-close-modal aria-label="關閉視窗"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+        <div class="modal-actions"><button type="button" class="primary-btn" id="project-add-trigger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>新增網址</button><button type="button" class="neutral-btn" id="export-data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m-5-5 5 5 5-5M5 17v4h14v-4"/></svg>備份資料</button><button type="button" class="neutral-btn" id="import-data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17V5m-5 5 5-5 5 5M5 17v4h14v-4"/></svg>匯入備份</button><input type="file" id="import-file" accept=".json,application/json" hidden /></div>
+      </div>
+      <div class="modal-main" id="library-main">
+        <form id="project-form" class="project-editor" hidden><div class="editor-heading"><span id="project-editor-title">新增收藏網址</span><button type="button" class="icon-btn" id="project-editor-cancel" aria-label="取消編輯">✕</button></div><div class="field-grid"><div class="field"><label for="project-name">網站名稱 *</label><input id="project-name" name="name" maxlength="100" required placeholder="例：我的作品集"/></div><div class="field"><label for="project-url">網址 URL *</label><input id="project-url" name="url" type="text" inputmode="url" maxlength="2048" required placeholder="https://example.com"/></div><div class="field"><label for="project-category">分類標籤</label><input id="project-category" name="category" maxlength="40" list="project-categories" placeholder="例：網頁工具"/><datalist id="project-categories"><option value="網頁工具"></option><option value="AI 實驗"></option><option value="正式網站"></option></datalist></div><div class="field"><label for="project-description">一句話備註</label><input id="project-description" name="description" maxlength="200" placeholder="這個網站是做什麼的？"/></div></div><div class="form-hint">網址支援 http:// 與 https://；沒有填分類時會放入「未分類」。</div><div class="editor-actions"><button type="button" class="neutral-btn" id="project-editor-cancel-secondary">取消</button><button type="submit" class="primary-btn" id="project-save-button">儲存作品</button></div></form>
+        <div class="search-row"><label class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="project-search" aria-label="搜尋作品" placeholder="搜尋網站名稱或備註…" /></label></div>
+        <div class="tag-list" id="project-tags" aria-label="依分類篩選"></div>
+        <div class="library-meta"><span id="library-result-count">共 0 個作品</span><span>點擊連結即可開啟新分頁 ↗</span></div>
+        <div class="library-list" id="library-list"></div>
+      </div>
+      <div class="modal-footer"><span id="library-storage-caption">☼ 自動儲存於此瀏覽器 · 可使用 Excel 備份</span><button type="button" class="neutral-btn" id="library-storage-open">▤ 試算表 / 備份設定</button></div>
+    </section>
+  </div>
+
+  <!-- Important date editor -->
+  <div class="overlay" id="event-overlay" hidden><section class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="event-modal-title"><div class="modal-header"><div class="modal-headline"><div><div class="modal-kicker">記住每一個值得期待的日子</div><h2 class="modal-title" id="event-modal-title">新增重要日程</h2><p class="modal-description">先使用個人倒數，Google Calendar 串接將在之後加入。</p></div><button class="modal-close" data-close-modal aria-label="關閉視窗">✕</button></div></div><div class="modal-main"><form id="event-form" class="simple-form"><div class="field-grid"><div class="field wide"><label for="event-title">日程名稱 *</label><input required maxlength="80" id="event-title" placeholder="例：作品正式上線" /></div><div class="field wide"><label for="event-date">日期 *</label><input required type="date" id="event-date" /></div></div><div class="editor-actions"><button type="button" class="neutral-btn" data-close-modal>取消</button><button type="submit" class="primary-btn">加入日程</button></div></form></div></section></div>
+
+  <!-- Quick link editor -->
+  <div class="overlay" id="shortcut-overlay" hidden><section class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="shortcut-modal-title"><div class="modal-header"><div class="modal-headline"><div><div class="modal-kicker">把喜歡的日常，放在伸手可及的地方</div><h2 class="modal-title" id="shortcut-modal-title">管理常用捷徑</h2><p class="modal-description">常去的地方放在這裡，讓每天多一點從容。</p></div><button class="modal-close" data-close-modal aria-label="關閉視窗">✕</button></div></div><div class="modal-main"><form id="shortcut-form" class="simple-form"><div class="field-grid"><div class="field wide"><label for="shortcut-title">網站名稱 *</label><input required maxlength="60" id="shortcut-title" placeholder="例如：我的日常工具" /></div><div class="field wide"><label for="shortcut-url">網址 URL *</label><input required inputmode="url" maxlength="2048" id="shortcut-url" placeholder="https://example.com" /></div></div><div class="editor-actions"><button type="submit" class="primary-btn">+ 新增捷徑</button></div></form><div class="section-divider"></div><div class="events-head"><strong>目前的常用網站</strong></div><div id="shortcut-manage-list" class="events-list" style="max-height:220px"></div></div></section></div>
+
+
+  <!-- Excel import/export and optional native Google Sheets storage -->
+  <div class="overlay" id="storage-overlay" hidden>
+    <section class="modal storage-modal" role="dialog" aria-modal="true" aria-labelledby="storage-title">
+      <div class="modal-header"><div class="modal-headline"><div><div class="modal-kicker">讓每一份努力，都有安心的歸處</div><h2 class="modal-title" id="storage-title">試算表與資料管理</h2><p class="modal-description">Excel 檔案備份・Google 試算表雲端同步</p></div><button class="modal-close" data-close-modal aria-label="關閉資料管理視窗">✕</button></div></div>
+      <div class="modal-main">
+        <div class="storage-alert" id="cloud-state" role="status">目前資料會自動保存在這個瀏覽器中。</div>
+        <div class="storage-options">
+          <section class="storage-option"><h3>▤ Excel .xlsx</h3><p>匯出四個工作表：作品庫、待辦、日程與常用捷徑；也能把編輯後的 Excel 匯入網站。</p>
+            <div class="option-actions"><button type="button" class="primary-btn" id="export-excel">↓ 下載 Excel</button><button type="button" class="neutral-btn" id="import-excel">↑ 匯入 Excel</button></div>
+            <input id="excel-file" class="sr-only" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-label="選擇 Excel 試算表" />
+            <div class="storage-note">提醒：Excel 匯入會覆蓋目前資料，系統會先詢問確認。</div>
+          </section>
+          <section class="storage-option"><h3>☁ Google 試算表</h3><p id="cloud-details">這個 GitHub 網站會直接連線你已建立的 Google 試算表。初次開啟請輸入同步密碼（不會放到 GitHub 程式碼）。</p>
+            <div class="option-actions"><button type="button" class="primary-btn" id="cloud-connect">🔐 連接試算表</button><button type="button" class="neutral-btn" id="cloud-load">↓ 載入雲端</button><button type="button" class="neutral-btn" id="cloud-upload">↑ 上傳本機</button><button type="button" class="primary-btn" id="cloud-save">↻ 立即同步</button></div>
+            <div class="storage-note" id="cloud-updated">尚未連線</div>
+          </section>
+        </div>
+        <p class="storage-footnote">你也可以沿用原有 JSON 備份，適合搬移到新版 HTML。Excel 檔案是手動匯入／匯出，不會自動修改裝置上的原始 .xlsx 檔案；部署 Google 試算表後才有跨裝置自動儲存。</p>
+        <div class="storage-help"><button type="button" class="neutral-btn" id="storage-export-json">↓ JSON 備份</button><button type="button" class="neutral-btn" id="storage-import-json">↑ JSON 還原</button><a href="https://developers.google.com/apps-script/guides/web" target="_blank" rel="noopener noreferrer">了解 Apps Script 部署</a></div>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script>
+/* Casa Marina XLSX engine: standalone Office Open XML import / export.
+   Exports uncompressed ZIP (valid XLSX); imports both stored/deflated ZIP entries.
+   Supported: four named data sheets, text, numbers, booleans, shared strings.
+   All user-provided values are written as inline strings, never executable formulas. */
+window.CasaWorkbook = (() => {
+  'use strict';
+  const enc = new TextEncoder(), dec = new TextDecoder();
+  const MAIN = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+  const REL = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+  const PKG = 'http://schemas.openxmlformats.org/package/2006/relationships';
+  const CONTENT = 'http://schemas.openxmlformats.org/package/2006/content-types';
+  const mime = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  const escapexml = v => String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
+  const u16=(b,p,n)=>{b[p]=n&255;b[p+1]=(n>>>8)&255};
+  const u32=(b,p,n)=>{b[p]=n&255;b[p+1]=(n>>>8)&255;b[p+2]=(n>>>16)&255;b[p+3]=(n>>>24)&255};
+  const r16=(d,p)=>d.getUint16(p,true),r32=(d,p)=>d.getUint32(p,true);
+  const crcTable=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+  function crc32(bytes){let c=0xffffffff;for(let i=0;i<bytes.length;i++)c=crcTable[(c^bytes[i])&255]^(c>>>8);return(c^0xffffffff)>>>0}
+  function concat(parts){let count=0;for(const p of parts)count+=p.length;const out=new Uint8Array(count);let offset=0;for(const p of parts){out.set(p,offset);offset+=p.length}return out}
+  function zip(files){const locals=[],centrals=[];let offset=0;const now=new Date(),time=((now.getHours()&31)<<11)|((now.getMinutes()&63)<<5)|((Math.floor(now.getSeconds()/2))&31),date=(((now.getFullYear()-1980)&127)<<9)|(((now.getMonth()+1)&15)<<5)|(now.getDate()&31);
+    for(const [path,xml] of files){const name=enc.encode(path),contents=enc.encode(xml),crc=crc32(contents);if(contents.length>16000000)throw Error('Excel 資料過大');const local=new Uint8Array(30+name.length);u32(local,0,0x04034b50);u16(local,4,20);u16(local,6,0x0800);u16(local,8,0);u16(local,10,time);u16(local,12,date);u32(local,14,crc);u32(local,18,contents.length);u32(local,22,contents.length);u16(local,26,name.length);local.set(name,30);locals.push(local,contents);
+      const central=new Uint8Array(46+name.length);u32(central,0,0x02014b50);u16(central,4,20);u16(central,6,20);u16(central,8,0x0800);u16(central,10,0);u16(central,12,time);u16(central,14,date);u32(central,16,crc);u32(central,20,contents.length);u32(central,24,contents.length);u16(central,28,name.length);u32(central,42,offset);central.set(name,46);centrals.push(central);offset+=local.length+contents.length}
+    const centralBytes=concat(centrals),footer=new Uint8Array(22);u32(footer,0,0x06054b50);u16(footer,8,files.length);u16(footer,10,files.length);u32(footer,12,centralBytes.length);u32(footer,16,offset);return concat([...locals,centralBytes,footer]);
+  }
+  function column(n){let s='';for(let x=n+1;x;x=Math.floor((x-1)/26))s=String.fromCharCode(65+(x-1)%26)+s;return s}
+  function cellXML(v,ref,isHeader){const a=` r="${ref}"${isHeader?' s="1"':''}`;if(typeof v==='number'&&Number.isFinite(v))return `<c${a}><v>${v}</v></c>`;if(typeof v==='boolean')return `<c${a} t="b"><v>${v?1:0}</v></c>`;return `<c${a} t="inlineStr"><is><t xml:space="preserve">${escapexml(v)}</t></is></c>`}
+  function worksheet({fields,rows}){const all=[fields,...rows],n=fields.length,lastRow=Math.max(all.length,1);const lines=all.map((values,index)=>`<row r="${index+1}"${index===0?' ht="25" customHeight="1"':''}>${values.map((v,i)=>cellXML(v,column(i)+(index+1),index===0)).join('')}</row>`).join('');const cols=fields.map((field,i)=>`<col min="${i+1}" max="${i+1}" width="${Math.min(46,Math.max(14,field==='url'?42:field==='description'?38:field==='text'?34:field==='title'?30:field==='id'?22:20))}" customWidth="1"/>`).join('');return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="${MAIN}"><dimension ref="A1:${column(n-1)}${lastRow}"/><sheetViews><sheetView showGridLines="0" workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="19"/><cols>${cols}</cols><sheetData>${lines}</sheetData><autoFilter ref="A1:${column(n-1)}${lastRow}"/></worksheet>`}
+  function makeXlsx(sheets){if(!Array.isArray(sheets)||sheets.length!==4)throw Error('需要四個工作表');const types=[`<?xml version="1.0" encoding="UTF-8"?><Types xmlns="${CONTENT}"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>`,...sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`),`</Types>`].join('');
+    const root=`<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="${PKG}"><Relationship Id="rId1" Type="${REL}/officeDocument" Target="xl/workbook.xml"/></Relationships>`;
+    const wb=`<?xml version="1.0" encoding="UTF-8"?><workbook xmlns="${MAIN}" xmlns:r="${REL}"><sheets>${sheets.map((s,i)=>`<sheet name="${escapexml(s.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets></workbook>`;
+    const wbrels=`<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="${PKG}">${sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="${REL}/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length+1}" Type="${REL}/styles" Target="styles.xml"/></Relationships>`;
+    const style=`<?xml version="1.0" encoding="UTF-8"?><styleSheet xmlns="${MAIN}"><fonts count="2"><font><sz val="11"/><color rgb="FF284A5E"/><name val="Aptos"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Aptos"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF245C80"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFill="1" applyFont="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+    const files=[['[Content_Types].xml',types],['_rels/.rels',root],['xl/workbook.xml',wb],['xl/_rels/workbook.xml.rels',wbrels],['xl/styles.xml',style],...sheets.map((s,i)=>[`xl/worksheets/sheet${i+1}.xml`,worksheet(s)])];return new Blob([zip(files)],{type:mime})
+  }
+  function download(blob,filename){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000)}
+  async function unzip(arrayBuffer){const bytes=new Uint8Array(arrayBuffer),view=new DataView(arrayBuffer),len=bytes.length;let footer=-1;for(let p=len-22;p>=Math.max(0,len-65557);p--)if(r32(view,p)===0x06054b50){footer=p;break}if(footer===-1)throw Error('不是有效的 .xlsx ZIP 檔');const count=r16(view,footer+10),off=r32(view,footer+16),size=r32(view,footer+12);if(count>1000||off+size>len)throw Error('Excel ZIP 結構異常');let pos=off;const entries=new Map();for(let i=0;i<count;i++){
+      if(r32(view,pos)!==0x02014b50)throw Error('Excel ZIP 目錄損毀');const method=r16(view,pos+10),packed=r32(view,pos+20),unpacked=r32(view,pos+24),nameLen=r16(view,pos+28),extraLen=r16(view,pos+30),commentLen=r16(view,pos+32),local=r32(view,pos+42),name=dec.decode(bytes.slice(pos+46,pos+46+nameLen));if(unpacked>14000000||packed>14000000)throw Error('工作表檔案過大');if(local+30>len||r32(view,local)!==0x04034b50)throw Error('Excel ZIP 區塊損毀');const start=local+30+r16(view,local+26)+r16(view,local+28);if(start+packed>len)throw Error('Excel ZIP 內容不完整');entries.set(name,{method,raw:bytes.slice(start,start+packed),unpacked});pos+=46+nameLen+extraLen+commentLen}
+    return async path=>{const file=entries.get(path);if(!file)return null;let output;if(file.method===0)output=file.raw;else if(file.method===8){if(!('DecompressionStream' in window))throw Error('此瀏覽器不支援 Excel 解壓，請改用 Chrome / Edge');output=new Uint8Array(await new Response(new Blob([file.raw]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer())}else throw Error('Excel 使用不支援的壓縮方式');if(output.length!==file.unpacked)throw Error('Excel ZIP 解壓尺寸不符');return dec.decode(output)};
+  }
+  const parseXml=raw=>{const doc=new DOMParser().parseFromString(raw,'application/xml');if(doc.getElementsByTagName('parsererror').length)throw Error('Excel XML 內容不正確');return doc};
+  const els=(parent,tag)=>Array.from(parent.getElementsByTagNameNS('*',tag));
+  function readRows(xml,shared){const doc=parseXml(xml),rows=[];for(const row of els(doc,'row')){const values={};for(const cell of els(row,'c')){const label=(cell.getAttribute('r')||'').match(/^[A-Z]+/i)?.[0];if(!label)continue;let col=0;for(const char of label.toUpperCase())col=col*26+char.charCodeAt(0)-64;col--;const type=cell.getAttribute('t'),v=els(cell,'v')[0]?.textContent??'';let value;if(type==='inlineStr')value=els(cell,'t').map(t=>t.textContent).join('');else if(type==='s')value=shared[Number(v)]??'';else if(type==='b')value=v==='1';else if(type==='str')value=v;else if(v!=='')value=Number.isFinite(Number(v))?Number(v):v;else value='';values[col]=value}rows.push(values)}
+    if(!rows.length)return[];const headers=rows.shift(),names=Object.keys(headers).sort((a,b)=>Number(a)-Number(b)).map(i=>String(headers[i]));return rows.map(values=>Object.fromEntries(names.map((name,i)=>[name,values[i]??'']))).filter(row=>Object.values(row).some(v=>v!==''&&v!==null));
+  }
+  async function readXlsx(arrayBuffer,required){const read=await unzip(arrayBuffer),workbook=await read('xl/workbook.xml'),rels=await read('xl/_rels/workbook.xml.rels');if(!workbook||!rels)throw Error('檔案缺少 Excel 工作表索引');const docs=parseXml(workbook),relDoc=parseXml(rels);const relMap={};for(const r of els(relDoc,'Relationship')){const target=r.getAttribute('Target')||'';relMap[r.getAttribute('Id')]=new URL(target,'https://example.invalid/xl/workbook.xml').pathname.slice(1)}let shared=[];const ss=await read('xl/sharedStrings.xml');if(ss)shared=els(parseXml(ss),'si').map(si=>els(si,'t').map(t=>t.textContent).join(''));
+    const out={};for(const sheet of els(docs,'sheet')){const name=sheet.getAttribute('name');if(!required.includes(name))continue;const relationship=Array.from(sheet.attributes).find(a=>a.localName==='id'&&a.namespaceURI===REL);const id=relationship?.value||sheet.getAttribute('r:id');const path=relMap[id];const xml=path?await read(path):null;if(!xml)throw Error('Excel 找不到工作表 '+name);out[name]=readRows(xml,shared)}return out;
+  }
+  return {makeXlsx,readXlsx,download};
+})();
+
+  </script>
+  <script>
+    (()=>{
+      'use strict';
+      const $ = (sel,root=document)=>root.querySelector(sel);
+      const $$ = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
+      const icon = (name) => {
+        const paths = {
+          check:'<path d="m4 12 5 5L20 6"/>',
+          trash:'<path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6M10 10v7m4-7v7"/>',
+          edit:'<path d="M12 5h7v7M13 11l6-6M20 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6"/>',
+          link:'<path d="M10 13a5 5 0 0 0 7 .5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+          arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+          plus:'<path d="M12 5v14M5 12h14"/>'
+        };
+        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]||paths.link}</svg>`;
+      };
+      const DEFAULT_LINK = {id:'sample-daily-tool',name:'我的 Apps Script 工具',url:'https://script.google.com/macros/s/AKfycbxon9xGEnCW-6ruNQp_ct3pxw7GXsFyE_kXskfd0i0sYI7Rk8Zhi3rn5KYjYepAjz6S/exec'};
+      const STORAGE_KEY='casaMarina.dashboard.v1';
+      const makeId=()=> typeof crypto!=='undefined' && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      function normalizeUrl(raw){let input=String(raw||'').trim();if(!/^https?:\/\//i.test(input))input='https://'+input;try{const url=new URL(input);if(!['http:','https:'].includes(url.protocol)||!url.hostname)throw Error();return url.toString()}catch(e){throw new Error('請輸入有效的 http 或 https 網址');}}
+      function normalizeData(input){
+        if(!input||typeof input!=='object') throw new Error('備份格式不正確');
+        const checkArray=(v,label)=>{if(!Array.isArray(v))throw new Error(label+'資料格式不正確');return v.slice(0,2000)};
+        const short=(v,length)=>String(v??'').slice(0,length).trim();
+        const projects=checkArray(input.projects??[],'作品').map(p=>{if(!p||!p.name||!p.url)return null;try{return {id:short(p.id,100)||makeId(),name:short(p.name,100),url:normalizeUrl(p.url),category:short(p.category,40)||'未分類',description:short(p.description,200),createdAt:Number(p.createdAt)||Date.now()}}catch(e){return null}}).filter(Boolean);
+        const todos=checkArray(input.todos??[],'待辦').map(t=>t&&t.text?{id:short(t.id,100)||makeId(),text:short(t.text,180),done:t.done===true||t.done===1||String(t.done).toLowerCase()==='true'}:null).filter(Boolean);
+        const events=checkArray(input.events??[],'日程').map(e=>e&&e.title&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)?{id:short(e.id,100)||makeId(),title:short(e.title,80),date:e.date}:null).filter(Boolean);
+        const quickLinks=checkArray(input.quickLinks??[DEFAULT_LINK],'捷徑').map(l=>{if(!l||!l.name||!l.url)return null;try{return{id:short(l.id,100)||makeId(),name:short(l.name,60),url:normalizeUrl(l.url)}}catch(e){return null}}).filter(Boolean);
+        return {projects,todos,events,quickLinks};
+      }
+      function loadData(){try{const raw=localStorage.getItem(STORAGE_KEY);return raw?normalizeData(JSON.parse(raw)):normalizeData({})}catch(err){console.warn('Unable to load browser data',err);return normalizeData({})}}
+      let data=loadData();
+      const CLOUD_API = 'https://script.google.com/macros/s/AKfycbyCWfet5FE7ZetyOI-eryL2m5K5xl4z6TNEh1spBCzys0MO0MgDfc390IBw38UwvQtP/exec';
+      const cloudEnabled = true;
+      let syncPassword = ''; // Only in memory; never committed to GitHub or localStorage.
+      let activeJsonp = 0;
+      let cloudReady=false,cloudRevision=null,cloudBusy=false,cloudPending=false,cloudTimer=null,cloudLastSaved='';
+      function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}catch(e){notify('瀏覽器無法儲存，請使用備份功能');console.warn(e)}if(cloudEnabled){if(cloudReady){cloudPending=true;scheduleCloudSave()}else{updateCloudStatus('已保存在本機；雲端尚待處理','warning')}}}
+      let toastTimer;
+      function notify(message){const el=$('#toast');el.textContent=message;el.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('visible'),3000)}
+      function localDateString(date){const y=date.getFullYear(),m=String(date.getMonth()+1).padStart(2,'0'),d=String(date.getDate()).padStart(2,'0');return `${y}-${m}-${d}`}
+      function updateClock(){const date=new Date(),h=date.getHours();$('#live-clock').textContent=date.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',hour12:false});$('#full-date').textContent=date.toLocaleDateString('zh-TW',{month:'long',day:'numeric',weekday:'long'});$('#header-date').textContent=date.toLocaleDateString('zh-TW',{month:'short',day:'numeric',weekday:'short'});$('#greeting-italian').textContent=h<11?'Buongiorno!':h<17?'Buon pomeriggio!':'Buonasera!';$('#greeting-chinese').textContent=h<11?'早安，為今天留一點美好。':h<17?'午安，在陽光裡慢慢前進。':'晚安，把今天收進溫柔的海風裡。'}
+      updateClock();setInterval(updateClock,1000);
+
+      // A clock-accurate timer which keeps counting across inactive tabs.
+      let timerMode='focus',timerRemaining=1500,timerEnd=null,timerRunning=false;
+      const modeSeconds=()=>timerMode==='focus'?1500:300;
+      function renderTimer(){const total=modeSeconds(),remaining=Math.max(0,Math.ceil(timerRemaining));$('#timer-time').textContent=`${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')}`;$('#timer-mode-label').textContent=timerMode==='focus'?'專注中':'休息中';$('#timer-progress').setAttribute('stroke-dashoffset',String(270.176*(1-remaining/total)));$('#timer-toggle').textContent=timerRunning?'Ⅱ 暫停':'▶ 開始';$('#preset-focus').classList.toggle('active',timerMode==='focus');$('#preset-break').classList.toggle('active',timerMode==='break')}
+      function tickTimer(){if(!timerRunning||!timerEnd)return;timerRemaining=Math.max(0,(timerEnd-Date.now())/1000);if(timerRemaining<=0){timerRemaining=0;timerRunning=false;timerEnd=null;notify(timerMode==='focus'?'專注時間完成！去休息一下吧 ☀':'休息結束！準備好重新出發了嗎？')}renderTimer()}
+      function setMode(mode){timerMode=mode;timerRunning=false;timerEnd=null;timerRemaining=modeSeconds();renderTimer()}
+      $('#preset-focus').addEventListener('click',()=>setMode('focus'));$('#preset-break').addEventListener('click',()=>setMode('break'));$('#timer-reset').addEventListener('click',()=>setMode(timerMode));$('#timer-toggle').addEventListener('click',()=>{if(timerRunning){timerRemaining=Math.max(0,(timerEnd-Date.now())/1000);timerRunning=false;timerEnd=null}else{if(timerRemaining<=0)timerRemaining=modeSeconds();timerEnd=Date.now()+timerRemaining*1000;timerRunning=true}renderTimer()});setInterval(tickTimer,300);renderTimer();
+
+      // Open-Meteo live forecast: three manually selected cities (no location permission).
+      const cities={tucheng:{name:'土城',lat:24.9727,lon:121.4439,tz:'Asia/Taipei'},taoyuan:{name:'桃園',lat:24.9937,lon:121.3009,tz:'Asia/Taipei'},zurich:{name:'蘇黎世',lat:47.3769,lon:8.5417,tz:'Europe/Zurich'}};
+      let selectedCity='tucheng',weatherSeq=0;const weatherCache={};
+      function weatherCondition(code){if(code===0)return ['☀','晴朗'];if([1,2].includes(code))return ['🌤','晴時多雲'];if(code===3)return ['☁','陰天'];if([45,48].includes(code))return ['≋','有霧'];if([51,53,55,56,57].includes(code))return ['🌦','毛毛雨'];if([61,63,65,66,67,80,81,82].includes(code))return ['🌧','有雨'];if([71,73,75,77,85,86].includes(code))return ['❄','有雪'];if([95,96,99].includes(code))return ['⛈','雷雨'];return ['◌','天氣變化中']}
+      async function loadWeather(force=false){const key=selectedCity,city=cities[key],seq=++weatherSeq;$$('.city-chip').forEach(b=>b.classList.toggle('active',b.dataset.city===key));$('#weather-description').textContent=`${city.name} · 讀取中…`;$('#weather-status').textContent='資料更新中…';
+        let result=weatherCache[key];if(force||!result||Date.now()-result.fetchedAt>10*60*1000){try{const q=new URLSearchParams({latitude:city.lat,longitude:city.lon,current:'temperature_2m,apparent_temperature,weather_code',hourly:'precipitation_probability',forecast_days:'2',timezone:city.tz});const res=await fetch('https://api.open-meteo.com/v1/forecast?'+q.toString(),{signal:AbortSignal.timeout(10000)});if(!res.ok)throw new Error('天氣服務暫時無法使用');const api=await res.json();const current=api.current||{};const hour=(current.time||'').slice(0,13);const idx=(api.hourly?.time||[]).findIndex(t=>t.slice(0,13)===hour);result={temperature:current.temperature_2m,apparent:current.apparent_temperature,code:current.weather_code,precip:idx>=0?api.hourly.precipitation_probability[idx]:null,fetchedAt:Date.now()};if(!Number.isFinite(result.temperature))throw new Error('氣溫資料缺失');weatherCache[key]=result}catch(e){if(seq!==weatherSeq)return;$('#weather-icon').textContent='◌';$('#weather-temp').textContent='--°';$('#weather-description').textContent=`${city.name} · 無法取得即時資料`;$('#weather-feels').textContent='--°';$('#weather-rain').textContent='--%';$('#weather-status').textContent='點右上角重新整理';return}}
+        if(seq!==weatherSeq)return;const [symbol,condition]=weatherCondition(result.code);$('#weather-icon').textContent=symbol;$('#weather-temp').textContent=`${Math.round(result.temperature)}°`;$('#weather-description').textContent=`${city.name} · ${condition}`;$('#weather-feels').textContent=Number.isFinite(result.apparent)?Math.round(result.apparent)+'°':'--°';$('#weather-rain').textContent=Number.isFinite(result.precip)?Math.round(result.precip)+'%':'--%';$('#weather-status').textContent='即時資料 · Open-Meteo';}
+      $$('.city-chip').forEach(button=>button.addEventListener('click',()=>{selectedCity=button.dataset.city;loadWeather()}));$('#weather-retry').addEventListener('click',()=>loadWeather(true));loadWeather();
+
+      // To-do list.
+      function renderTodos(){const list=$('#todo-list');list.replaceChildren();const completed=data.todos.filter(t=>t.done).length,total=data.todos.length;$('#todo-completed').textContent=`${completed} / ${total}`;const percent=total?Math.round(completed/total*100):0;$('#todo-progress-fill').style.width=percent+'%';$('#todo-progress').setAttribute('aria-valuenow',String(percent));if(!total){const empty=document.createElement('div');empty.className='todo-empty';empty.innerHTML='<span class="todo-empty-symbol">Ciao!</span><span>今天還沒有待辦，也可以慢慢來。</span>';list.append(empty);return}for(const t of [...data.todos].sort((a,b)=>Number(a.done)-Number(b.done))){const row=document.createElement('div');row.className='todo-item'+(t.done?' done':'');const check=document.createElement('button');check.className='todo-check';check.setAttribute('aria-label',t.done?'標示未完成':'標示完成');check.innerHTML=t.done?icon('check'):'';check.addEventListener('click',()=>{t.done=!t.done;saveData();renderTodos()});const label=document.createElement('div');label.className='todo-label';label.textContent=t.text;const remove=document.createElement('button');remove.className='todo-remove';remove.title='刪除待辦';remove.setAttribute('aria-label','刪除待辦 '+t.text);remove.innerHTML=icon('trash');remove.addEventListener('click',()=>{data.todos=data.todos.filter(x=>x.id!==t.id);saveData();renderTodos()});row.append(check,label,remove);list.append(row)}}
+      $('#todo-form').addEventListener('submit',(e)=>{e.preventDefault();const input=$('#todo-input'),text=input.value.trim();if(!text)return;data.todos.unshift({id:makeId(),text,done:false});input.value='';saveData();renderTodos();input.focus()});renderTodos();
+
+      // Monthly calendar and local event countdown.
+      let displayMonth=new Date();displayMonth=new Date(displayMonth.getFullYear(),displayMonth.getMonth(),1);
+      function addMonths(delta){displayMonth=new Date(displayMonth.getFullYear(),displayMonth.getMonth()+delta,1);renderCalendar()}
+      $('#previous-month').addEventListener('click',()=>addMonths(-1));$('#next-month').addEventListener('click',()=>addMonths(1));$('#current-month').addEventListener('click',()=>{const now=new Date();displayMonth=new Date(now.getFullYear(),now.getMonth(),1);renderCalendar()});
+      function renderCalendar(){const year=displayMonth.getFullYear(),month=displayMonth.getMonth(),today=localDateString(new Date());$('#month-name').textContent=new Intl.DateTimeFormat('en-US',{month:'long',year:'numeric'}).format(displayMonth);const grid=$('#month-grid');grid.replaceChildren();const offset=new Date(year,month,1).getDay();const days=new Date(year,month+1,0).getDate();const totalCells=offset+days>35?42:35;for(let i=0;i<totalCells;i++){const d=i-offset+1,cell=document.createElement('span');cell.className='month-day';if(d<=0||d>days){cell.classList.add('muted');cell.textContent=d<=0?new Date(year,month,0).getDate()+d:d-days}else{cell.textContent=d;const date=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(date===today)cell.classList.add('today');if(data.events.some(e=>e.date===date))cell.classList.add('event')}grid.append(cell)}renderEvents()}
+      function renderEvents(){const list=$('#events-list');list.replaceChildren();const now=new Date(),start=new Date(now.getFullYear(),now.getMonth(),now.getDate());const items=[...data.events].filter(e=>new Date(e.date+'T00:00:00')>=start).sort((a,b)=>a.date.localeCompare(b.date));if(!items.length){const el=document.createElement('div');el.className='empty-event';el.textContent='未來還留著許多空白，挑一天寫下期待吧。';list.append(el);return}for(const event of items.slice(0,3)){const days=Math.round((new Date(event.date+'T00:00:00')-start)/86400000);const wrap=document.createElement('div');wrap.className='event';const bar=document.createElement('span');bar.className='event-bar';const info=document.createElement('div');info.className='event-info';const name=document.createElement('div');name.className='event-name';name.textContent=event.title;const date=document.createElement('div');date.className='event-date';date.textContent=event.date;info.append(name,date);const count=document.createElement('span');count.className='event-count';count.textContent=days===0?'就是今天':`還有 ${days} 天`;const del=document.createElement('button');del.className='icon-btn';del.title='刪除日程';del.setAttribute('aria-label','刪除日程 '+event.title);del.innerHTML=icon('trash');del.addEventListener('click',()=>{data.events=data.events.filter(x=>x.id!==event.id);saveData();renderCalendar()});wrap.append(bar,info,count,del);list.append(wrap)}}
+      renderCalendar();
+
+      // Accessible modal helpers, with escape and backdrop close.
+      let activeOverlay=null,lastFocused=null;
+      function openModal(id){if(activeOverlay)closeModal();lastFocused=document.activeElement;activeOverlay=$('#'+id);activeOverlay.hidden=false;document.body.style.overflow='hidden';const focusable=activeOverlay.querySelector('button:not([disabled]), input:not([disabled])');focusable?.focus()}
+      function closeModal(){if(!activeOverlay)return;activeOverlay.hidden=true;activeOverlay=null;document.body.style.overflow='';if(lastFocused?.isConnected)lastFocused.focus();lastFocused=null}
+      $$('.overlay').forEach(overlay=>overlay.addEventListener('mousedown',e=>{if(e.target===overlay)closeModal()}));$$('[data-close-modal]').forEach(b=>b.addEventListener('click',closeModal));document.addEventListener('keydown',e=>{if(e.key==='Escape'&&activeOverlay){closeModal();return}if(e.key==='Tab'&&activeOverlay){const els=$$('button:not([disabled]):not([hidden]),[href],input:not([disabled]):not([hidden]),textarea:not([disabled]):not([hidden])',activeOverlay).filter(el=>el.getClientRects().length);if(!els.length)return;const first=els[0],last=els[els.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
+      function openEventModal(){const date=$('#event-date');date.value=localDateString(new Date());openModal('event-overlay')}
+      $('#add-event').addEventListener('click',openEventModal);$('#add-event-secondary').addEventListener('click',openEventModal);
+      $('#event-form').addEventListener('submit',e=>{e.preventDefault();const title=$('#event-title').value.trim(),date=$('#event-date').value;if(!title||!/^\d{4}-\d{2}-\d{2}$/.test(date))return;data.events.push({id:makeId(),title,date});saveData();renderCalendar();e.target.reset();closeModal();notify('日程已加入倒數')});
+
+      // Quick links, including the single URL provided by the user.
+      function renderLinks(){const grid=$('#links-grid');grid.replaceChildren();data.quickLinks.slice(0,3).forEach(l=>{const a=document.createElement('a');a.className='quick-link';a.href=l.url;a.target='_blank';a.rel='noopener noreferrer';a.title=l.url;const mark=document.createElement('span');mark.className='link-icon';mark.textContent=l.name.slice(0,1).toUpperCase();const label=document.createElement('div');label.style.minWidth='0';const name=document.createElement('div');name.className='quick-link-title';name.textContent=l.name;const sub=document.createElement('div');sub.className='quick-link-sub';sub.textContent='開啟網站 ↗';label.append(name,sub);a.append(mark,label);grid.append(a)});const add=document.createElement('button');add.className='quick-link quick-link-add';add.type='button';add.innerHTML=`<span class="link-icon">${icon('plus')}</span><span>新增捷徑</span>`;add.addEventListener('click',()=>openShortcutModal());grid.append(add)}
+      function renderShortcutManager(){const list=$('#shortcut-manage-list');list.replaceChildren();if(!data.quickLinks.length){const el=document.createElement('div');el.className='empty-event';el.textContent='目前還沒有捷徑';list.append(el)}for(const l of data.quickLinks){const row=document.createElement('div');row.className='event';const info=document.createElement('div');info.className='event-info';const name=document.createElement('div');name.className='event-name';name.textContent=l.name;const desc=document.createElement('div');desc.className='event-date';desc.textContent=l.url;info.append(name,desc);const edit=document.createElement('button');edit.className='icon-btn';edit.setAttribute('aria-label','修改 '+l.name);edit.innerHTML=icon('edit');edit.addEventListener('click',()=>{$('#shortcut-title').value=l.name;$('#shortcut-url').value=l.url;$('#shortcut-form').dataset.editId=l.id;$('#shortcut-form button[type=submit]').textContent='儲存修改';$('#shortcut-title').focus()});const del=document.createElement('button');del.className='icon-btn';del.setAttribute('aria-label','刪除 '+l.name);del.innerHTML=icon('trash');del.addEventListener('click',()=>{if(!confirm('確定移除此捷徑？'))return;data.quickLinks=data.quickLinks.filter(x=>x.id!==l.id);saveData();renderLinks();renderShortcutManager();notify('捷徑已刪除')});row.append(info,edit,del);list.append(row)}}
+      function openShortcutModal(){$('#shortcut-form').reset();delete $('#shortcut-form').dataset.editId;$('#shortcut-form button[type=submit]').textContent='+ 新增捷徑';renderShortcutManager();openModal('shortcut-overlay')}
+      $('#manage-shortcuts').addEventListener('click',openShortcutModal);
+      $('#shortcut-form').addEventListener('submit',e=>{e.preventDefault();const form=e.currentTarget,name=$('#shortcut-title').value.trim();let url;try{url=normalizeUrl($('#shortcut-url').value)}catch(err){notify(err.message);return}if(!name)return;const editId=form.dataset.editId;if(editId){const entry=data.quickLinks.find(x=>x.id===editId);if(entry){entry.name=name;entry.url=url}}else data.quickLinks.push({id:makeId(),name,url});saveData();renderLinks();renderShortcutManager();form.reset();delete form.dataset.editId;form.querySelector('[type=submit]').textContent='+ 新增捷徑';notify(editId?'捷徑已更新':'捷徑已新增')});renderLinks();
+
+      // Works library: search, tag filter, CRUD, JSON backups.
+      let currentTag='全部',editingId=null;
+      function openLibrary(){openModal('library-overlay');renderLibrary()}
+      $('#projects-entry').addEventListener('click',openLibrary);$('#projects-entry').addEventListener('keydown',e=>{if(e.target===e.currentTarget&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openLibrary()}});
+      function renderProjectSummary(){const ordered=[...data.projects].sort((a,b)=>b.createdAt-a.createdAt);$('#project-count').textContent=String(ordered.length).padStart(2,'0');const preview=$('#project-preview');preview.replaceChildren();if(!ordered.length){const p=document.createElement('span');p.className='preview-pill';p.textContent='✦ 每個小小的創作，都值得被珍藏';preview.append(p);return}for(const p of ordered.slice(0,3)){const pill=document.createElement('span');pill.className='preview-pill';const name=document.createElement('span');name.textContent=p.name;pill.append('✦ ',name);preview.append(pill)}}
+      function openProjectEditor(project=null){editingId=project?.id||null;$('#project-editor-title').textContent=project?'編輯收藏網址':'新增收藏網址';$('#project-save-button').textContent=project?'儲存修改':'儲存作品';$('#project-name').value=project?.name||'';$('#project-url').value=project?.url||'';$('#project-category').value=project?.category||'';$('#project-description').value=project?.description||'';$('#project-form').hidden=false;$('#library-main').scrollTo({top:0,behavior:'smooth'});$('#project-name').focus()}
+      function hideProjectEditor(){$('#project-form').hidden=true;editingId=null;$('#project-form').reset()}
+      $('#project-add-trigger').addEventListener('click',()=>openProjectEditor());$('#project-editor-cancel').addEventListener('click',hideProjectEditor);$('#project-editor-cancel-secondary').addEventListener('click',hideProjectEditor);
+      $('#project-form').addEventListener('submit',e=>{e.preventDefault();const name=$('#project-name').value.trim();let url;try{url=normalizeUrl($('#project-url').value)}catch(err){notify(err.message);return}if(!name)return;const category=$('#project-category').value.trim()||'未分類',description=$('#project-description').value.trim();if(editingId){const project=data.projects.find(p=>p.id===editingId);if(project){Object.assign(project,{name,url,category,description})}}else data.projects.unshift({id:makeId(),name,url,category,description,createdAt:Date.now()});saveData();hideProjectEditor();renderProjectSummary();renderLibrary();notify('作品已儲存')});
+      $('#project-search').addEventListener('input',renderLibrary);
+      function renderLibrary(){const tags=$('#project-tags');tags.replaceChildren();const categories=['全部','網頁工具','AI 實驗','正式網站',...new Set(data.projects.map(p=>p.category).filter(c=>!['網頁工具','AI 實驗','正式網站'].includes(c)))];if(!categories.includes(currentTag))currentTag='全部';categories.forEach(category=>{const btn=document.createElement('button');btn.className='tag'+(currentTag===category?' active':'');btn.textContent=category;btn.type='button';btn.addEventListener('click',()=>{currentTag=category;renderLibrary()});tags.append(btn)});
+        const q=$('#project-search').value.trim().toLocaleLowerCase();const filtered=[...data.projects].sort((a,b)=>b.createdAt-a.createdAt).filter(p=>(currentTag==='全部'||p.category===currentTag)&&(!q||[p.name,p.description,p.category,p.url].some(str=>str.toLocaleLowerCase().includes(q))));$('#library-result-count').textContent=`顯示 ${filtered.length} / ${data.projects.length} 個作品`;
+        const list=$('#library-list');list.replaceChildren();if(!filtered.length){const empty=document.createElement('div');empty.className='library-empty';const title=document.createElement('strong');title.textContent=data.projects.length?'Nessun risultato':'La tua collezione';const desc=document.createElement('span');desc.textContent=data.projects.length?'找不到符合條件的作品，試著更換搜尋條件。':'還沒有收藏，點擊「新增網址」保存你的第一件作品。';empty.append(title,desc);list.append(empty);return}
+        for(const p of filtered){const card=document.createElement('article');card.className='library-card';const top=document.createElement('div');top.className='library-card-top';const mark=document.createElement('div');mark.className='library-symbol';mark.textContent=p.name.slice(0,1).toUpperCase();const nameArea=document.createElement('div');nameArea.className='library-card-title';const title=document.createElement('strong');title.textContent=p.name;const category=document.createElement('div');category.className='library-category';category.textContent=p.category;nameArea.append(title,category);const controls=document.createElement('div');controls.className='library-controls';const edit=document.createElement('button');edit.className='icon-btn';edit.title='編輯作品';edit.setAttribute('aria-label','編輯 '+p.name);edit.innerHTML=icon('edit');edit.addEventListener('click',()=>openProjectEditor(p));const del=document.createElement('button');del.className='icon-btn';del.title='刪除作品';del.setAttribute('aria-label','刪除 '+p.name);del.innerHTML=icon('trash');del.addEventListener('click',()=>{if(!confirm(`確定刪除「${p.name}」？`))return;data.projects=data.projects.filter(x=>x.id!==p.id);saveData();renderProjectSummary();renderLibrary();notify('作品已刪除')});controls.append(edit,del);top.append(mark,nameArea,controls);const desc=document.createElement('p');desc.className='library-desc';desc.textContent=p.description||'尚未添加備註。';const visit=document.createElement('a');visit.className='visit-btn';visit.href=p.url;visit.target='_blank';visit.rel='noopener noreferrer';visit.innerHTML=`<span>前往網站</span>${icon('arrow')}`;card.append(top,desc,visit);list.append(card)}}
+      renderProjectSummary();
+      $('#export-data').addEventListener('click',()=>{const payload={...data,exportedAt:new Date().toISOString(),version:1};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`casa-marina-backup-${localDateString(new Date())}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);notify('已產生 JSON 備份')});
+      $('#import-data').addEventListener('click',()=>$('#import-file').click());$('#import-file').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const raw=JSON.parse(await file.text());if(!Array.isArray(raw.projects)||!Array.isArray(raw.todos)||!Array.isArray(raw.events)||!Array.isArray(raw.quickLinks))throw new Error('請選擇此 Dashboard 匯出的完整 JSON 備份');const imported=normalizeData(raw);if(!confirm('匯入將覆蓋目前的作品、待辦、捷徑與日程。確定繼續嗎？'))return;data=imported;saveData();renderProjectSummary();renderTodos();renderCalendar();renderLinks();renderLibrary();notify('備份匯入完成')}catch(err){notify(err.message||'匯入失敗，請檢查 JSON 檔案')}finally{e.target.value=''}});
+
+      // Mobile quick-jump: a sticky nav that tracks the nearest visible card.
+      const jumpButtons = $$('[data-jump]');
+      const navMap = {hero:'#hero-section',focus:'#focus-section',weather:'#weather-section',calendar:'#calendar-section',todos:'#todos-section',links:'#links-section'};
+      function activateJump(key){jumpButtons.forEach(b=>{const active=b.dataset.jump===key;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','location');else b.removeAttribute('aria-current')})}
+      jumpButtons.forEach(b=>b.addEventListener('click',()=>{const target=$(navMap[b.dataset.jump]);if(!target)return;activateJump(b.dataset.jump);target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}));
+      if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio);if(visible.length){const key=visible[0].target.id.replace('-section','');activateJump(key)}},{rootMargin:'-95px 0px -42% 0px',threshold:[0,.2,.5,.8]});Object.values(navMap).forEach(s=>{const el=$(s);if(el)observer.observe(el)})}
+      $$('[data-open-library]').forEach(b=>b.addEventListener('click',openLibrary));
+      function openStorage(){openModal('storage-overlay')}
+      $('#storage-trigger').addEventListener('click',openStorage);
+      $$('[data-open-storage]').forEach(b=>b.addEventListener('click',openStorage));
+      $('#library-storage-open').addEventListener('click',openStorage);
+
+      // Excel OOXML import/export is implemented locally and works without CDN scripts.
+      const XLSX_SHEETS={
+        Projects:['id','name','url','category','description','createdAt'],
+        Todos:['id','text','done'],
+        Events:['id','title','date'],
+        QuickLinks:['id','name','url']
+      };
+      function refreshAllData(){renderProjectSummary();renderTodos();renderCalendar();renderLinks();renderLibrary();if(activeOverlay?.id==='shortcut-overlay')renderShortcutManager()}
+      function exportExcel(){try{const sheets=Object.entries(XLSX_SHEETS).map(([name,fields])=>({name,fields,rows:data[{Projects:'projects',Todos:'todos',Events:'events',QuickLinks:'quickLinks'}[name]].map(row=>fields.map(k=>row[k]??''))}));const blob=CasaWorkbook.makeXlsx(sheets);CasaWorkbook.download(blob,`Casa-Marina-${localDateString(new Date())}.xlsx`);notify('已匯出 Excel 試算表')}catch(e){notify('Excel 匯出失敗：'+(e.message||e))}}
+      async function importExcelFile(file){if(file.size>12*1024*1024)throw Error('檔案超過 12 MB，請先縮小 Excel');const sheets=await CasaWorkbook.readXlsx(await file.arrayBuffer(),Object.keys(XLSX_SHEETS));const input={};for(const [tab,fields] of Object.entries(XLSX_SHEETS)){if(!sheets[tab])throw Error('缺少工作表：'+tab);input[{Projects:'projects',Todos:'todos',Events:'events',QuickLinks:'quickLinks'}[tab]]=sheets[tab].map(row=>Object.fromEntries(fields.map(k=>[k,row[k]??''])))}
+        // Account for Excel formatting a date column as a numeric serial.
+        input.events.forEach(e=>{if(typeof e.date==='number'&&e.date>30000&&e.date<100000){const d=new Date(Math.round((e.date-25569)*86400000));e.date=d.toISOString().slice(0,10)}});
+        input.projects.forEach(p=>{if(typeof p.createdAt==='number'&&p.createdAt<100000)p.createdAt=Math.round((p.createdAt-25569)*86400000)});
+        const parsed=normalizeData(input);if(!confirm('匯入 Excel 將覆蓋目前所有作品、待辦、日程和捷徑。建議先匯出備份，確定繼續嗎？'))return;
+        data=parsed;saveData();refreshAllData();notify('Excel 匯入完成（已儲存於瀏覽器）')
+      }
+      $('#export-excel').addEventListener('click',exportExcel);
+      $('#import-excel').addEventListener('click',()=>$('#excel-file').click());
+      $('#excel-file').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{await importExcelFile(file)}catch(error){console.error(error);notify('Excel 匯入失敗：'+(error.message||'格式不符'))}finally{e.target.value=''}});
+      $('#storage-export-json').addEventListener('click',()=>$('#export-data').click());
+      $('#storage-import-json').addEventListener('click',()=>$('#import-data').click());
+
+      // google.script.run is only present when the HTML is hosted as a Google Apps Script web app.
+      // Use the native authenticated bridge: no public write endpoint / API keys in browser code.
+      function updateCloudStatus(label,kind='normal',updated=''){
+        $('#cloud-state').textContent=label;$('#cloud-state').classList.toggle('warn',kind==='warning');
+        $('#header-storage-status').textContent=cloudReady?'試算表已同步':'Excel · 資料管理';
+        $('#storage-dot').classList.toggle('connected',cloudReady&&kind!=='warning');$('#storage-dot').classList.toggle('warning',kind==='warning');
+        $('#cloud-updated').textContent=updated||label;
+        $('#library-storage-caption').textContent=cloudReady?'☁ 已連線 Google 試算表 · 本機亦有備份':'☼ 儲存於此瀏覽器 · 可用 Excel 或 JSON 備份';
+      }
+      function jsonpRead(){
+        return new Promise((resolve,reject)=>{
+          if(!syncPassword){reject(Error('請先連接試算表'));return}
+          const cb='__casaCloud'+(++activeJsonp)+'_'+Date.now();
+          const url=new URL(CLOUD_API);
+          url.searchParams.set('action','read');url.searchParams.set('key',syncPassword);url.searchParams.set('callback',cb);
+          let ended=false;const script=document.createElement('script');
+          const cleanup=()=>{delete window[cb];script.remove();clearTimeout(timeout)};
+          window[cb]=(result)=>{if(ended)return;ended=true;cleanup();if(result?.ok)resolve(result.result);else reject(Error(result?.error||'讀取失敗'))};
+          script.onerror=()=>{if(!ended){ended=true;cleanup();reject(Error('無法連上 Apps Script，請檢查部署權限與網址'))}};
+          const timeout=setTimeout(()=>{if(!ended){ended=true;cleanup();reject(Error('連線逾時，請檢查網路或部署狀態'))}},15000);
+          script.src=url.toString();document.head.append(script);
+        });
+      }
+      async function cloudCall(name,arg){
+        if(!syncPassword)throw Error('請先連接試算表');
+        if(name==='getDashboardData')return jsonpRead();
+        if(name!=='saveDashboardData')throw Error('未知的雲端操作');
+        // Cross-origin Apps Script redirects cannot be read via regular fetch/CORS.
+        // Send a simple no-cors POST, then independently read back to verify the saved revision.
+        const expected=Number(arg.revision)+1;
+        const payload={action:'save',key:syncPassword,revision:arg.revision,data:arg.data};
+        await fetch(CLOUD_API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(payload),redirect:'follow'});
+        let latest=null;
+        for(let attempt=0;attempt<6;attempt++){
+          await new Promise(r=>setTimeout(r,650+attempt*350));
+          latest=await jsonpRead();
+          if(Number(latest.revision)>=expected){
+            if(Number(latest.revision)!==expected||!sameData(normalizeData(latest.data||{}),normalizeData(arg.data)))throw Error('VERSION_CONFLICT：雲端資料與本機不同，請手動確認');
+            return {revision:latest.revision,updatedAt:latest.updatedAt};
+          }
+        }
+        throw Error('無法確認試算表已寫入。請先檢查 Apps Script 部署設定，不要重複覆蓋資料。');
+      }
+      function userHasLocalData(d){return d.projects.length>0||d.todos.length>0||d.events.length>0||d.quickLinks.some(x=>x.id!==DEFAULT_LINK.id)}
+      function sameData(a,b){return JSON.stringify(a)===JSON.stringify(b)}
+      function scheduleCloudSave(){clearTimeout(cloudTimer);cloudTimer=setTimeout(flushCloudSave,850)}
+      async function flushCloudSave(){if(!cloudEnabled||!cloudReady||cloudBusy)return;if(!cloudPending)return;cloudBusy=true;cloudPending=false;const payload=JSON.parse(JSON.stringify(data));updateCloudStatus('正在將變更儲存到 Google 試算表…');try{
+          const result=await cloudCall('saveDashboardData',{revision:cloudRevision,data:payload});cloudRevision=result.revision;cloudLastSaved=result.updatedAt||'';if(!cloudPending)updateCloudStatus('已同步到 Google 試算表','normal',`最近同步：${cloudLastSaved}`);
+        }catch(err){cloudPending=true;cloudReady=false;const conflict=String(err.message||err).includes('VERSION_CONFLICT');updateCloudStatus(conflict?'雲端已有其他裝置的新資料。請選擇「載入雲端」或「上傳本機」。':'同步失敗：'+(err.message||err),'warning');notify('雲端未同步，本機資料仍保留')}finally{cloudBusy=false;if(cloudReady&&cloudPending)scheduleCloudSave()}}
+      async function initialCloudLoad(){if(!syncPassword){updateCloudStatus('目前保存在本機。點「連接試算表」輸入同步密碼，即可啟用 Google 試算表同步。');return}$('#cloud-details').textContent='GitHub Pages 網站正在透過 Apps Script 與 Google 試算表同步。';updateCloudStatus('正在檢查 Google 試算表…');try{const remote=await cloudCall('getDashboardData');const remoteData=normalizeData(remote.data||{});cloudRevision=Number(remote.revision)||0;cloudLastSaved=remote.updatedAt||'';
+        if(cloudRevision===0&&!userHasLocalData(remoteData)){if(userHasLocalData(data)){cloudReady=false;updateCloudStatus('試算表尚無資料；可按「上傳本機」將舊資料搬到雲端。','warning')}else{cloudReady=true;updateCloudStatus('已連上空白試算表，下一次編輯將自動同步。')}}
+        else if(!userHasLocalData(data)||sameData(data,remoteData)){data=remoteData;saveLocalOnly();refreshAllData();cloudReady=true;updateCloudStatus('已載入 Google 試算表','normal',`最近同步：${cloudLastSaved}`)}
+        else{cloudReady=false;updateCloudStatus('本機與試算表內容不同：請決定要保留哪一份。未經確認不會覆蓋。','warning')}
+      }catch(err){cloudReady=false;updateCloudStatus('尚未能連接試算表：'+(err.message||err),'warning')}}
+      function saveLocalOnly(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}catch(e){console.warn(e)}}
+      async function loadFromCloud(){if(!syncPassword){notify('請先點「連接試算表」');return}if(cloudBusy)return;cloudBusy=true;updateCloudStatus('正在讀取試算表…');try{const response=await cloudCall('getDashboardData');const next=normalizeData(response.data||{});if(!sameData(data,next)&&userHasLocalData(data)&&!confirm('載入試算表資料會覆蓋目前這台裝置的本機資料。你確定嗎？'))return;data=next;saveLocalOnly();refreshAllData();cloudRevision=Number(response.revision)||0;cloudReady=true;cloudPending=false;updateCloudStatus('已由 Google 試算表載入','normal',`最近同步：${response.updatedAt||'剛剛'}`);notify('已載入雲端資料')}catch(err){updateCloudStatus('雲端讀取失敗：'+(err.message||err),'warning')}finally{cloudBusy=false}}
+      async function uploadToCloud(){if(!syncPassword){notify('請先點「連接試算表」');return}if(cloudBusy)return;cloudBusy=true;updateCloudStatus('正在檢查雲端版本…');try{const latest=await cloudCall('getDashboardData');const latestData=normalizeData(latest.data||{});if(Number(latest.revision)>0&&!sameData(data,latestData)&&!confirm('這會用本機資料完整覆蓋 Google 試算表的作品、待辦、日程和捷徑。建議先備份，確定覆蓋嗎？'))return;const result=await cloudCall('saveDashboardData',{revision:Number(latest.revision)||0,data:JSON.parse(JSON.stringify(data))});cloudRevision=result.revision;cloudReady=true;cloudPending=false;updateCloudStatus('已將本機資料上傳到 Google 試算表','normal',`最近同步：${result.updatedAt||'剛剛'}`);notify('雲端儲存完成')}catch(err){cloudReady=false;updateCloudStatus('上傳失敗：'+(err.message||err),'warning')}finally{cloudBusy=false}}
+      $('#cloud-connect').addEventListener('click',async()=>{const input=prompt('請輸入你在 Apps Script 產生的 Casa Marina 同步密碼（只保留在目前這個分頁）');if(!input)return;syncPassword=input.trim();cloudReady=false;$('#cloud-connect').disabled=true;try{await initialCloudLoad();if(cloudReady||cloudRevision!==null){notify('已檢查試算表連線')}else{syncPassword='';notify('連線失敗，請確認密碼與部署')}}finally{$('#cloud-connect').disabled=false}});
+      $('#cloud-load').disabled=false;$('#cloud-upload').disabled=false;$('#cloud-save').disabled=false;
+      $('#cloud-load').addEventListener('click',loadFromCloud);$('#cloud-upload').addEventListener('click',uploadToCloud);
+      $('#cloud-save').addEventListener('click',()=>{if(!cloudReady){notify('請先選擇「載入雲端」或「上傳本機」');return}cloudPending=true;flushCloudSave()});
+      initialCloudLoad();
+    })();
+  </script>
+</body>
+</html>
