@@ -583,6 +583,119 @@
 @media(max-width:650px){.casa-unified-layout #hero-section,.casa-unified-layout #v9-countdowns,.casa-unified-layout #todos-section,.casa-unified-layout #projects-entry,.casa-unified-layout #v9-words,.casa-unified-layout #v9-ideas,.casa-unified-layout #v9-garden,.casa-unified-layout #links-section,.casa-unified-layout #focus-section{grid-column:1;grid-row:auto}.casa-unified-layout #v9-countdowns .cm-countdown-list{grid-template-columns:repeat(2,minmax(0,1fr))}#library-overlay .library-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:390px){#library-overlay .library-list{grid-template-columns:1fr}}
 
+
+/* v10.1: countdown two-row layout, contained labels, no internal scrollbar */
+.casa-unified-layout #v9-countdowns{
+  overflow:visible;gap:0;padding:12px 14px 11px;
+}
+.casa-unified-layout #v9-countdowns>.overline{font-size:9px;line-height:1.2;margin:0 0 3px}
+.casa-unified-layout #v9-countdowns>h2{font-size:clamp(17px,1.5vw,21px);line-height:1.17;margin:0 0 3px}
+.casa-unified-layout #v9-countdowns>.muted{font-size:10px;line-height:1.3;margin:0 0 7px}
+.casa-unified-layout #v9-countdowns .cm-countdown-list{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-auto-rows:minmax(0,1fr);gap:7px;
+  margin-top:0;max-height:none;overflow:visible;
+  flex:1 1 auto;min-height:0;align-content:stretch;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-event{
+  box-sizing:border-box;min-width:0;min-height:0;height:100%;
+  padding:6px 28px 6px 8px;gap:2px;position:relative;
+  display:grid;grid-template-columns:64px minmax(0,1fr);
+  grid-template-rows:minmax(0,1fr) auto auto;
+  align-items:center;justify-items:start;
+  border-radius:12px;overflow:hidden;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-visual{
+  grid-column:1;grid-row:1/4;width:62px;height:62px;
+  align-self:center;justify-self:center;flex-shrink:0;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-calendar{
+  transform:none;width:39px;height:48px;min-height:0;
+  border-radius:5px;overflow:visible;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-calendar:before,
+.casa-unified-layout #v9-countdowns .cm-countdown-calendar:after{
+  width:5px;height:11px;top:-4px;border-radius:4px;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-calendar:before{left:8px}
+.casa-unified-layout #v9-countdowns .cm-countdown-calendar:after{right:8px}
+.casa-unified-layout #v9-countdowns .cm-countdown-binding{height:12px;flex:none;border-radius:5px 5px 0 0}
+.casa-unified-layout #v9-countdowns .cm-countdown-number,
+.casa-unified-layout #v9-countdowns .cm-countdown-number.many{
+  font-size:23px;line-height:1;font-weight:900;letter-spacing:-1px;
+  margin:3px 0 0;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-number.many{font-size:17px;margin-top:5px}
+.casa-unified-layout #v9-countdowns .cm-countdown-days{font-size:5.5px;letter-spacing:0;line-height:1;margin:2px 0 2px}
+.casa-unified-layout #v9-countdowns .cm-countdown-decoration{font-size:11px;right:0;bottom:2px}
+.casa-unified-layout #v9-countdowns .cm-countdown-title{
+  grid-column:2;grid-row:2;
+  font-size:clamp(10px,1vw,12px);line-height:1.23;
+  font-weight:800;text-align:left;max-width:100%;
+  overflow-wrap:anywhere;word-break:break-word;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-date{
+  grid-column:2;grid-row:3;
+  font-size:9px;line-height:1.24;text-align:left;
+  overflow-wrap:anywhere;max-width:100%;
+}
+.casa-unified-layout #v9-countdowns .cm-count-edit{
+  width:22px;height:22px;right:5px;top:5px;font-size:12px;
+}
+.casa-unified-layout #v9-countdowns .cm-countdown-actions{
+  margin:0;padding-top:7px;flex-shrink:0;
+}
+.casa-unified-layout #v9-countdowns .cm-count-add{font-size:10px!important;padding:5px 10px!important}
+/* If more than four events exist, grow the panel instead of hiding cards. */
+@media(min-width:941px){
+ .casa-unified-layout #v9-countdowns.cm-count-many{height:auto;max-height:none;min-height:356px}
+ .casa-unified-layout #v9-countdowns.cm-count-many .cm-countdown-list{grid-auto-rows:minmax(93px,auto)}
+}
+@media(max-width:940px){
+ .casa-unified-layout #v9-countdowns{height:auto;max-height:none;min-height:0}
+ .casa-unified-layout #v9-countdowns .cm-countdown-list{flex:none;grid-auto-rows:minmax(96px,auto)}
+}
+@media(max-width:470px){
+ .casa-unified-layout #v9-countdowns .cm-countdown-event{
+  grid-template-columns:1fr;grid-template-rows:auto auto auto;
+  padding:7px 5px 8px;justify-items:center;gap:2px;
+ }
+ .casa-unified-layout #v9-countdowns .cm-countdown-visual{grid-column:1;grid-row:1;width:56px;height:56px}
+ .casa-unified-layout #v9-countdowns .cm-countdown-title{grid-column:1;grid-row:2;text-align:center}
+ .casa-unified-layout #v9-countdowns .cm-countdown-date{grid-column:1;grid-row:3;text-align:center}
+ .casa-unified-layout #v9-countdowns .cm-countdown-list{grid-auto-rows:minmax(117px,auto)}
+}
+
+
+/* Casa Marina v10.2: three independent stacked columns beneath the first row */
+@media(min-width:941px){
+ .casa-unified-layout{grid-template-columns:repeat(12,minmax(0,1fr));align-items:start}
+ .casa-unified-layout .cm-second-left{grid-column:1/5;grid-row:2;order:4}
+ .casa-unified-layout #v9-words{grid-column:5/9;grid-row:2;order:5;align-self:start}
+ .casa-unified-layout .cm-second-right{grid-column:9/13;grid-row:2;order:6}
+ .casa-unified-layout .cm-second-left,.casa-unified-layout .cm-second-right{display:flex;flex-direction:column;gap:16px;min-width:0;align-self:start}
+ .casa-unified-layout .cm-second-left>*,.casa-unified-layout .cm-second-right>*{width:100%;min-width:0;grid-column:auto!important;grid-row:auto!important;max-height:none;align-self:auto;height:auto}
+ .casa-unified-layout #v9-garden{grid-column:auto;grid-row:auto}
+ .casa-unified-layout #links-section{grid-column:auto;grid-row:auto}
+ .casa-unified-layout #focus-section{grid-column:auto;grid-row:auto}
+}
+@media(max-width:940px){
+ .casa-unified-layout .cm-second-left,.casa-unified-layout .cm-second-right{display:contents}
+}
+/* Larger, truly readable 4-column portfolio tiles */
+#library-overlay .library-list{gap:11px}
+#library-overlay .library-card{padding:14px 12px 13px;min-height:136px;gap:8px}
+#library-overlay .library-card-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start}
+#library-overlay .library-symbol{display:none}
+#library-overlay .library-card-title{min-width:0}
+#library-overlay .library-card-title strong{font-size:clamp(15px,1.25vw,18px);line-height:1.35;white-space:normal;overflow-wrap:anywhere;overflow:visible;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3}
+#library-overlay .library-category{font-size:11px;margin-top:5px}
+#library-overlay .library-desc{font-size:12px;line-height:1.55;-webkit-line-clamp:3}
+#library-overlay .library-controls{align-items:flex-start}
+#library-overlay .icon-btn,#library-overlay .project-edit-btn{min-width:27px;min-height:27px}
+#v9-words .cm-word-audio-help{max-width:115px;line-height:1.35}
+@media(max-width:940px){#library-overlay .library-card-title strong{font-size:16px}}
+@media(max-width:650px){#library-overlay .library-card-title strong{font-size:15px}}
 </style>
 </head>
 <body>
@@ -648,7 +761,7 @@
     </main>
 <section class="v9-space" aria-label="Casa Marina v9 生活小花園">
   <section class="v9-card v9-words" id="v9-words"><div class="overline">08 / THREE WORDS A DAY</div><h2>每日單字 📖</h2><p class="muted">每天從 Vocabulary 單字庫隨機選三個，英文、中文與例句就像海邊的便利貼。</p><div id="v9-words-list" class="v9-stack">正在讀取今日單字…</div>
-    <div class="v9-controls"><span class="muted" id="v9-audio-source" role="status" aria-live="polite">點便利貼上的 🇺🇸 美式 或 🇬🇧 英式，在本站直接播放字典真人錄音；沒有對應音檔時不會使用機器語音。</span></div></section>
+    <div class="v9-controls"><span class="muted" id="v9-audio-source" role="status" aria-live="polite">點 🇺🇸／🇬🇧 可在本站聽單字：優先真人字典錄音，找不到時改用裝置英文朗讀。</span></div></section>
   <section class="v9-card v9-ideas" id="v9-ideas"><div class="overline">09 / LITTLE IDEAS</div><h2>靈感漂流瓶 💡</h2><p class="muted">平常只展示你已收藏的漂流瓶；想新增時，再打開表單慢慢寫下來。</p>
     <div id="v9-idea-list" class="cm-bottle-grid" aria-live="polite"></div>
     <div class="cm-bottle-actions"><button id="v9-idea-open" class="cm-bottle-add" type="button" aria-haspopup="dialog">＋ 新增漂流瓶</button></div></section>
@@ -1154,60 +1267,101 @@ function renderWords(){
  const day=today(),progress=collection('WordProgress').filter(p=>p.date===day);
  $('#v9-words-list').innerHTML=words.length?words.map((w,i)=>{
   const p=progress.find(p=>String(p.wordId)===String(w.id));
-  return `<article class="cm-word-sticky"><div class="cm-word-content"><div class="cm-word-count">WORD 0${i+1} · LITTLE WORD OF TODAY</div><div class="cm-word-title">${esc(w.word)}</div><div class="cm-word-meaning">${esc(w.meaning||'尚未填中文意思')}</div>${w.example?`<div class="cm-word-example">${esc(w.example)}</div>`:''}<div class="cm-word-buttons"><button type="button" data-known="${esc(w.id)}">${p?.known?'✓ 已學會':'○ 記住了'}</button><button type="button" data-fav="${esc(w.id)}">${p?.favorite?'★ 已收藏':'☆ 收藏'}</button></div></div><div class="cm-word-sounds"><button type="button" class="cm-word-audio" data-word-audio="${esc(w.id)}" data-accent="us" aria-label="播放 ${esc(w.word)} 的美式字典真人錄音">🇺🇸 美式 🔊</button><button type="button" class="cm-word-audio" data-word-audio="${esc(w.id)}" data-accent="uk" aria-label="播放 ${esc(w.word)} 的英式字典真人錄音">🇬🇧 英式 🔊</button><span class="cm-word-audio-help">字典真人音檔</span></div></article>`;
+  return `<article class="cm-word-sticky"><div class="cm-word-content"><div class="cm-word-count">WORD 0${i+1} · LITTLE WORD OF TODAY</div><div class="cm-word-title">${esc(w.word)}</div><div class="cm-word-meaning">${esc(w.meaning||'尚未填中文意思')}</div>${w.example?`<div class="cm-word-example">${esc(w.example)}</div>`:''}<div class="cm-word-buttons"><button type="button" data-known="${esc(w.id)}">${p?.known?'✓ 已學會':'○ 記住了'}</button><button type="button" data-fav="${esc(w.id)}">${p?.favorite?'★ 已收藏':'☆ 收藏'}</button></div></div><div class="cm-word-sounds"><button type="button" class="cm-word-audio" data-word-audio="${esc(w.id)}" data-accent="us" aria-label="播放 ${esc(w.word)} 的美式發音">🇺🇸 美式 🔊</button><button type="button" class="cm-word-audio" data-word-audio="${esc(w.id)}" data-accent="uk" aria-label="播放 ${esc(w.word)} 的英式發音">🇬🇧 英式 🔊</button><span class="cm-word-audio-help">字典錄音／英文語音</span></div></article>`;
  }).join(''):'<p class="muted">Vocabulary 工作表還沒有可用的單字，請新增 word、meaning 和 example。</p>';
 }
-/* v9.7: play dictionary recordings directly; never fall back to synthetic TTS. */
+/* v10.2: prefetch recorded pronunciation, with immediate English TTS fallback.
+   Audio playback is initiated inside the button click, without waiting for fetch. */
 const wordAudioCache=new Map();
 let activeWordAudio=null;
-async function wordAudioEntries(word){
-  const key=String(word||'').trim().toLowerCase();
-  if(!key)return [];
-  if(!wordAudioCache.has(key)){
-    const promise=(async()=>{
-      const response=await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(key),{headers:{Accept:'application/json'}});
-      if(!response.ok)throw new Error('字典目前沒有這個單字的錄音資料');
-      const entries=await response.json();
-      if(!Array.isArray(entries))return [];
-      return entries.flatMap(entry=>Array.isArray(entry.phonetics)?entry.phonetics:[])
-        .filter(p=>p&&typeof p.audio==='string'&&p.audio.trim())
-        .map(p=>({...p,audio:p.audio.startsWith('//')?'https:'+p.audio:p.audio}))
-        .filter(p=>/^https:\/\//i.test(p.audio));
-    })();
-    wordAudioCache.set(key,promise);
-  }
-  try{return await wordAudioCache.get(key)}catch(err){wordAudioCache.delete(key);throw err}
+let activeSpeechUtterance=null;
+let cachedEnglishVoices=[];
+function refreshEnglishVoices(){
+ if(!('speechSynthesis' in window))return [];
+ cachedEnglishVoices=window.speechSynthesis.getVoices().filter(v=>/^en(?:-|$)/i.test(v.lang));
+ return cachedEnglishVoices;
+}
+refreshEnglishVoices();
+if('speechSynthesis' in window){
+ window.speechSynthesis.addEventListener?.('voiceschanged',refreshEnglishVoices);
 }
 function accentOfDictionaryAudio(item){
-  const a=String(item.audio||'').toLowerCase();
-  const text=String(item.text||'').toLowerCase();
-  if(/(?:[-_](?:us|en-us|american|usa)(?:[-_.\/]|$)|(?:\/|-)us\/)/i.test(a))return 'us';
-  if(/(?:[-_](?:uk|gb|en-gb|british)(?:[-_.\/]|$)|(?:\/|-)uk\/)/i.test(a))return 'uk';
-  if(/american|united states|u\.s\./.test(text))return 'us';
-  if(/british|united kingdom|u\.k\./.test(text))return 'uk';
-  return 'unknown';
+ const a=String(item.audio||'').toLowerCase();
+ const t=String(item.text||'').toLowerCase();
+ if(/(?:[_-](?:us|en-us|american|usa)(?:[_./-]|$)|\/us\/)/i.test(a)||/american|united states|u\.s\./i.test(t))return 'us';
+ if(/(?:[_-](?:uk|gb|en-gb|british)(?:[_./-]|$)|\/uk\/)/i.test(a)||/british|united kingdom|u\.k\./i.test(t))return 'uk';
+ return 'unknown';
 }
-async function playDictionaryWord(id,accent,button){
-  const word=collection('Vocabulary').find(w=>String(w.id)===String(id));
-  if(!word)return;
-  button.disabled=true;
-  button.setAttribute('aria-busy','true');
-  const audioStatus=$('#v9-audio-source');
-  audioStatus.textContent='正在尋找「'+word.word+'」的'+(accent==='us'?'美式':'英式')+'真人錄音…';
+function prefetchDictionaryAudio(word){
+ const key=String(word||'').trim().toLowerCase();
+ if(!key)return;
+ if(wordAudioCache.has(key))return;
+ const record={state:'loading',files:[],error:null};wordAudioCache.set(key,record);
+ fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(key),{headers:{Accept:'application/json'}})
+ .then(r=>{if(!r.ok)throw new Error('字典暫時無法連線');return r.json()})
+ .then(entries=>{
+   record.files=(Array.isArray(entries)?entries:[]).flatMap(e=>Array.isArray(e.phonetics)?e.phonetics:[])
+    .filter(p=>p&&typeof p.audio==='string'&&p.audio.trim())
+    .map(p=>({...p,audio:p.audio.startsWith('//') ?'https:'+p.audio:p.audio}))
+    .filter(p=>/^https:\/\//i.test(p.audio));
+   record.state='ready';
+ }).catch(e=>{record.state='error';record.error=e});
+}
+function choosePronunciationVoice(accent){
+ const locale=accent==='uk'?'en-GB':'en-US';
+ const voices=refreshEnglishVoices();
+ const exact=voices.filter(v=>v.lang.toLowerCase()===locale.toLowerCase());
+ const preferred=/microsoft (aria|jenny|guy|ryan|sonia)|google (us|uk) english|samantha|daniel|karen|moira|ava|allison/i;
+ return exact.find(v=>preferred.test(v.name))||exact[0]||voices.find(v=>v.lang.toLowerCase().startsWith('en-'))||null;
+}
+function speakEnglishNow(word,accent,statusEl){
+ if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){
+  statusEl.textContent='此瀏覽器沒有英文語音功能；請確認使用最新版 Chrome、Edge 或 Safari。';return;
+ }
+ try{
+  const synth=window.speechSynthesis;synth.cancel();
+  const u=new SpeechSynthesisUtterance(word);
+  u.lang=accent==='uk'?'en-GB':'en-US';u.rate=.88;u.pitch=1;u.volume=1;
+  const voice=choosePronunciationVoice(accent);if(voice)u.voice=voice;
+  activeSpeechUtterance=u;
+  u.onstart=()=>{statusEl.textContent='🔊 正在播放「'+word+'」的英文語音（'+(accent==='uk'?'英式':'美式')+'）'};
+  u.onerror=()=>{statusEl.textContent='英文語音播放失敗，請確認裝置沒有靜音，並檢查瀏覽器已安裝英文語音。'};
+  u.onend=()=>{if(activeSpeechUtterance===u)activeSpeechUtterance=null};
+  synth.speak(u);
+  statusEl.textContent='🔊 使用'+(voice?voice.name:'裝置預設英文')+'朗讀「'+word+'」';
+ }catch(err){statusEl.textContent='發音功能暫時無法播放：'+(err.message||'請檢查瀏覽器語音設定')}
+}
+function playDictionaryWord(id,accent,button){
+ const word=collection('Vocabulary').find(w=>String(w.id)===String(id));if(!word)return;
+ const statusEl=$('#v9-audio-source');
+ const wordText=String(word.word||'').trim();if(!wordText)return;
+ if(activeWordAudio){activeWordAudio.pause();activeWordAudio=null}
+ if('speechSynthesis' in window)window.speechSynthesis.cancel();
+ const cached=wordAudioCache.get(wordText.toLowerCase());
+ const files=cached?.state==='ready'?cached.files:[];
+ const sameAccent=files.find(p=>accentOfDictionaryAudio(p)===accent);
+ const unlabeled=files.find(p=>accentOfDictionaryAudio(p)==='unknown');
+ const chosen=sameAccent||unlabeled;
+ if(chosen){
   try{
-    const files=await wordAudioEntries(word.word);
-    const selected=files.find(p=>accentOfDictionaryAudio(p)===accent);
-    if(!selected){audioStatus.textContent='目前沒有「'+word.word+'」的'+(accent==='us'?'美式':'英式')+'錄音；不會使用機器語音。可試試另一種口音。';return}
-    if(activeWordAudio){activeWordAudio.pause();activeWordAudio.currentTime=0}
-    const audio=new Audio(selected.audio);
-    activeWordAudio=audio;
-    audio.preload='auto';
-    audio.onended=()=>{if(activeWordAudio===audio)activeWordAudio=null};
-    audio.onerror=()=>{audioStatus.textContent='真人音檔暫時無法播放，請稍後再試。'};
-    await audio.play();
-    audioStatus.textContent='正在播放「'+word.word+'」的'+(accent==='us'?'美式':'英式')+'字典錄音（非合成語音）。';
-  }catch(err){audioStatus.textContent='暫時讀不到字典音檔：'+(err?.message||'請檢查網路或稍後再試')}
-  finally{button.disabled=false;button.removeAttribute('aria-busy')}
+   const audio=new Audio(chosen.audio);activeWordAudio=audio;
+   audio.onended=()=>{if(activeWordAudio===audio)activeWordAudio=null};
+   audio.onerror=()=>{if(activeWordAudio===audio)activeWordAudio=null;speakEnglishNow(wordText,accent,statusEl)};
+   const playback=audio.play();
+   statusEl.textContent='🔊 正在播放「'+wordText+'」的真人字典錄音'+(sameAccent?'（'+(accent==='uk'?'英式':'美式')+'）':'（未標示口音）');
+   if(playback&&typeof playback.catch==='function')playback.catch(()=>{if(activeWordAudio===audio)activeWordAudio=null;speakEnglishNow(wordText,accent,statusEl)});
+   return;
+  }catch(e){/* falls through to TTS */}
+ }
+ // Launch speech immediately during the original user click. Delaying with await
+ // can lose user activation on mobile browsers and produce silent playback.
+ speakEnglishNow(wordText,accent,statusEl);
+ if(!cached)prefetchDictionaryAudio(wordText);
+}
+function prefetchTodayPronunciations(){
+ const ids=extras?.dailyWordIds||[];
+ ids.map(id=>collection('Vocabulary').find(w=>String(w.id)===String(id)))
+ .filter(Boolean).forEach(w=>prefetchDictionaryAudio(w.word));
 }
 
 function renderIdeas(){const items=collection('Ideas').sort((a,b)=>Number(b.createdAt)-Number(a.createdAt));
@@ -1235,6 +1389,7 @@ function renderThemePicker(){const current=$('#v9-count-theme').value;
 renderThemePicker();
 $('#v9-theme-picker').addEventListener('click',e=>{const b=e.target.closest('[data-theme-pick]');if(!b)return;$('#v9-count-theme').value=b.dataset.themePick;renderThemePicker()});
 function renderCountdown(){const items=collection('Countdowns').map(x=>({...x,days:daysUntil(x.date,x.yearly)})).filter(x=>x.days!==null&&x.days>=0).sort((a,b)=>a.days-b.days);
+ $('#v9-countdowns').classList.toggle('cm-count-many',items.length>4);
  $('#v9-count-list').innerHTML=items.length?items.slice(0,8).map(x=>{const t=casaTheme(x.theme),count=String(x.days);
  return `<article class="cm-countdown-event" style="--count-bg:${t.bg};--count-top:${t.top};--count-ink:${t.ink};--count-soft:${t.soft}"><button type="button" class="cm-count-edit" data-count-edit="${esc(x.id)}" aria-label="編輯 ${esc(x.title)}" title="編輯日期、名稱和配色">✎</button><div class="cm-countdown-visual" aria-label="${esc(x.title)}，倒數 ${x.days} 天"><div class="cm-countdown-calendar"><div class="cm-countdown-binding"></div><div class="cm-countdown-number ${count.length>3?'many':''}">${count}</div><div class="cm-countdown-days">${x.days===0?'TODAY!':'DAYS TO GO'}</div></div><span class="cm-countdown-decoration" aria-hidden="true">${t.icon}</span></div><div class="cm-countdown-title">${esc(x.title)}</div><div class="cm-countdown-date">${esc(x.date)} ${x.yearly?' · 每年重複':''}</div></article>`}).join(''):'<div class="cm-countdown-empty">還沒有倒數日。新增一個值得期待的小日子，再挑選喜歡的節慶配色吧。🍋</div>'}
 function renderHabits(){const habits=collection('Habits').filter(x=>x.active!==false&&String(x.active).toLowerCase()!=='false');const logs=collection('HabitLogs').filter(x=>x.date===today()&&x.done);
@@ -1261,7 +1416,7 @@ function renderQuote(){
  const pair=pool[((quoteOffset%pool.length)+pool.length)%pool.length];
  $('#v9-quote-line').textContent=pair[0];$('#v9-quote-en').textContent=pair[1];
 }
-function render(){renderWords();renderIdeas();renderCountdown();renderHabits();renderQuote()}
+function render(){renderWords();prefetchTodayPronunciations();renderIdeas();renderCountdown();renderHabits();renderQuote()}
 $('#v9-words-list').onclick=async e=>{
  const audioButton=e.target.closest('[data-word-audio]');
  if(audioButton){await playDictionaryWord(audioButton.dataset.wordAudio,audioButton.dataset.accent,audioButton);return}
@@ -1295,5 +1450,18 @@ status('新功能正連接試算表…');poll();
 })();
 </script>
 
+
+<script>
+/* Layout assembly: move existing cards, keeping their IDs, listeners and data. */
+(function(){
+ const root=document.querySelector('.casa-unified-layout');if(!root)return;
+ const left=document.createElement('div');left.className='cm-second-left';
+ const right=document.createElement('div');right.className='cm-second-right';
+ [['projects-entry',left],['links-section',left],['v9-garden',left],['v9-ideas',right],['focus-section',right]].forEach(([id,host])=>{
+  const element=document.getElementById(id);if(element)host.appendChild(element);
+ });
+ root.append(left,right);
+})();
+</script>
 </body>
 </html>
