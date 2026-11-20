@@ -8,7 +8,7 @@
   <title>願每一天，都有一點海的自由。｜Casa Marina</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
   <style>
     :root{--ink:#294451;--deep:#245C80;--sea:#73B3C2;--sky:#A5D0D7;--cream:#F7F0E6;--paper:#FFFDF8;--coral:#EB947C;--lemon:#E7C16E;--mint:#E8F1EA;--line:#DDD6C7;--muted:#788B8E;--radius:24px;--shadow:0 13px 35px rgba(58,75,76,.075);color-scheme:light}
     *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;background:var(--cream);color:var(--ink);font-family:"DM Sans","Noto Sans TC",sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
@@ -803,6 +803,16 @@
 /* Prevent unnecessary motion while sync messages change. */
 #v9-audio-source{min-height:2em}
 
+
+/* v10.6: browser-native drift bottle modal; visible even before cloud starts. */
+.cm-idea-dialog{border:0;padding:0;position:fixed;inset:0;margin:auto;background:transparent;color:inherit;width:min(540px,calc(100vw - 24px));max-height:92dvh;overflow:visible;box-shadow:none;z-index:300}
+.cm-idea-dialog::backdrop{background:rgba(19,43,55,.56);backdrop-filter:blur(5px)}
+.cm-idea-dialog>.modal{box-sizing:border-box;width:100%;max-height:88dvh;overflow:hidden;border:1px solid #EAC7B2;background:#FFF9F0;box-shadow:0 25px 80px rgba(19,43,55,.24)}
+.cm-idea-dialog .modal-header{background:linear-gradient(115deg,#FFE3CC,#FFF3DE 56%,#E9EEE7)}
+.cm-idea-dialog .modal-title{color:#80515C}
+.cm-idea-dialog .modal-main{overflow:auto;overscroll-behavior:contain}
+.cm-idea-dialog:not([open]){display:none!important}
+@media(max-width:620px){.cm-idea-dialog{width:min(100vw - 18px,540px)}.cm-idea-dialog>.modal{max-height:90dvh}}
 </style>
 </head>
 <body>
@@ -904,19 +914,59 @@
     </section>
   </div>
 
-  <div class="overlay" id="idea-overlay" hidden>
+  <dialog class="cm-idea-dialog" id="idea-overlay" aria-labelledby="idea-modal-title">
     <section class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="idea-modal-title">
       <div class="modal-header"><div class="modal-headline"><div><div class="modal-kicker">把突然想起來的好點子，收進海邊的小瓶子裡</div><h2 class="modal-title" id="idea-modal-title">新增漂流瓶</h2><p class="modal-description">只有在你想新增的時候，才打開這個小小表單。</p></div><button class="modal-close" data-close-modal aria-label="關閉新增漂流瓶視窗">✕</button></div></div>
       <div class="modal-main"><form id="v9-idea-form" class="simple-form"><div class="field-grid"><div class="field wide"><label for="v9-idea-text">漂流瓶內容 *</label><textarea id="v9-idea-text" required maxlength="1400" placeholder="今天有什麼新想法？或想收藏什麼片刻？"></textarea></div><div class="field"><label for="v9-idea-category">分類</label><input id="v9-idea-category" maxlength="60" placeholder="例如：網站靈感、生活片段"></div><div class="field"><label for="v9-idea-url">相關連結</label><input id="v9-idea-url" inputmode="url" maxlength="2048" placeholder="https://example.com"></div></div><div class="editor-actions"><button type="button" class="neutral-btn" data-close-modal>取消</button><button type="submit" class="primary-btn">把它放進漂流瓶 ♡</button></div></form></div>
     </section>
-  </div>
+  </dialog>
 
-  <div class="overlay" id="idea-view-overlay" hidden>
+  <dialog class="cm-idea-dialog" id="idea-view-overlay" aria-labelledby="idea-view-title">
     <section class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="idea-view-title">
       <div class="modal-header"><div class="modal-headline"><div><div class="modal-kicker">DRIFT BOTTLE · LITTLE IDEA</div><h2 class="modal-title" id="idea-view-title">漂流瓶內容</h2><p class="modal-description" id="idea-view-meta">有些小念頭，值得好好收藏。</p></div><button class="modal-close" data-close-modal aria-label="關閉漂流瓶內容">✕</button></div></div>
       <div class="modal-main"><div class="cm-bottle-detail"><div class="cm-bottle-detail-art"><div class="cm-bottle-shape"><div class="cm-bottle-cork"></div><div class="cm-bottle-neck"></div><div class="cm-bottle-body"><div class="cm-bottle-note"><div id="idea-view-preview" class="cm-bottle-note-text"></div></div><div class="cm-bottle-gloss"></div></div></div></div><div class="cm-bottle-detail-copy"><div class="cm-bottle-detail-label" id="idea-view-category">隨手記錄</div><p id="idea-view-text" class="cm-bottle-detail-text"></p><div class="cm-bottle-detail-actions"><a id="idea-view-link" class="primary-btn" href="#" target="_blank" rel="noopener noreferrer" hidden>↗ 前往連結</a><button type="button" class="neutral-btn" id="idea-view-todo">轉成待辦</button><button type="button" class="neutral-btn" id="idea-view-project" hidden>加入 My WEB x My World</button><button type="button" class="neutral-btn" id="idea-view-delete">移除漂流瓶</button></div></div></div></div>
     </section>
-  </div>
+  </dialog>
+
+  <!-- Casa Marina v10.6: native drift-bottle dialogs independent of sync. -->
+  <script>
+  (function(){
+    'use strict';
+    var addButton=document.getElementById('v9-idea-open');
+    var addDialog=document.getElementById('idea-overlay');
+    var detailDialog=document.getElementById('idea-view-overlay');
+    var ideaForm=document.getElementById('v9-idea-form');
+    function openDialog(dialog){
+      if(!dialog)return;
+      if(addDialog.open&&dialog!==addDialog)addDialog.close();
+      if(detailDialog.open&&dialog!==detailDialog)detailDialog.close();
+      if(!dialog.open){dialog.showModal();}
+    }
+    function closeDialogs(){[addDialog,detailDialog].forEach(function(dialog){if(dialog&&dialog.open)dialog.close();});}
+    addButton.addEventListener('click',function(event){
+      event.preventDefault();
+      // Open before invoking any networking or application state.
+      if(ideaForm)ideaForm.reset();
+      openDialog(addDialog);
+      var textarea=document.getElementById('v9-idea-text');
+      if(textarea)textarea.focus();
+    });
+    [addDialog,detailDialog].forEach(function(dialog){
+      dialog.addEventListener('click',function(event){
+        if(event.target.closest('[data-close-modal]')){
+          event.preventDefault();event.stopImmediatePropagation();dialog.close();
+        }
+      },true);
+      dialog.addEventListener('click',function(event){
+        if(event.target===dialog){
+          var rect=dialog.getBoundingClientRect();
+          if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)dialog.close();
+        }
+      });
+    });
+    window.CasaIdeaDialog={openNew:function(){openDialog(addDialog);},openView:function(){openDialog(detailDialog);},close:closeDialogs};
+  })();
+  </script>
 
   <!-- Important date editor -->
 
@@ -1079,6 +1129,8 @@ window.CasaWorkbook = (() => {
       let activeOverlay=null,lastFocused=null;
       function openModal(id){if(activeOverlay)closeModal();lastFocused=document.activeElement;activeOverlay=$('#'+id);activeOverlay.hidden=false;document.body.style.overflow='hidden';const focusable=activeOverlay.querySelector('button:not([disabled]), input:not([disabled])');focusable?.focus()}
       function closeModal(){if(!activeOverlay)return;activeOverlay.hidden=true;activeOverlay=null;document.body.style.overflow='';if(lastFocused?.isConnected)lastFocused.focus();lastFocused=null}
+      // Shared modal API for the separately scoped Casa Marina v9+ features.
+      window.CasaModal={open:openModal,close:closeModal};
       $$('.overlay').forEach(overlay=>overlay.addEventListener('mousedown',e=>{if(e.target===overlay)closeModal()}));$$('[data-close-modal]').forEach(b=>b.addEventListener('click',closeModal));document.addEventListener('keydown',e=>{if(e.key==='Escape'&&activeOverlay){closeModal();return}if(e.key==='Tab'&&activeOverlay){const els=$$('button:not([disabled]):not([hidden]),[href],input:not([disabled]):not([hidden]),textarea:not([disabled]):not([hidden])',activeOverlay).filter(el=>el.getClientRects().length);if(!els.length)return;const first=els[0],last=els[els.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
 
       // Quick links, including the single URL provided by the user.
@@ -1149,7 +1201,7 @@ window.CasaWorkbook = (() => {
       // become visible on next poll or tab focus. No login/password UI.
       const CLOUD_BASELINE_KEY=STORAGE_KEY+'.syncBaseline.v2';
       const CLOUD_RECOVERY_KEY=STORAGE_KEY+'.recovery';
-      const CLOUD_POLL_MS=20000;
+      const CLOUD_POLL_MS=30000;
       const DELETIONS_KEY=STORAGE_KEY+'.explicitDeletes.v9';
       let pendingDeletes;try{pendingDeletes=JSON.parse(localStorage.getItem(DELETIONS_KEY)||'{}')}catch(e){pendingDeletes={}}
       function markDeleted(tab,id){if(!pendingDeletes[tab])pendingDeletes[tab]=[];if(!pendingDeletes[tab].includes(id))pendingDeletes[tab].push(id);localStorage.setItem(DELETIONS_KEY,JSON.stringify(pendingDeletes))}
@@ -1175,7 +1227,7 @@ window.CasaWorkbook = (() => {
           const cleanup=()=>{delete window[cb];script.remove();clearTimeout(timeout)};
           window[cb]=(response)=>{if(ended)return;ended=true;cleanup();response?.ok?resolve(response.result):reject(Error(response?.error||'讀取失敗'))};
           script.onerror=()=>{if(!ended){ended=true;cleanup();reject(Error('無法連上 Apps Script，請檢查部署權限與網址'))}};
-          const timeout=setTimeout(()=>{if(!ended){ended=true;cleanup();reject(Error('連線逾時，請檢查網路'))}},18000);
+          const timeout=setTimeout(()=>{if(!ended){ended=true;cleanup();reject(Error('連線逾時，請檢查網路'))}},14000);
           script.src=url.toString();document.head.append(script);
         });
       }
@@ -1235,7 +1287,9 @@ window.CasaWorkbook = (() => {
         // On first upgrade with an unknown baseline, trust the existing cloud
         // but back up any different local copy rather than silently discard it.
         if(!previous&&userHasLocalData(data)&&!sameData(data,latest)&&userHasLocalData(latest))preserveLocal('首次同步：本機與雲端不同');
-        data=next;saveLocalOnly();refreshAllData();
+        const visiblyChanged=!sameData(data,next);
+        data=next;
+        if(visiblyChanged){saveLocalOnly();refreshAllData()}
         cloudRevision=Number(result.revision)||0;cloudLastSaved=result.updatedAt||'';
         setBaseline(latest);cloudReady=true;
         cloudPending=!sameData(next,latest);
@@ -1307,13 +1361,15 @@ window.CasaWorkbook = (() => {
       setInterval(pollCloud,CLOUD_POLL_MS);
       document.addEventListener('visibilitychange',()=>{if(!document.hidden)pollCloud()});
       window.addEventListener('online',pollCloud);
-      initialCloudLoad();
+      // Let first paint and click handlers finish before the remote read starts.
+      requestAnimationFrame(()=>setTimeout(initialCloudLoad,140));
     })();
   </script>
 <script>
 (()=>{
 'use strict';
 const $=q=>document.querySelector(q);
+// Reuse the same overlay manager as the main dashboard (Escape, backdrop, focus).
 const api='https://script.google.com/macros/s/AKfycbwPjQ2mTGU5V7-M9Lv5VYJFzfR50icsvjtMgoBHuhmj-4Z6MYp4IUCCWjHkw804aWsu/exec';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pad=n=>String(n).padStart(2,'0');
@@ -1324,12 +1380,20 @@ const today=()=>{
 const later=(a,b)=>String(a||'').localeCompare(String(b||''));
 const id=()=> 'cm_'+(crypto.randomUUID?crypto.randomUUID():Date.now()+'_'+Math.random().toString(36).slice(2));
 let extras=null,busy=false,reading=false,queued=false,extraSignature="",accent='en-US',slow=false,shown=new Set(),quoteOffset=0,lastDate=today();
+let pendingExtraWrites=Promise.resolve();
+const EXTRA_CACHE_KEY='casa.v106.extras';
+function rememberExtras(){
+ try{const raw=JSON.stringify({savedAt:Date.now(),result:extras});
+  if(raw.length<350000) localStorage.setItem(EXTRA_CACHE_KEY,raw);
+ }catch(e){}
+}
+
 function status(s,error=false){$('#v9-sync-state').textContent=(error?'⚠ ':'☁ ')+s;$('#v9-sync-state').style.color=error?'#a74f4c':'#65837b'}
 function collection(name){return (extras?.collections?.[name]||[]).filter(x=>!x.deletedAt)}
 function jsonp(action){return new Promise((resolve,reject)=>{
  const cb='__casaCloudV9_'+Date.now()+'_'+Math.random().toString(36).slice(2);
  const script=document.createElement('script');const u=new URL(api);u.searchParams.set('action',action);u.searchParams.set('callback',cb);
- let finished=false;const timeout=setTimeout(()=>complete(Error('試算表讀取逾時')),20000);
+ let finished=false;const timeout=setTimeout(()=>complete(Error('試算表讀取逾時')),14000);
  function complete(err,value){if(finished)return;finished=true;clearTimeout(timeout);delete window[cb];script.remove();err?reject(err):resolve(value)}
  window[cb]=resp=>resp?.ok?complete(null,resp.result):complete(Error(resp?.error||'讀取失敗'));
  script.onerror=()=>complete(Error('無法連線 Apps Script，請確認已部署新版 Code.gs'));
@@ -1338,12 +1402,18 @@ function jsonp(action){return new Promise((resolve,reject)=>{
 async function poll(){if(reading||busy||document.hidden)return;reading=true;
  try{
    const result=await jsonp('extrasRead');
+   if(busy)return; // do not replace an in-flight optimistic update
    const signature=JSON.stringify(result);
-   if(signature!==extraSignature){extras=result;extraSignature=signature;render();try{sessionStorage.setItem('casa.v104.extras',JSON.stringify({savedAt:Date.now(),result}))}catch(e){}}
+   if(signature!==extraSignature){extras=result;extraSignature=signature;render();rememberExtras()}
    status('新功能已連接 Google 試算表 · 自動更新');
  }catch(e){status('試算表暫時讀取失敗：'+e.message,true)}finally{reading=false}}
 async function write(collectionName,item,op='upsert'){
- if(busy)return false;
+ // Serialize Google Sheets writes; never silently drop a second click.
+ const previous=pendingExtraWrites;
+ let release;
+ pendingExtraWrites=new Promise(resolve=>{release=resolve});
+ if(busy)status('上一筆資料正在儲存，已排隊處理這次操作…');
+ await previous;
  busy=true;
  const old=collection(collectionName).find(x=>String(x.id)===String(item.id));
  const expectedVersion=old?old._version:'';
@@ -1372,8 +1442,8 @@ async function write(collectionName,item,op='upsert'){
     }
   }
   if(!confirmed)throw Error('寫入未獲確認：可能資料衝突或被拒絕。請檢查試算表再重試。');
-  render();try{sessionStorage.setItem('casa.v104.extras',JSON.stringify({savedAt:Date.now(),result:extras}))}catch(e){}status('已儲存到 Google 試算表');return true;
- }catch(e){extras=original;extraSignature='';if(original)render();status(e.message,true);return false}finally{busy=false}
+  render();rememberExtras();status('已儲存到 Google 試算表');return true;
+ }catch(e){extras=original;extraSignature='';if(original)render();status(e.message,true);return false}finally{busy=false;release()}
 }
 function coreTodos(){return window.CasaCore?.getTodos?.()||[]}
 function todayFocus(){const record=collection('DailyFocus').find(x=>x.date===today());const all=coreTodos().filter(x=>!x.done);
@@ -1520,7 +1590,7 @@ function renderIdeas(){const items=collection('Ideas').sort((a,b)=>Number(b.crea
   return `<button type="button" class="cm-bottle-card" data-idea-open="${esc(x.id)}" aria-label="打開漂流瓶：${esc(summary.slice(0,30)||'未命名')}？"><div class="cm-bottle-shape"><div class="cm-bottle-cork"></div><div class="cm-bottle-neck"></div><div class="cm-bottle-body"><div class="cm-bottle-note"><div class="cm-bottle-note-text">${esc(summary)}</div></div><div class="cm-bottle-gloss"></div></div>${x.url?'<span class="cm-bottle-linkflag" aria-hidden="true">↗</span>':''}</div><div class="cm-bottle-caption"><strong>${esc(summary.slice(0,30)||(x.category||'漂流瓶'))}</strong><span>${esc(x.category||'隨手記錄')}${x.url?' · 有連結':''}</span></div></button>`
  }).join(''):'<div class="cm-bottle-empty">漂流瓶還是空的。等你把第一個喜歡的想法收進來。🫙</div>'}
 function formatIdeaTime(ts){const n=Number(ts);if(!n)return '';const d=new Date(n);return Number.isNaN(d.getTime())?'':d.toLocaleString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}
-function openIdeaDetail(ideaId){const idea=collection('Ideas').find(x=>String(x.id)===String(ideaId));if(!idea)return;$('#idea-view-title').textContent=idea.category||'漂流瓶內容';$('#idea-view-meta').textContent=[idea.category||'隨手記錄',formatIdeaTime(idea.createdAt)].filter(Boolean).join(' · ');$('#idea-view-category').textContent=idea.category||'隨手記錄';$('#idea-view-text').textContent=idea.text||'';$('#idea-view-preview').textContent=idea.text||'';const link=$('#idea-view-link');if(idea.url){link.hidden=false;link.href=idea.url}else{link.hidden=true;link.removeAttribute('href')}const todoBtn=$('#idea-view-todo'),projectBtn=$('#idea-view-project'),delBtn=$('#idea-view-delete');todoBtn.dataset.ideaTodo=idea.id;projectBtn.dataset.ideaProject=idea.id;projectBtn.hidden=!idea.url;delBtn.dataset.extraDel='Ideas|'+idea.id;openModal('idea-view-overlay')}
+function openIdeaDetail(ideaId){const idea=collection('Ideas').find(x=>String(x.id)===String(ideaId));if(!idea)return;$('#idea-view-title').textContent=idea.category||'漂流瓶內容';$('#idea-view-meta').textContent=[idea.category||'隨手記錄',formatIdeaTime(idea.createdAt)].filter(Boolean).join(' · ');$('#idea-view-category').textContent=idea.category||'隨手記錄';$('#idea-view-text').textContent=idea.text||'';$('#idea-view-preview').textContent=idea.text||'';const link=$('#idea-view-link');if(idea.url){link.hidden=false;link.href=idea.url}else{link.hidden=true;link.removeAttribute('href')}const todoBtn=$('#idea-view-todo'),projectBtn=$('#idea-view-project'),delBtn=$('#idea-view-delete');todoBtn.dataset.ideaTodo=idea.id;projectBtn.dataset.ideaProject=idea.id;projectBtn.hidden=!idea.url;delBtn.dataset.extraDel='Ideas|'+idea.id;window.CasaIdeaDialog.openView()}
 function daysUntil(date,yearly){if(!/^\d{4}-\d\d-\d\d$/.test(date))return null;const base=new Date(today()+'T12:00:00+08:00');let d=new Date(date+'T12:00:00+08:00');if(Number.isNaN(d.getTime()))return null;if(yearly){d.setFullYear(base.getFullYear());if(d<base)d.setFullYear(base.getFullYear()+1)}return Math.round((d.getTime()-base.getTime())/86400000)}
 const CASA_THEMES={
  summer:{name:'夏日',bg:'#329FC9',top:'#F7CE5F',ink:'#275C80',soft:'#FFF8E5',icon:'🍋'},
@@ -1577,10 +1647,28 @@ $('#v9-words-list').onclick=async e=>{
  const record=collection('WordProgress').find(x=>x.date===today()&&String(x.wordId)===String(word.id));
  await write('WordProgress',{id:record?.id||'word_'+today()+'_'+word.id,date:today(),wordId:word.id,known:kind==='known'?!record?.known:!!record?.known,favorite:kind==='fav'?!record?.favorite:!!record?.favorite,deletedAt:''});
 };
-$('#v9-idea-open').addEventListener('click',()=>{const f=$('#v9-idea-form');f.reset();openModal('idea-overlay')});
 $('#v9-idea-list').addEventListener('click',e=>{const b=e.target.closest('[data-idea-open]');if(!b)return;openIdeaDetail(b.dataset.ideaOpen)});
-$('#idea-view-overlay').addEventListener('click',async e=>{const b=e.target.closest('[data-idea-todo],[data-idea-project],[data-extra-del]');if(!b)return;if(b.dataset.extraDel){if(!confirm('確定移除這個漂流瓶嗎？'))return;const ok=await write('Ideas',{id:b.dataset.extraDel.split('|')[1]},'delete');if(ok)closeModal();return}const idea=collection('Ideas').find(x=>String(x.id)===String(b.dataset.ideaTodo||b.dataset.ideaProject));if(!idea)return;try{if(b.dataset.ideaTodo)window.CasaCore?.addTodo?.(idea.text);else window.CasaCore?.addProject?.((idea.text||'').slice(0,70),idea.url,idea.category||'靈感漂流瓶');status('已加入原本的待辦／作品，正在自動同步')}catch(err){status(err.message,true)}});
-$('#v9-idea-form').addEventListener('submit',async e=>{e.preventDefault();const text=$('#v9-idea-text').value.trim();if(!text)return;const url=$('#v9-idea-url').value.trim();if(url&&!/^https?:\/\//i.test(url)){status('網址請以 https:// 開頭',true);return}const ok=await write('Ideas',{id:id(),text,category:$('#v9-idea-category').value.trim(),url,createdAt:Date.now(),deletedAt:''});if(ok){e.target.reset();closeModal()}});
+$('#idea-view-overlay').addEventListener('click',async e=>{const b=e.target.closest('[data-idea-todo],[data-idea-project],[data-extra-del]');if(!b)return;if(b.dataset.extraDel){if(!confirm('確定移除這個漂流瓶嗎？'))return;const ok=await write('Ideas',{id:b.dataset.extraDel.split('|')[1]},'delete');if(ok)window.CasaIdeaDialog.close();return}const idea=collection('Ideas').find(x=>String(x.id)===String(b.dataset.ideaTodo||b.dataset.ideaProject));if(!idea)return;try{if(b.dataset.ideaTodo)window.CasaCore?.addTodo?.(idea.text);else window.CasaCore?.addProject?.((idea.text||'').slice(0,70),idea.url,idea.category||'靈感漂流瓶');status('已加入原本的待辦／作品，正在自動同步')}catch(err){status(err.message,true)}});
+$('#v9-idea-form').addEventListener('submit',async e=>{
+ e.preventDefault();const form=e.currentTarget;
+ const text=$('#v9-idea-text').value.trim();if(!text)return;
+ const url=$('#v9-idea-url').value.trim();
+ if(url&&!/^https?:\/\//i.test(url)){status('網址請以 https:// 開頭',true);return}
+ const saveBtn=form.querySelector('button[type=submit]');
+ if(saveBtn.disabled)return;
+ saveBtn.disabled=true;
+ const item={id:id(),text,category:$('#v9-idea-category').value.trim(),url,createdAt:Date.now(),deletedAt:''};
+ window.CasaIdeaDialog.close();
+ status('漂流瓶已加入畫面，正在背景儲存試算表…');
+ let ok=false;
+ try{ok=await write('Ideas',item)}finally{saveBtn.disabled=false}
+ if(ok){form.reset()}
+ else{
+  // Keep the unsaved text and reopen the form instead of discarding a failed write.
+  window.CasaIdeaDialog.openNew();
+  status('儲存失敗，已保留內容，請檢查連線後再按儲存。',true);
+ }
+});
 const countDialog=$('#v9-count-dialog');
 let countdownEditingId=null;
 function resetCountdownForm(){countdownEditingId=null;$('#v9-count-form').reset();$('#v9-count-theme').value='summer';$('#v9-count-delete-edit').hidden=true;$('#v9-count-dialog-title').textContent='收藏一個期待的日子 ♡';$('#v9-count-save').textContent='儲存這個期待的日子 ♡';renderThemePicker()}
@@ -1596,14 +1684,15 @@ $('#v9-next-quote').onclick=()=>{quoteOffset++;renderQuote()};
 document.querySelectorAll('[data-v9-jump]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.v9Jump)?.scrollIntoView({behavior:'smooth',block:'start'})));
 
 window.addEventListener('online',poll);document.addEventListener('visibilitychange',()=>{if(!document.hidden)poll()});
-setInterval(()=>{if(today()!==lastDate){lastDate=today();shown.clear()}poll()},25000);
+setInterval(()=>{if(today()!==lastDate){lastDate=today();shown.clear()}poll()},30000);
 try{
- const cached=JSON.parse(sessionStorage.getItem('casa.v104.extras')||'null');
- if(cached&&Date.now()-cached.savedAt<86400000&&cached.result?.collections){
-  extras=cached.result;extraSignature=JSON.stringify(cached.result);render();status('已載入上次資料，正在確認雲端更新…');
+ const cached=JSON.parse(localStorage.getItem(EXTRA_CACHE_KEY)||sessionStorage.getItem('casa.v104.extras')||'null');
+ if(cached&&Date.now()-cached.savedAt<3*86400000&&cached.result?.collections){
+  extras=cached.result;extraSignature=JSON.stringify(cached.result);render();status('已先顯示上次資料，正在背景檢查更新…');
  }
 }catch(e){}
-status('新功能正連接試算表…');poll();
+// Do not replace the cached-data status, and avoid competing with first paint.
+requestAnimationFrame(()=>setTimeout(poll,180));
 })();
 </script>
 
